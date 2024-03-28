@@ -263,15 +263,15 @@ def process_quest_step(player: str, fp_cert: str,
             qm = parse(f)
         QUEST_CACHE[qid] = qm
 
+    prev_sid, state, lang = load_state(fp_cert, quest_name, lang)
     qmplayer = QMPlayer(qm, lang)
     qmplayer.player = dataclasses.replace(qmplayer.player,
                                           Ranger=player, Player=player)
-    prev_sid, state, lang = load_state(fp_cert, quest_name, lang)
     if state:
         qmplayer.load_saving(state)
 
     if cid is None or sid is None or prev_sid != sid:
-        save_state(fp_cert, quest_name, "0", qmplayer.state, lang)
+        save_state(fp_cert, quest_name, str(prev_sid), qmplayer.state, lang)
         player_state = qmplayer.get_state()
         del_state_at_the_end(player_state, fp_cert, QUEST_NAMES[qid])
         return prev_sid, player_state, lang
@@ -322,9 +322,10 @@ def render_gemini_page(qid: int, sid: int, state: PlayerState,
         if x.active else style(x.text),
         state.choices)))
 
-    if not choices and state.gameState in (GameStateEnum.fail,
-                                           GameStateEnum.win):
-        choices += f'=> /{lang.value} {texts["goBackToShip"]}'
+    if not choices and state.gameState == GameStateEnum.fail:
+        choices += f'=> /{lang.value} {texts["goBackToShip"]} (fail)'
+    if not choices and state.gameState == GameStateEnum.win:
+        choices += f'=> /{lang.value} {texts["goBackToShip"]} (win)'
     if not choices and state.gameState == GameStateEnum.dead:
         choices += f'=> /{lang.value} {texts["death"]}'
 

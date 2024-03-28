@@ -314,7 +314,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
                             f' no state loc id={state.locationId}')
 
         loc_text_id = calc_loc_showing_text_id(loc, state, rnd, debug)
-        loc_own_text = loc.texts[loc_text_id] or ''
+        loc_own_text = (loc.texts[loc_text_id] or '') if loc.texts else ''
 
         last_jump = next(filter(lambda x: x.id == state.lastJumpId,
                                 quest.jumps), None)
