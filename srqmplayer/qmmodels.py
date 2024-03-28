@@ -267,6 +267,24 @@ class QM(QMBase, QMBase2, QMBase3):
     locations: List[Location]
     jumps: List[Jump]
 
+    def find_jump(self, jid: int) -> Optional[Jump]:
+        return next(filter(lambda x: x.id == jid, self.jumps), None)
+
+    def get_jump(self, jid: int) -> Jump:
+        jump = self.find_jump(jid)
+        if not jump:
+            raise Exception(f'Internal error: no jump id={jid}')
+        return jump
+
+    def find_loc(self, lid: int) -> Optional[Location]:
+        return next(filter(lambda x: x.id == lid, self.locations), None)
+
+    def get_loc(self, lid: int) -> Location:
+        loc = self.find_loc(lid)
+        if not loc:
+            raise Exception(f'Internal error: no loc id={lid}')
+        return loc
+
     @staticmethod
     def create(base: QMBase, base2: QMBase2, base3: QMBase3,
                params: List[QMParam],

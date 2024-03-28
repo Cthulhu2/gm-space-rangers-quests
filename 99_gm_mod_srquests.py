@@ -198,6 +198,7 @@ def quests_handler(req: gmcapsule.gemini.Request):
         return 50, f'{ex}'
 
 
+# TODO: Use SQLite to store user session
 def load_state(fp_cert, quest_name):
     user_dir = join(USERS_DIR, fp_cert)
     if fp_cert not in listdir(USERS_DIR):
@@ -287,7 +288,9 @@ def style(text: str, colorize: bool = True):
             .replace('<clrEnd>', '*') \
             .replace('</clr>', '*')
 
-    text = text.replace('<fix>', '```').replace('</fix>', '```')
+    text = text.replace('<fix>', '```') \
+        .replace('</fix>', '```') \
+        .replace('<br>', '\n')
 
     fmt_begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)
     while fmt_begin:
@@ -341,7 +344,7 @@ def render_gemini_page(qid: int, sid: int, state: PlayerState,
     if not choices and state.gameState == GameStateEnum.win:
         choices += f'=> /{lang.value} {texts["goBackToShip"]} (win)'
     if not choices and state.gameState == GameStateEnum.dead:
-        choices += f'=> /{lang.value} {texts["death"]}'
+        choices += f'=> /{lang.value} {texts["death"]} (death)'
 
     return f'{img}{snd}{text}\n{inventory}{choices}'
 

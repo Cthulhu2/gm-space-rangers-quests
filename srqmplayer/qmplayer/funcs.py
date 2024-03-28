@@ -289,11 +289,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
             soundName=None
         )
     elif state.state == State.jump:
-        jump = next(filter(lambda x: x.id == state.lastJumpId,
-                           quest.jumps), None)
-        if not jump:
-            raise Exception(f'Internal error:'
-                            f' no last jump id={state.lastJumpId}')
+        jump = quest.get_jump(state.lastJumpId)
         return PlayerState(
             text=replace(jump.description, quest, state, player, None,
                          alea.rnd),
@@ -307,17 +303,11 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
             soundName=state.soundName
         )
     elif state.state in (State.location, State.critonlocation):
-        loc = next(filter(lambda x: x.id == state.locationId,
-                          quest.locations), None)
-        if not loc:
-            raise Exception(f'Internal error:'
-                            f' no state loc id={state.locationId}')
-
+        loc = quest.get_loc(state.locationId)
         loc_text_id = calc_loc_showing_text_id(loc, state, rnd, debug)
         loc_own_text = (loc.texts[loc_text_id] or '') if loc.texts else ''
 
-        last_jump = next(filter(lambda x: x.id == state.lastJumpId,
-                                quest.jumps), None)
+        last_jump = quest.find_jump(state.lastJumpId)
         if loc.isEmpty and last_jump and last_jump.description:
             text = last_jump.description
         else:
@@ -332,12 +322,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
                                         active=True)]
             else:
                 def map_possible_jumps(p_jump):
-                    jmp = next(filter(lambda j: j.id == p_jump.id,
-                                      quest.jumps), None)
-                    if not jmp:
-                        raise Exception(
-                            f'Internal error:'
-                            f' no jump {p_jump.id} in possible jumps')
+                    jmp = quest.get_jump(p_jump.id)
                     return PlayerChoice(
                         text=replace(jmp.text, quest, state, player, None,
                                      alea.rnd) or texts['next'],
@@ -361,8 +346,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
             soundName=state.soundName)
     elif state.state == State.critonjump:
         crit_id = state.critParamId
-        jump = next(filter(lambda x: x.id == state.lastJumpId,
-                           quest.jumps), None)
+        jump = quest.find_jump(state.lastJumpId)
         if crit_id is None or not jump:
             raise Exception(f'Internal error: crit={crit_id}'
                             f' lastJump={state.lastJumpId}')
@@ -387,8 +371,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
             soundName=state.soundName)
     elif state.state == State.jumpandnextcrit:
         crit_id = state.critParamId
-        jump = next(filter(lambda x: x.id == state.lastJumpId,
-                           quest.jumps), None)
+        jump = quest.find_jump(state.lastJumpId)
         if crit_id is None or not jump:
             raise Exception(f'Internal error: crit={crit_id}'
                             f' lastJump={state.lastJumpId}')
@@ -406,13 +389,9 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
             soundName=state.soundName)
     elif state.state == State.critonlocationlastmessage:
         crit_id = state.critParamId
-        loc = next(filter(lambda x: x.id == state.locationId,
-                          quest.locations), None)
         if crit_id is None:
             raise Exception('Internal error: no critId')
-        if not loc:
-            raise Exception(f'Internal error:'
-                            f' no crit state loc {state.locationId}')
+        loc = quest.get_loc(state.locationId)
         param = quest.params[crit_id]
         if param.type == ParamType.Успешный:
             choices = [PlayerChoice(jumpId=JUMP_GO_BACK_TO_SHIP,
@@ -536,7 +515,7 @@ def perform_jump_internal(jump_id: int,
     #  }
     # */
 
-    jump = next(filter(lambda x: x.id == jump_id, quest.jumps), None)
+    jump = quest.find_jump(jump_id)
     state = dataclasses.replace(
         state,
         imageName=jump.img if jump and jump.img else state.imageName,
@@ -548,10 +527,7 @@ def perform_jump_internal(jump_id: int,
         state = dataclasses.replace(state, state=State.location)
         state = calc_loc(quest, state, random, debug)
     elif state.state == State.jump:
-        jump = next(filter(lambda x: x.id == state.lastJumpId,
-                           quest.jumps), None)
-        if not jump:
-            raise Exception(f'Internal error: no jump {state.lastJumpId}')
+        jump = quest.get_jump(state.lastJumpId)
         state = dataclasses.replace(state,
                                     locationId=jump.toLocationId,
                                     state=State.location)
@@ -562,11 +538,7 @@ def perform_jump_internal(jump_id: int,
             raise Exception(
                 f'Jump {jump_id} is not in list in that location.'
                 f' Possible jumps={state.possibleJumps}')
-        jump = next(filter(lambda x: x.id == jump_id,
-                           quest.jumps), None)
-        if not jump:
-            raise Exception(f'Internal Error:'
-                            f' no jump id={jump_id} from possible jump list')
+        jump = quest.get_jump(jump_id)
         state = dataclasses.replace(state, lastJumpId=jump_id)
         if jump.dayPassed:
             state = dataclasses.replace(state, daysPassed=state.daysPassed + 1)
@@ -583,11 +555,7 @@ def perform_jump_internal(jump_id: int,
         state, crit_params_triggered = \
             calc_params_update(quest, state, random, jump.paramsChanges)
 
-        next_loc = next(filter(lambda x: x.id == jump.toLocationId,
-                               quest.locations), None)
-        if not next_loc:
-            raise Exception(f'Internal error:'
-                            f' no next location {jump.toLocationId}')
+        next_loc = quest.get_loc(jump.toLocationId)
 
         if not jump.description:
             if crit_params_triggered:
@@ -627,8 +595,7 @@ def perform_jump_internal(jump_id: int,
                 state = dataclasses.replace(state, state=State.jump)
     elif state.state == State.jumpandnextcrit:
         state = dataclasses.replace(state, state=State.critonjump)
-        jump = next(filter(lambda x: x.id == state.lastJumpId,
-                           quest.jumps), None)
+        jump = quest.find_jump(state.lastJumpId)
         img = ''
         track = ''
         sound = ''
@@ -697,11 +664,7 @@ def calc_loc(quest: Quest,
         },
     )
 
-    loc = next(filter(lambda x: x.id == state.locationId,
-                      quest.locations), None)
-    if not loc:
-        raise Exception(f'Internal error: no state location {state.locationId}')
-
+    loc = quest.get_loc(state.locationId)
     loc_img_id = calc_loc_showing_text_id(loc, state, rnd, debug)
     loc_media = loc.media[loc_img_id] if loc.media else None
     state = dataclasses.replace(
@@ -726,8 +689,7 @@ def calc_loc(quest: Quest,
 
     def filter_jumps(jump: Jump) -> bool:
         # Сразу выкинуть переходы в локации с превышенным лимитом
-        to_loc = next(filter(lambda x: x.id == jump.toLocationId,
-                             quest.locations), None)
+        to_loc = quest.find_loc(jump.toLocationId)
         if (to_loc and to_loc.maxVisits
                 and jump.toLocationId in state.locationVisitCount
                 and state.locationVisitCount[jump.toLocationId] + 1
@@ -911,8 +873,7 @@ def calc_loc(quest: Quest,
             # Do nothing because some jumps allows this
             pass
         else:
-            last_jump: Jump = next(filter(lambda x: x.id == state.lastJumpId,
-                                          quest.jumps), None)
+            last_jump = quest.find_jump(state.lastJumpId)
             if loc.isEmpty:
                 if state.lastJumpId and last_jump and last_jump.description:
                     state_ = State.critonlocation
@@ -941,15 +902,8 @@ def calc_loc(quest: Quest,
     # А это дикий костыль для пустых локаций и переходов
     if state.state == State.location and len(state.possibleJumps) == 1:
         lonely_current_jump_in_possible = state.possibleJumps[0]
-        lonely_current_jump = next(filter(
-            lambda x: x.id == lonely_current_jump_in_possible.id, quest.jumps),
-            None)
-
-        if not lonely_current_jump:
-            raise Exception(f'Unable to find jump'
-                            f' id={lonely_current_jump_in_possible.id}')
-        last_jump = next(filter(lambda x: x.id == state.lastJumpId,
-                                quest.jumps), None)
+        lonely_current_jump = quest.get_jump(lonely_current_jump_in_possible.id)
+        last_jump = quest.find_jump(state.lastJumpId)
 
         loc_text_id = calc_loc_showing_text_id(loc, state, rnd, debug)
         loc_own_text = (loc.texts[loc_text_id] or '') if loc.texts else ''
@@ -974,9 +928,7 @@ def calc_loc(quest: Quest,
                                           rnd, debug)
     elif state.state == State.critonlocation:
         # Little bit copy-paste from branch above
-        last_jump = next(
-            filter(lambda x: x.id == state.lastJumpId, quest.jumps),
-            None)
+        last_jump = quest.find_jump(state.lastJumpId)
         loc_text_id = calc_loc_showing_text_id(loc, state, rnd, debug)
         loc_own_text = loc.texts[loc_text_id] or ''
         if loc.isEmpty:

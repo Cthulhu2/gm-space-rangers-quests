@@ -1,4 +1,5 @@
-### Квесты
+### Квесты :: КР 2
+=> /cgi-quests/action?qid=5 Банкет
 => /cgi-quests/action?qid=2 Плохой день рейнджера
 => /cgi-quests/action?qid=101 Проигрыватель
 => /cgi-quests/action?qid=104 Тюрьма
