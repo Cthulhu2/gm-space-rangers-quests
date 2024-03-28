@@ -4,8 +4,8 @@ from typing import Optional
 
 
 class Lang(Enum):
-    rus = 'rus'
-    eng = 'eng'
+    ru = 'ru'
+    en = 'en'
 
 
 @dataclass
@@ -23,23 +23,18 @@ class Player:
 
 # TODO: move from this file
 DEFAULT_RUS_PLAYER = Player(Ranger='Греф', Player='Греф',
-                            FromPlanet='Земля',
-                            FromStar='Солнечная',
-                            ToPlanet='Боннасис',
-                            ToStar='Процион',
+                            FromPlanet='Земля', FromStar='Солнце',
+                            ToPlanet='Боннасис', ToStar='Процион',
                             Money='10000',
                             #
-                            lang=Lang.rus,
+                            lang=Lang.ru,
                             allowBackButton=False)
 
 # TODO: move from this file
-DEFAULT_ENG_PLAYER = Player(Ranger='Ranger',
-                            Player='Player',
-                            FromPlanet='FromPlanet',
-                            FromStar='FromStar',
-                            ToPlanet='ToPlanet',
-                            ToStar='ToStar',
+DEFAULT_ENG_PLAYER = Player(Ranger='Ranger', Player='Ranger',
+                            FromPlanet='Earth', FromStar='Sun',
+                            ToPlanet='Bonnasis', ToStar='Procyon',
                             Money='10000',
                             #
-                            lang=Lang.eng,
+                            lang=Lang.en,
                             allowBackButton=False)

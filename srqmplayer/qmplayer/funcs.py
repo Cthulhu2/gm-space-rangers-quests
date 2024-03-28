@@ -1,10 +1,12 @@
 import dataclasses
 import logging
-from functools import reduce
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
+from functools import reduce
 from typing import List, Optional, Dict, Tuple
+
+from dataclasses_json import dataclass_json
 
 from srqmplayer.alea import AleaState, Alea
 from srqmplayer.formula import calculate, ParamValues
@@ -23,11 +25,19 @@ from srqmplayer.substitution import substitute
 
 TEXTS_ENG = {'iAgree': 'I agree',
              'next': 'Next',
-             'goBackToShip': 'Go back to ship'}
+             'goBackToShip': 'Go back to ship',
+             'death': 'The great ranger\'s life was numbered',
+             'image': 'Image',
+             'track': 'Track',
+             'inv': 'Inventory'}
 
 TEXTS_RUS = {'iAgree': 'Я берусь за это задание',
              'next': 'Далее',
-             'goBackToShip': 'Вернуться на корабль'}
+             'goBackToShip': 'Вернуться на корабль',
+             'death': 'Жизнь великого рейнджера была сочтена',
+             'image': 'Изображение',
+             'track': 'Дорожка',
+             'inv': 'Инвентарь'}
 
 log = logging.getLogger()
 
@@ -42,6 +52,7 @@ class GameLogStep:
     jumpId: int
 
 
+@dataclass_json
 @dataclass(frozen=True)
 class GameLog:
     aleaSeed: str
@@ -65,12 +76,14 @@ class State(Enum):
     returnedending = 'returnedending'
 
 
+@dataclass_json
 @dataclass
 class PossibleJump:
     id: int
     active: bool
 
 
+@dataclass_json
 @dataclass(frozen=True)
 class GameState(GameLog):
     state: State
@@ -169,7 +182,7 @@ def sr_date_to_str(days_to_add: int,
         initial_date = datetime.now()
 
     d = initial_date + timedelta(days=days_to_add)
-    if lang == Lang.eng:
+    if lang == Lang.en:
         months = ['January', 'February', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
                   'December']
@@ -261,7 +274,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
     alea = Alea(AleaState(state.aleaState))
     rnd = alea.rnd
 
-    texts = TEXTS_RUS if player.lang == Lang.rus else TEXTS_ENG
+    texts = TEXTS_RUS if player.lang == Lang.ru else TEXTS_ENG
 
     if state.state == State.starting:
         return PlayerState(
@@ -487,7 +500,7 @@ def perform_jump(jump_id: int,
                  date_unix=None,
                  debug: bool = True) -> GameState:
     if date_unix is None:
-        date_unix = datetime.now().time()
+        date_unix = datetime.now().timestamp()
     alea = Alea(AleaState(state_orig.aleaState))
     rnd = alea.rnd
     performed_jumps = [*state_orig.performedJumps,

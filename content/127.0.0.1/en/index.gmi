@@ -1,0 +1,2 @@
+### Quests
+=> /cgi-quests/action?qid=3&lang=en Ranger's Bad Day

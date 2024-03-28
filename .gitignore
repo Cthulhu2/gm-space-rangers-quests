@@ -1,2 +1,7 @@
 .idea/
 borrowed/qm/**
+certs/**
+content/127.0.0.1/quests/img/**
+content/127.0.0.1/quests/snd/**
+content/127.0.0.1/quests/track/**
+users/**

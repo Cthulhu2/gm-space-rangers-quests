@@ -44,11 +44,14 @@ class QMPlayer:
 
     def __init__(self, quest, lang: Lang):
         self.quest = quest
-        self.state = init_game(cast(Quest, quest), int2base(random(), 36))
-        self.player = DEFAULT_RUS_PLAYER if lang.rus else DEFAULT_ENG_PLAYER
+        self.state = init_game(cast(Quest, quest),
+                               int2base(random() * 10_000_000_000, 36))
+        self.player = DEFAULT_RUS_PLAYER if lang == Lang.ru \
+            else DEFAULT_ENG_PLAYER
 
     def start(self):
-        self.state = init_game(cast(Quest, self.quest), int2base(random(), 36))
+        self.state = init_game(cast(Quest, self.quest),
+                               int2base(random() * 10_000_000_000, 36))
 
     def get_state(self) -> PlayerState:
         return get_ui_state(cast(Quest, self.quest), self.state, self.player)

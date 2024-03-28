@@ -84,7 +84,7 @@ def test_checking_all_quests_for_formulas_and_params_substitution():
             Day='Day',
             Money='Money',
             CurDate='CurDate',
-            lang=Lang.rus,
+            lang=Lang.ru,
             allowBackButton=False
         )
 
@@ -108,7 +108,7 @@ def test_checking_all_quests_for_formulas_and_params_substitution():
             enumerate(quest.params))))
 
         log.info('Creates player and starts (to check init values)')
-        QMPlayer(quest, Lang.rus).start()
+        QMPlayer(quest, Lang.ru).start()
 
         log.info('Starting/ending text')
         check(player, quest, param_values, quest.taskText, "start")

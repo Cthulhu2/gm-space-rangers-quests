@@ -26,7 +26,7 @@ def create_player(quest_filename: str) -> QMPlayer:
     log.info('Reads and parses quest')
     with open(join(TEST_RESOURCE_DIR, quest_filename), 'rb') as f:
         qm: QM = parse(f)
-    player = QMPlayer(qm, Lang.rus)
+    player = QMPlayer(qm, Lang.ru)
     player.start()
     return player
 
