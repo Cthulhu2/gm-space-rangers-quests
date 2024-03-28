@@ -1,2 +1,2 @@
 ### Квесты
-=> /cgi-quests/action?qid=2&lang=ru Плохой день рейнджера
+=> /cgi-quests/action?qid=2 Плохой день рейнджера

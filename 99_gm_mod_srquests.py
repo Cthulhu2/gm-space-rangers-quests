@@ -21,7 +21,6 @@ SND_URL = '/quests/snd/'
 QUEST_ID = 'qid'
 STEP_ID = 'sid'
 CHOICE_ID = 'cid'
-LANG = 'lang'
 
 QUEST_DIR = f'{dirname(realpath(__file__))}/borrowed/qm'
 QUEST_CACHE: Dict[int, Optional[QM]] = {}
@@ -171,8 +170,7 @@ def parse_query(query: str):
     params = parse_qs(query)
     return (int(params[QUEST_ID][0]) if QUEST_ID in params else None,
             int(params[STEP_ID][0]) if STEP_ID in params else None,
-            int(params[CHOICE_ID][0]) if CHOICE_ID in params else None,
-            Lang(params[LANG][0]) if LANG in params else Lang.en)
+            int(params[CHOICE_ID][0]) if CHOICE_ID in params else None)
 
 
 def quests_handler(req: gmcapsule.gemini.Request):
@@ -180,7 +178,7 @@ def quests_handler(req: gmcapsule.gemini.Request):
         return 60, 'User certificate required'
 
     try:
-        qid, sid, cid, lang = parse_query(req.query)
+        qid, sid, cid = parse_query(req.query)
         if not qid or qid not in QUEST_NAMES:
             return 50, f'Unknown quest id={qid}'
 
@@ -191,7 +189,7 @@ def quests_handler(req: gmcapsule.gemini.Request):
             player = 'Ranger'
 
         sid, state, lang = process_quest_step(player, ident.fp_cert,
-                                              qid, sid, cid, lang)
+                                              qid, sid, cid)
 
         return render_gemini_page(qid, sid, state, lang)
     except Exception as ex:
@@ -199,7 +197,7 @@ def quests_handler(req: gmcapsule.gemini.Request):
         return 50, f'{ex}'
 
 
-def load_state(fp_cert, quest_name, lang):
+def load_state(fp_cert, quest_name):
     user_dir = join(USERS_DIR, fp_cert)
     if fp_cert not in listdir(USERS_DIR):
         os.makedirs(user_dir)
@@ -209,31 +207,24 @@ def load_state(fp_cert, quest_name, lang):
         os.makedirs(quest_dir)
 
     if 'game_state.json' not in listdir(quest_dir):
-        return 0, None, lang  #
+        return 0, None  #
 
     with open(join(quest_dir, 'sid'), 'r') as f:
         sid = int(f.readline())
-
-    with open(join(quest_dir, 'lang'), 'r') as f:
-        lang = Lang(f.readline())
 
     with open(join(quest_dir, 'game_state.json'), 'r') as f:
         state_json = f.read()
         state = GameState.from_json(state_json)
 
-    return sid, state, lang
+    return sid, state
 
 
-def save_state(fp_cert, quest_name, sid, state: GameState, lang: Lang):
+def save_state(fp_cert, quest_name, sid, state: GameState):
     user_dir = join(USERS_DIR, fp_cert)
     quest_dir = join(user_dir, quest_name)
 
     with open(join(quest_dir, 'sid'), 'w') as f:
         f.write(sid)
-
-    with open(join(quest_dir, 'lang'), 'w') as f:
-        # noinspection PyTypeChecker
-        f.write(lang.value)
 
     with open(join(quest_dir, 'game_state.json'), 'w') as f:
         state_json = state.to_json()
@@ -249,12 +240,11 @@ def del_state_at_the_end(state: PlayerState, fp_cert, quest_name):
     quest_dir = join(user_dir, quest_name)
 
     os.remove(join(quest_dir, 'sid'))
-    os.remove(join(quest_dir, 'lang'))
     os.remove(join(quest_dir, 'game_state.json'))
 
 
 def process_quest_step(player: str, fp_cert: str,
-                       qid: int, sid: int, cid: int, lang: Lang
+                       qid: int, sid: int, cid: int
                        ) -> Tuple[int, PlayerState, Lang]:
     qm = QUEST_CACHE[qid] if qid in QUEST_CACHE else None
     quest_name = QUEST_NAMES[qid]
@@ -262,8 +252,9 @@ def process_quest_step(player: str, fp_cert: str,
         with open(join(QUEST_DIR, quest_name), 'rb') as f:
             qm = parse(f)
         QUEST_CACHE[qid] = qm
+    lang = Lang.en if '_eng.' in quest_name else Lang.ru
 
-    prev_sid, state, lang = load_state(fp_cert, quest_name, lang)
+    prev_sid, state = load_state(fp_cert, quest_name)
     qmplayer = QMPlayer(qm, lang)
     qmplayer.player = dataclasses.replace(qmplayer.player,
                                           Ranger=player, Player=player)
@@ -271,14 +262,14 @@ def process_quest_step(player: str, fp_cert: str,
         qmplayer.load_saving(state)
 
     if cid is None or sid is None or prev_sid != sid:
-        save_state(fp_cert, quest_name, str(prev_sid), qmplayer.state, lang)
+        save_state(fp_cert, quest_name, str(prev_sid), qmplayer.state)
         player_state = qmplayer.get_state()
         del_state_at_the_end(player_state, fp_cert, QUEST_NAMES[qid])
         return prev_sid, player_state, lang
 
     qmplayer.perform_jump(cid)
     next_sid = prev_sid + 1
-    save_state(fp_cert, quest_name, str(next_sid), qmplayer.state, lang)
+    save_state(fp_cert, quest_name, str(next_sid), qmplayer.state)
 
     player_state = qmplayer.get_state()
     del_state_at_the_end(player_state, fp_cert, QUEST_NAMES[qid])
