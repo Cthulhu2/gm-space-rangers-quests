@@ -1,3 +1,4 @@
 ### Quests
-=> /cgi-quests/action?qid=3 Ranger's Bad Day
+=> /cgi-quests/action?qid=102 Player
 => /cgi-quests/action?qid=106 Prison
+=> /cgi-quests/action?qid=3 Ranger's Bad Day

@@ -1,6 +1,7 @@
 import dataclasses
 import logging
 import os
+import re
 from os import listdir
 from os.path import join, dirname, realpath
 from typing import Dict, Optional, Tuple
@@ -278,10 +279,32 @@ def process_quest_step(player: str, fp_cert: str,
 
 def style(text: str, colorize: bool = True):
     if colorize:
-        return text.replace('<clr>', '\033[38;5;11m') \
-            .replace('<clrEnd>', '\033[0m')
+        text = text.replace('<clr>', '\033[38;5;11m') \
+            .replace('<clrEnd>', '\033[0m') \
+            .replace('</clr>', '\033[0m')
     else:
-        return text.replace('<clr>', '*').replace('<clrEnd>', '*')
+        text = text.replace('<clr>', '*') \
+            .replace('<clrEnd>', '*') \
+            .replace('</clr>', '*')
+
+    text = text.replace('<fix>', '```').replace('</fix>', '```')
+
+    fmt_begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)
+    while fmt_begin:
+        fmt_end = re.search(r'</format>', text)
+        padding = fmt_begin[1]
+        size = int(fmt_begin[2])
+        body = text[fmt_begin.regs[0][1]:fmt_end.regs[0][0]]
+        if padding == 'left':
+            body = f'{body:<{size}}'
+        elif padding == 'center':
+            body = f'{body:^{size}}'
+        elif padding == 'right':
+            body = f'{body:>{size}}'
+        text = text[:fmt_begin.regs[0][0]] + body + text[fmt_end.regs[0][1]:]
+        #
+        fmt_begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)
+    return text
 
 
 def render_gemini_page(qid: int, sid: int, state: PlayerState,
