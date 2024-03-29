@@ -1,6 +1,6 @@
 import dataclasses
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from functools import reduce
@@ -113,6 +113,16 @@ class PlayerChoice:
     jumpId: int
     active: bool
 
+    @staticmethod
+    def next(texts: Dict[str, str]):
+        return PlayerChoice(jumpId=JUMP_NEXT, text=texts['next'], active=True)
+
+    @staticmethod
+    def go_back_to_ship(texts: Dict[str, str]):
+        return PlayerChoice(jumpId=JUMP_GO_BACK_TO_SHIP,
+                            text=texts['goBackToShip'],
+                            active=True)
+
 
 class GameStateEnum(Enum):
     running = 'running'
@@ -124,12 +134,12 @@ class GameStateEnum(Enum):
 @dataclass
 class PlayerState:
     text: str
-    imageName: Optional[str]
-    trackName: Optional[str]
-    soundName: Optional[str]
-    paramsState: List[str]
-    choices: List[PlayerChoice]
     gameState: GameStateEnum
+    choices: List[PlayerChoice] = field(default_factory=list)
+    paramsState: List[str] = field(default_factory=list)
+    imageName: Optional[str] = None
+    trackName: Optional[str] = None
+    soundName: Optional[str] = None
 
 
 def init_game(quest: Quest, seed: str) -> GameState:
@@ -283,24 +293,17 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
     if state.state == State.starting:
         return PlayerState(
             text=replace(quest.taskText, quest, state, player, None, rnd),
-            paramsState=[],
             choices=[PlayerChoice(jumpId=JUMP_I_AGREE,
                                   text=texts['iAgree'],
                                   active=True)],
-            gameState=GameStateEnum.running,
-            imageName=None,
-            trackName=None,
-            soundName=None
-        )
+            gameState=GameStateEnum.running)
     elif state.state == State.jump:
         jump = quest.get_jump(state.lastJumpId)
         return PlayerState(
             text=replace(jump.description, quest, state, player, None,
                          alea.rnd),
             paramsState=get_params_state(quest, state, player, rnd),
-            choices=[PlayerChoice(jumpId=JUMP_NEXT,
-                                  text=texts['next'],
-                                  active=True)],
+            choices=[PlayerChoice.next(texts)],
             gameState=GameStateEnum.running,
             imageName=state.imageName,
             trackName=replace_special_track_name(state.trackName),
@@ -321,9 +324,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
             if loc.isFaily or loc.isFailyDeadly:
                 choices = []
             elif loc.isSuccess:
-                choices = [PlayerChoice(jumpId=JUMP_GO_BACK_TO_SHIP,
-                                        text=texts['goBackToShip'],
-                                        active=True)]
+                choices = [PlayerChoice.go_back_to_ship(texts)]
             else:
                 def map_possible_jumps(p_jump):
                     jmp = quest.get_jump(p_jump.id)
@@ -335,9 +336,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
 
                 choices = list(map(map_possible_jumps, state.possibleJumps))
         else:  # critonlocation
-            choices = [PlayerChoice(jumpId=JUMP_NEXT,
-                                    text=texts['next'],
-                                    active=True)]
+            choices = [PlayerChoice.next(texts)]
         return PlayerState(
             text=replace(text, quest, state, player, None, alea.rnd),
             paramsState=get_params_state(quest, state, player, rnd),
@@ -356,9 +355,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
                             f' lastJump={state.lastJumpId}')
         param = quest.params[crit_id]
         if param.type == ParamType.Успешный:
-            choices = [PlayerChoice(jumpId=JUMP_GO_BACK_TO_SHIP,
-                                    text=texts['goBackToShip'],
-                                    active=True)]
+            choices = [PlayerChoice.go_back_to_ship(texts)]
         else:
             choices = []
         return PlayerState(
@@ -384,9 +381,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
             text=replace(jump.description, quest, state, player, None,
                          alea.rnd),
             paramsState=get_params_state(quest, state, player, rnd),
-            choices=[PlayerChoice(jumpId=JUMP_NEXT,
-                                  text=texts['next'],
-                                  active=True)],
+            choices=[PlayerChoice.next(texts)],
             gameState=GameStateEnum.running,
             imageName=state.imageName,
             trackName=replace_special_track_name(state.trackName),
@@ -398,9 +393,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
         loc = quest.get_loc(state.locationId)
         param = quest.params[crit_id]
         if param.type == ParamType.Успешный:
-            choices = [PlayerChoice(jumpId=JUMP_GO_BACK_TO_SHIP,
-                                    text=texts['goBackToShip'],
-                                    active=True)]
+            choices = [PlayerChoice.go_back_to_ship(texts)]
         else:
             choices = []
         return PlayerState(
@@ -419,12 +412,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
         return PlayerState(
             text=replace(quest.successText, quest, state, player, None,
                          alea.rnd),
-            paramsState=[],
-            choices=[],
-            gameState=GameStateEnum.win,
-            imageName=None,
-            trackName=None,
-            soundName=None)
+            gameState=GameStateEnum.win)
     else:
         raise Exception(f'Unexpected state {state.state}')
 
@@ -499,7 +487,7 @@ def perform_jump(jump_id: int,
 def perform_jump_internal(jump_id: int,
                           quest: Quest,
                           state_orig: GameState,
-                          random: RandomFunc,
+                          rnd: RandomFunc,
                           debug: bool) -> GameState:
     if jump_id == JUMP_GO_BACK_TO_SHIP:
         return dataclasses.replace(state_orig, state=State.returnedending)
@@ -529,13 +517,13 @@ def perform_jump_internal(jump_id: int,
 
     if state.state == State.starting:
         state = dataclasses.replace(state, state=State.location)
-        state = calc_loc(quest, state, random, debug)
+        state = calc_loc(quest, state, rnd, debug)
     elif state.state == State.jump:
         jump = quest.get_jump(state.lastJumpId)
         state = dataclasses.replace(state,
                                     locationId=jump.toLocationId,
                                     state=State.location)
-        state = calc_loc(quest, state, random, debug)
+        state = calc_loc(quest, state, rnd, debug)
     elif state.state == State.location:
         if not next(filter(lambda x: x.id == jump_id,
                            state.possibleJumps), None):
@@ -557,7 +545,7 @@ def perform_jump_internal(jump_id: int,
         )
 
         state, crit_params_triggered = \
-            calc_params_update(quest, state, random, jump.paramsChanges)
+            calc_params_update(quest, state, rnd, jump.paramsChanges)
 
         next_loc = quest.get_loc(jump.toLocationId)
 
@@ -583,7 +571,7 @@ def perform_jump_internal(jump_id: int,
                 state = dataclasses.replace(state,
                                             locationId=next_loc.id,
                                             state=State.location)
-                state = calc_loc(quest, state, random, debug)
+                state = calc_loc(quest, state, rnd, debug)
         else:
             if crit_params_triggered:
                 state = dataclasses.replace(
@@ -594,7 +582,7 @@ def perform_jump_internal(jump_id: int,
                 state = dataclasses.replace(state,
                                             locationId=next_loc.id,
                                             state=State.location)
-                state = calc_loc(quest, state, random, debug)
+                state = calc_loc(quest, state, rnd, debug)
             else:
                 state = dataclasses.replace(state, state=State.jump)
     elif state.state == State.jumpandnextcrit:

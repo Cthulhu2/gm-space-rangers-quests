@@ -291,7 +291,7 @@ class QM(QMBase, QMBase2, QMBase3):
                locations: List[Location],
                jumps: List[Jump]):
         return QM(
-            base3.header,
+            header=base3.header,
             #
             strings=base2.strings,
             locationsCount=base2.locationsCount,
