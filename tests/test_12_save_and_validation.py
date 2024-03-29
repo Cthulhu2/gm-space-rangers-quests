@@ -7,7 +7,7 @@ from typing import cast
 from srqmplayer.qmplayer import JUMP_I_AGREE, JUMP_GO_BACK_TO_SHIP
 from srqmplayer.qmplayer.funcs import (
     State, get_ui_state, GameStateEnum,
-    get_game_log, validate_winning_log, perform_jump, init_game, Quest
+    get_game_log, perform_jump, init_game, Quest, GameLog
 )
 from srqmplayer.qmplayer.player import DEFAULT_RUS_PLAYER
 from srqmplayer.qmreader import parse
@@ -23,6 +23,26 @@ date1 = datetime.strptime('2018-07-22T22:20:36.761Z', DT_FMT).time()
 date2 = datetime.strptime('2018-07-22T22:21:36.761Z', DT_FMT).time()
 date3 = datetime.strptime('2018-07-22T22:22:36.761Z', DT_FMT).time()
 date4 = datetime.strptime('2018-07-22T22:30:36.761Z', DT_FMT).time()
+
+
+def validate_winning_log(quest: Quest, game_log: GameLog):
+    state = init_game(quest, game_log.aleaSeed)
+    for jump in game_log.performedJumps:
+        ui_state = get_ui_state(quest, state, DEFAULT_RUS_PLAYER, False)
+        if any(filter(lambda x: x.jumpId == jump.jumpId, ui_state.choices)):
+            log.info(f'Validate jumping jumpId={jump.jumpId}')
+            state = perform_jump(jump.jumpId, quest, state,
+                                 jump.dateUnix, False)
+        else:
+            log.info(f'Validate=false jumpId={jump.jumpId} not found')
+            return False
+
+    ui_state = get_ui_state(quest, state, DEFAULT_RUS_PLAYER)
+    if ui_state.gameState != GameStateEnum.win:
+        log.info('Validate=false, not a win state')
+        return False
+    log.info('Validate=true')
+    return True
 
 
 def test_using_save_and_validation_qm_seed_1():

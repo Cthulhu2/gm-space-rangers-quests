@@ -979,31 +979,6 @@ def get_game_log(state: GameState) -> GameLog:
     return GameLog(aleaSeed=state.aleaSeed, performedJumps=state.performedJumps)
 
 
-def validate_winning_log(quest: Quest, game_log: GameLog,
-                         debug: bool = False):
-    state = init_game(quest, game_log.aleaSeed)
-    for jump in game_log.performedJumps:
-        ui_state = get_ui_state(quest, state, DEFAULT_RUS_PLAYER, debug)
-        if any(filter(lambda x: x.jumpId == jump.jumpId, ui_state.choices)):
-            if debug:
-                log.info(f'Validate jumping jumpId={jump.jumpId}')
-            state = perform_jump(jump.jumpId, quest, state,
-                                 jump.dateUnix, debug)
-        else:
-            if debug:
-                log.info(f'Validate=false jumpId={jump.jumpId} not found')
-            return False
-
-    ui_state = get_ui_state(quest, state, DEFAULT_RUS_PLAYER)
-    if ui_state.gameState != GameStateEnum.win:
-        if debug:
-            log.info('Validate=false, not a win state')
-        return False
-    if debug:
-        log.info('Validate=true')
-    return True
-
-
 def sort_jumps(inp: List[Jump], rnd: RandomFunc) -> List[Jump]:
     output: List[Jump] = list(inp)
     for i in range(len(output)):
