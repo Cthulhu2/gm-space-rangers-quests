@@ -4,7 +4,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from functools import reduce
-from typing import List, Optional, Dict, Tuple
+from random import random
+from typing import List, Optional, Dict, Tuple, cast
 
 from dataclasses_json import dataclass_json
 
@@ -16,10 +17,13 @@ from srqmplayer.qmmodels import (
     ParameterShowingType, ParamCritType, HEADER_QM_2,
     HEADER_QM_3, HEADER_QM_4, HEADER_QMM_7_WITH_OLD_TGE_BEHAVIOUR, Jump
 )
-from srqmplayer.qmplayer.defs import (
-    DEFAULT_DAYS_TO_PASS_QUEST, JUMP_I_AGREE, JUMP_NEXT, JUMP_GO_BACK_TO_SHIP
+from srqmplayer.qmplayer import (
+    DEFAULT_DAYS_TO_PASS_QUEST, JUMP_I_AGREE, JUMP_NEXT, JUMP_GO_BACK_TO_SHIP,
+    int2base
 )
-from srqmplayer.qmplayer.player import Lang, Player, DEFAULT_RUS_PLAYER
+from srqmplayer.qmplayer.player import (
+    Lang, Player, DEFAULT_RUS_PLAYER, DEFAULT_ENG_PLAYER
+)
 from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
 from srqmplayer.substitution import substitute
 
@@ -1022,3 +1026,32 @@ def sort_jumps(inp: List[Jump], rnd: RandomFunc) -> List[Jump]:
         output[min_idx] = swap
 
     return output
+
+
+class QMPlayer:
+    quest: QM
+    player: Player
+    state: GameState
+
+    def __init__(self, quest, lang: Lang):
+        self.quest = quest
+        self.state = init_game(cast(Quest, quest),
+                               int2base(random() * 10_000_000_000, 36))
+        self.player = DEFAULT_RUS_PLAYER if lang == Lang.ru \
+            else DEFAULT_ENG_PLAYER
+
+    def start(self):
+        self.state = init_game(cast(Quest, self.quest),
+                               int2base(random() * 10_000_000_000, 36))
+
+    def get_state(self) -> PlayerState:
+        return get_ui_state(cast(Quest, self.quest), self.state, self.player)
+
+    def perform_jump(self, jump_id: int):
+        self.state = perform_jump(jump_id, cast(Quest, self.quest), self.state)
+
+    def get_saving(self):
+        return self.state
+
+    def load_saving(self, state: GameState):
+        self.state = state

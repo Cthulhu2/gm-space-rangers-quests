@@ -10,8 +10,10 @@ from urllib.parse import parse_qs
 import gmcapsule
 
 from srqmplayer.qmmodels import QM
-from srqmplayer.qmplayer import QMPlayer, Lang, GameState, PlayerState
-from srqmplayer.qmplayer.funcs import GameStateEnum, TEXTS_RUS, TEXTS_ENG
+from srqmplayer.qmplayer.funcs import (
+    GameStateEnum, TEXTS_RUS, TEXTS_ENG, GameState, PlayerState, QMPlayer
+)
+from srqmplayer.qmplayer.player import Lang
 from srqmplayer.qmreader import parse
 
 log = logging.getLogger()
@@ -288,8 +290,14 @@ def style(text: str, colorize: bool = True):
             .replace('<clrEnd>', '*') \
             .replace('</clr>', '*')
 
-    text = text.replace('<fix>', '```') \
-        .replace('</fix>', '```') \
+    # replace <fix> twice, to render one new line with preformatted
+    # 1 - with new lines,
+    # 2 - without new lines,
+    text = text.replace('\r\n', '\n') \
+        .replace('<fix>\n', '```\n') \
+        .replace('\n</fix>', '\n```') \
+        .replace('<fix>', '```\n') \
+        .replace('</fix>', '\n```') \
         .replace('<br>', '\n')
 
     fmt_begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)

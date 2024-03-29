@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from srqmplayer.qmplayer.defs import JUMP_I_AGREE
+from srqmplayer.qmplayer import JUMP_I_AGREE
 from srqmplayer.qmplayer.funcs import GameState, GameStateEnum
 from tests import create_player_n_jump_agree, jump_to, create_player
 

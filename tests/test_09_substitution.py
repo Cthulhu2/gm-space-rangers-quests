@@ -2,7 +2,7 @@ import logging
 
 from srqmplayer.formula import ParamValues
 from srqmplayer.qmmodels import QMParamShowInfo, QMParamShowInfoPart
-from srqmplayer.qmplayer import Lang
+from srqmplayer.qmplayer.player import Lang
 from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
 from srqmplayer.substitution import substitute
 from tests import pseudo_rnd

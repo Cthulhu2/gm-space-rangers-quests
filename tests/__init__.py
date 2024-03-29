@@ -5,10 +5,10 @@ from random import random
 from typing import List, Optional, Union
 
 from srqmplayer.qmmodels import QM
-from srqmplayer.qmplayer import QMPlayer, Lang
-from srqmplayer.qmplayer.defs import JUMP_I_AGREE
+from srqmplayer.qmplayer import JUMP_I_AGREE
+from srqmplayer.qmplayer.funcs import QMPlayer
+from srqmplayer.qmplayer.player import Lang
 from srqmplayer.qmreader import parse
-
 
 log = logging.getLogger()
 TEST_RESOURCE_DIR = f'{dirname(realpath(__file__))}/resources'

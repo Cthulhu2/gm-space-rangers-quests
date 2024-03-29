@@ -1,15 +1,10 @@
 import string
-from random import random
-from typing import cast
 
-from srqmplayer.qmmodels import QM
-from srqmplayer.qmplayer.funcs import (
-    GameState, init_game, Quest,
-    PlayerState, get_ui_state, perform_jump
-)
-from srqmplayer.qmplayer.player import (
-    Player, Lang, DEFAULT_RUS_PLAYER, DEFAULT_ENG_PLAYER
-)
+JUMP_I_AGREE = -1
+JUMP_NEXT = -2
+JUMP_GO_BACK_TO_SHIP = -3
+
+DEFAULT_DAYS_TO_PASS_QUEST = 35
 
 digs = string.digits + string.ascii_letters
 
@@ -35,32 +30,3 @@ def int2base(x, base):
     digits.reverse()
 
     return ''.join(digits)
-
-
-class QMPlayer:
-    quest: QM
-    player: Player
-    state: GameState
-
-    def __init__(self, quest, lang: Lang):
-        self.quest = quest
-        self.state = init_game(cast(Quest, quest),
-                               int2base(random() * 10_000_000_000, 36))
-        self.player = DEFAULT_RUS_PLAYER if lang == Lang.ru \
-            else DEFAULT_ENG_PLAYER
-
-    def start(self):
-        self.state = init_game(cast(Quest, self.quest),
-                               int2base(random() * 10_000_000_000, 36))
-
-    def get_state(self) -> PlayerState:
-        return get_ui_state(cast(Quest, self.quest), self.state, self.player)
-
-    def perform_jump(self, jump_id: int):
-        self.state = perform_jump(jump_id, cast(Quest, self.quest), self.state)
-
-    def get_saving(self):
-        return self.state
-
-    def load_saving(self, state: GameState):
-        self.state = state

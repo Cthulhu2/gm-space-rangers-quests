@@ -3,4 +3,5 @@
 => /cgi-quests/action?qid=10 Борзухан
 => /cgi-quests/action?qid=2 Плохой день рейнджера
 => /cgi-quests/action?qid=101 Проигрыватель
+=> /cgi-quests/action?qid=15 Пятнашка
 => /cgi-quests/action?qid=104 Тюрьма

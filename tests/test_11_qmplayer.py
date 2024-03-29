@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from srqmplayer.qmplayer.defs import JUMP_GO_BACK_TO_SHIP
+from srqmplayer.qmplayer import JUMP_GO_BACK_TO_SHIP
 from srqmplayer.qmplayer.funcs import GameStateEnum
 from tests import jump_to, create_player_n_jump_agree
 

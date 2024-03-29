@@ -1,15 +1,15 @@
 import dataclasses
 import logging
-from os.path import join
 from datetime import datetime
+from os.path import join
 from typing import cast
 
-from srqmplayer.qmplayer import (
-    init_game, Quest, perform_jump, DEFAULT_RUS_PLAYER
+from srqmplayer.qmplayer import JUMP_I_AGREE, JUMP_GO_BACK_TO_SHIP
+from srqmplayer.qmplayer.funcs import (
+    State, get_ui_state, GameStateEnum,
+    get_game_log, validate_winning_log, perform_jump, init_game, Quest
 )
-from srqmplayer.qmplayer.defs import JUMP_I_AGREE, JUMP_GO_BACK_TO_SHIP
-from srqmplayer.qmplayer.funcs import State, get_ui_state, GameStateEnum, \
-    get_game_log, validate_winning_log
+from srqmplayer.qmplayer.player import DEFAULT_RUS_PLAYER
 from srqmplayer.qmreader import parse
 from tests import TEST_RESOURCE_DIR
 

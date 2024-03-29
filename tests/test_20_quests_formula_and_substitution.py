@@ -4,14 +4,13 @@ from os.path import join
 
 from srqmplayer.formula import calculate, ParamValues
 from srqmplayer.qmmodels import QM, ParamType
-from srqmplayer.qmplayer import Lang, QMPlayer
-from srqmplayer.qmplayer.defs import DEFAULT_DAYS_TO_PASS_QUEST
-from srqmplayer.qmplayer.funcs import sr_date_to_str
+from srqmplayer.qmplayer import DEFAULT_DAYS_TO_PASS_QUEST
+from srqmplayer.qmplayer.funcs import sr_date_to_str, QMPlayer
+from srqmplayer.qmplayer.player import Lang
 from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
 from srqmplayer.qmreader import parse
 from srqmplayer.substitution import substitute
-from tests import TEST_RESOURCE_DIR
-from tests import math_rnd, pseudo_rnd
+from tests import TEST_RESOURCE_DIR, math_rnd, pseudo_rnd
 
 log = logging.getLogger()
 BORROWED_QUEST_DIR = join(TEST_RESOURCE_DIR, '../../borrowed/qm/')

@@ -57,8 +57,9 @@ class Reader:
     def dword_flag(self, expected: Optional[int] = None):
         val = self.int32()
         if expected is not None and val != expected:
-            raise Exception(f'Expecting ${expected},'
-                            f' but get ${val} at position ${self.data.tell() - 4}')
+            raise Exception(
+                f'Expecting ${expected},'
+                f' but get ${val} at position ${self.data.tell() - 4}')
 
     def is_not_end(self):
         if not self.data.read(1):
@@ -73,7 +74,8 @@ class Reader:
 #     console.info("Data at 0x" + Number(this.i).toString(16) + "\n");
 #     let s = "";
 #     for (let i = 0; i < n; i++) {
-#       s = s + ("0" + Number(this.data[this.i + i]).toString(16)).slice(-2) + ":";
+#       s = s + ("0" + Number(this.data[this.i + i])
+#         .toString(16)).slice(-2) + ":";
 #       if (i % 16 === 15) {
 #         s = s + "\n";
 #       }
@@ -81,14 +83,6 @@ class Reader:
 #     console.info(s);
 #   }
 # }
-
-# noinspection NonAsciiCharacters
-
-
-# noinspection NonAsciiCharacters
-
-
-# noinspection NonAsciiCharacters
 
 
 def parse_base(r: Reader, header: int) -> Optional[QMBase]:
@@ -153,12 +147,6 @@ def parse_base(r: Reader, header: int) -> Optional[QMBase]:
                   screen_size_x, screen_size_y,
                   reputation_change,
                   width_size, height_size)
-
-
-# noinspection NonAsciiCharacters
-
-
-# noinspection NonAsciiCharacters
 
 
 def parse_param(r: Reader) -> QMParam:
@@ -231,9 +219,6 @@ def parse_param_qmm(r: Reader) -> QMParam:
     param.track = r.read_string(True)
     param.starting = r.read_string()
     return param
-
-
-# noinspection NonAsciiCharacters
 
 
 def parse_base2(r: Reader, is_qmm: bool) -> QMBase2:
@@ -418,7 +403,8 @@ def parse_jmp(r: Reader, params_count: int) -> Jump:
             must_equal_values.append(r.int32())
             # console.info('pushed');
 
-        # console.info(`eq=${mustEqualValuesNotEqual} values = ${must_equal_values.join(', ')}`)
+        # console.info(`eq=${mustEqualValuesNotEqual}
+        #   values = ${must_equal_values.join(', ')}`)
         must_mod_values_count = r.int32()
         # console.info(`must_mod_values_count=${must_mod_values_count}`)
         must_mod_values_mod = bool(r.byte())
