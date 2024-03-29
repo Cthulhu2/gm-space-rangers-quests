@@ -4,8 +4,8 @@ from srqmplayer.formula import ParamValues
 from srqmplayer.qmmodels import QMParamShowInfo, QMParamShowInfoPart
 from srqmplayer.qmplayer import Lang
 from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
-from srqmplayer.randomFunc import create_determenistic_random
 from srqmplayer.substitution import substitute
+from tests import pseudo_rnd
 
 PLAYER = PlayerSubstitute(Ranger='MyName',
                           Player='Player',
@@ -61,7 +61,7 @@ def test_checking_substitute():
     # TODO: What if [d1] refers [d2] which refers [d1]?
     #       TGE crashes with stack overflow
     for str_, expected in TEST.items():
-        rnd = create_determenistic_random([5, 6, 7])
+        rnd = pseudo_rnd([5, 6, 7])
         log.info(f'Substitute \'{str_}\' into \'{expected}\'')
         assert substitute(
             str_=str_, player=PLAYER, param_values=ParamValues([10, 20, 30]),

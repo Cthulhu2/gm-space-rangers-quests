@@ -1,5 +1,8 @@
 import logging
+import math
 from os.path import dirname, realpath, join
+from random import random
+from typing import List, Optional, Union
 
 from srqmplayer.qmmodels import QM
 from srqmplayer.qmplayer import QMPlayer, Lang
@@ -35,3 +38,25 @@ def create_player_n_jump_agree(quest_filename: str) -> QMPlayer:
     player = create_player(quest_filename)
     player.perform_jump(JUMP_I_AGREE)
     return player
+
+
+def math_rnd(n: int) -> Union[int, float]:
+    return math.floor(random() * n) if n is not None else random()
+
+
+def pseudo_rnd(rnd_values: List[int]):
+    rnd_iterator = iter(rnd_values)
+
+    def deterministic_rnd(n: Optional[int]):
+        if n is None:
+            raise Exception('todo this test')
+
+        val = next(rnd_iterator, None)
+        if val is None:
+            raise Exception('Lots of randoms')
+
+        if val >= n:
+            raise Exception('Why stored random value is greater?')
+        return val
+
+    return deterministic_rnd

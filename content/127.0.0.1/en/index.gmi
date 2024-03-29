@@ -1,5 +1,6 @@
 ### Quests :: SR 2
 => /cgi-quests/action?qid=6 Banquet
+=> /cgi-quests/action?qid=11 Borzukhan
 => /cgi-quests/action?qid=102 Player
 => /cgi-quests/action?qid=106 Prison
 => /cgi-quests/action?qid=3 Ranger's Bad Day

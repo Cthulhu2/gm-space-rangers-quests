@@ -2,10 +2,10 @@ import logging
 import re
 from typing import List, Optional
 
+from srqmplayer import RandomFunc
 from srqmplayer.formula import ParamValues, calculate
 from srqmplayer.qmmodels import QMParamShowInfo
 from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
-from srqmplayer.randomFunc import RandomFunc
 
 clr = '<clr>'
 clrEnd = '<clrEnd>'

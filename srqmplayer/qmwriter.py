@@ -87,9 +87,8 @@ def is_jump_parameter_condition_changed(condition: JumpParameterCondition,
 
 def write_qmm(quest: QM, data: io.BytesIO):
     w = Writer(data)
-    if quest.header in (
-            HEADER_QMM_7_WITH_OLD_TGE_BEHAVIOUR, HEADER_QM_2, HEADER_QM_3,
-            HEADER_QM_4):
+    if quest.header in (HEADER_QMM_7_WITH_OLD_TGE_BEHAVIOUR,
+                        HEADER_QM_2, HEADER_QM_3, HEADER_QM_4):
         w.int32(HEADER_QMM_7_WITH_OLD_TGE_BEHAVIOUR)
     elif quest.header in (HEADER_QMM_7, HEADER_QMM_6):
         w.int32(HEADER_QMM_7)

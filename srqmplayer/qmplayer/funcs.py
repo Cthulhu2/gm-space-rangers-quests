@@ -8,6 +8,7 @@ from typing import List, Optional, Dict, Tuple
 
 from dataclasses_json import dataclass_json
 
+from srqmplayer import RandomFunc
 from srqmplayer.alea import AleaState, Alea
 from srqmplayer.formula import calculate, ParamValues
 from srqmplayer.qmmodels import (
@@ -20,7 +21,6 @@ from srqmplayer.qmplayer.defs import (
 )
 from srqmplayer.qmplayer.player import Lang, Player, DEFAULT_RUS_PLAYER
 from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
-from srqmplayer.randomFunc import RandomFunc
 from srqmplayer.substitution import substitute
 
 TEXTS_ENG = {'iAgree': 'I agree',

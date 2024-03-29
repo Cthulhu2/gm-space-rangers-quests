@@ -3,7 +3,7 @@ from typing import Union
 
 from srqmplayer.qmmodels import Jump
 from srqmplayer.qmplayer.funcs import sort_jumps
-from srqmplayer.randomFunc import create_determenistic_random
+from tests import pseudo_rnd
 
 log = logging.getLogger()
 
@@ -47,7 +47,7 @@ def test_sorting_jumps():
             jump(id=4, showingOrder=9)] == r
 
     log.info('Sorting, have duplicated prios')
-    rnd = create_determenistic_random([1, 0, 0, 1])
+    rnd = pseudo_rnd([1, 0, 0, 1])
     r = sort_jumps([jump(id=0, showingOrder=5),
                     jump(id=1, showingOrder=6),
                     jump(id=2, showingOrder=2),

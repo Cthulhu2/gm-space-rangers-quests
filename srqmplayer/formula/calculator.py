@@ -3,12 +3,12 @@ from dataclasses import dataclass
 from functools import reduce
 from typing import Union, List
 
+from srqmplayer import RandomFunc
 from srqmplayer.formula.types import (
     ExpressionCommon, ParamValues, ExpressionType, SyntaxKind,
     BinaryExpression, RangeExpression, RangePart, NumberExpression,
     ParameterExpression, UnaryExpression
 )
-from srqmplayer.randomFunc import RandomFunc
 
 MAX_NUMBER = 2000000000
 

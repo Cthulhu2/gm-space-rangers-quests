@@ -9,9 +9,9 @@ from srqmplayer.qmplayer.defs import DEFAULT_DAYS_TO_PASS_QUEST
 from srqmplayer.qmplayer.funcs import sr_date_to_str
 from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
 from srqmplayer.qmreader import parse
-from srqmplayer.randomFunc import rnd, create_determenistic_random
 from srqmplayer.substitution import substitute
 from tests import TEST_RESOURCE_DIR
+from tests import math_rnd, pseudo_rnd
 
 log = logging.getLogger()
 BORROWED_QUEST_DIR = join(TEST_RESOURCE_DIR, '../../borrowed/qm/')
@@ -26,7 +26,7 @@ def check(player_subs: PlayerSubstitute, quest: QM,
             player_subs,
             param_values,
             quest.params,
-            rnd,
+            math_rnd,
             1 if is_diamond else None,
         )
     except Exception as err:
@@ -50,7 +50,7 @@ def check_formula(param_values: ParamValues, str_: str, place: str = ''):
     try:
         formulaResult = calculate(
             str_,
-            create_determenistic_random(static_random_generated),
+            pseudo_rnd(static_random_generated),
             param_values,
         )
     except Exception as err:
@@ -64,7 +64,7 @@ def get_game_task_text(task_text: str, player):
         date=sr_date_to_str(DEFAULT_DAYS_TO_PASS_QUEST, player.lang),
         cur_date=sr_date_to_str(0, player.lang))
 
-    return substitute(task_text, p_subst, ParamValues([]), [], rnd, None)
+    return substitute(task_text, p_subst, ParamValues([]), [], math_rnd, None)
 
 
 def test_checking_all_quests_for_formulas_and_params_substitution():

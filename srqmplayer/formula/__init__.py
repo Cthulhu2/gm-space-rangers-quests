@@ -4,7 +4,7 @@ from srqmplayer.formula.calculator import calculate_ast
 from srqmplayer.formula.parser import parse_expression
 from srqmplayer.formula.scanner import Scanner
 from srqmplayer.formula.types import ParamValues
-from srqmplayer.randomFunc import RandomFunc
+from srqmplayer import RandomFunc
 
 
 def parse(str_: str):

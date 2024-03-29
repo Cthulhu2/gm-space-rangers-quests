@@ -1,8 +1,8 @@
 import logging
 
-from srqmplayer.formula.calculator import MAX_NUMBER
 from srqmplayer.formula import calculate, ParamValues
-from srqmplayer.randomFunc import rnd
+from srqmplayer.formula.calculator import MAX_NUMBER
+from tests import math_rnd
 
 log = logging.getLogger()
 
@@ -124,47 +124,47 @@ def test_formula_parser():
 
     for k, v in test_equations.items():
         log.info(f'Calculates {k} into {v}')
-        assert calculate(k, rnd, params) == test_equations[k]
+        assert calculate(k, math_rnd, params) == test_equations[k]
 
     for withRandom in ('[p48]+[0..1]*[0..1]*[-1..1]+([p48]=0)*[1..8]',
                        '[1..0]'):
         log.info(f'Calculates \'{withRandom}\'')
-        calculate(withRandom, rnd, params)
+        calculate(withRandom, math_rnd, params)
 
     log.info('Formula with new lines')
-    assert calculate(' 1 \n + \r\n 1', rnd, ParamValues()) == 2
+    assert calculate(' 1 \n + \r\n 1', math_rnd, ParamValues()) == 2
 
     log.info('Calculates scary formula from Codebox')
     assert calculate('(-(([p4] div 1000) mod 10)*1000*(([p1] div 10)=1)-'
                      '(([p4] div 100) mod 10)*100*(([p1] div 10)=2)-'
                      '(([p4] div 10) mod 10)*10*(([p1] div 10)=3)-'
                      '(([p4] div 1) mod 10)*1*(([p1] div 10)=4))',
-                     rnd,
+                     math_rnd,
                      ParamValues([44, 4631, 7584, 3152, 8270, 72])) == -2
 
 
 def test_randomness_ranges():
     for i in range(10_000):
-        val = calculate('3 + [4;9;  10..20]', rnd, ParamValues())
+        val = calculate('3 + [4;9;  10..20]', math_rnd, ParamValues())
         assert val in (7, 12) or 13 <= val <= 23
 
 
 def test_randomness_ranges_w_neg_values():
     for i in range(10_000):
-        val = calculate('3 + [ -20..-10]', rnd, ParamValues())
+        val = calculate('3 + [ -20..-10]', math_rnd, ParamValues())
         assert -20 + 3 <= val <= -10 + 3
 
 
 def test_randomness_ranges_w_neg_reversed_values():
     for i in range(10_000):
-        val = calculate('3 + [ -10 ..  -12; -3]', rnd, ParamValues())
+        val = calculate('3 + [ -10 ..  -12; -3]', math_rnd, ParamValues())
         assert val == 0 or (-12 + 3 <= val <= -10 + 3)
 
 
 def test_randomness_distribution():
     values = {}
     for i in range(10_000):
-        val = calculate('3 + [1;3;6..9] - 3', rnd, ParamValues())
+        val = calculate('3 + [1;3;6..9] - 3', math_rnd, ParamValues())
         assert val in (1, 3) or (6 <= val <= 9), f'Random value={val}'
         values[val] = values[val] + 1 if val in values else 0
 

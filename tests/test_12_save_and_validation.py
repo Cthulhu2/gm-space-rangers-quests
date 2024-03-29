@@ -53,7 +53,7 @@ def test_using_save_and_validation_qm_seed_1():
     assert validate_winning_log(quest, game_log)
 
     log.info('Partial game log is not validated')
-    game_log = get_game_log(state);
+    game_log = get_game_log(state)
     partial_game_log = dataclasses.replace(
         game_log, performedJumps=game_log.performedJumps[0:3])
 
