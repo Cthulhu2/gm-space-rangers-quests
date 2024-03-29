@@ -273,10 +273,11 @@ def parse_loc(r: Reader, params_count: int) -> Location:
         r.seek(10)
         crit_text = r.read_string()
         params_changes.append(ParameterChange(
-            None, None, None, change,
-            is_change_percentage, is_change_value, is_change_formula,
-            changing_formula,
-            showing_type, crit_text))
+            img=None, sound=None, track=None, change=change,
+            isChangePercentage=is_change_percentage,
+            isChangeValue=is_change_value, isChangeFormula=is_change_formula,
+            changingFormula=changing_formula,
+            showingType=showing_type, critText=crit_text))
 
     texts: List[str] = []
     media: List[Media] = []
@@ -464,11 +465,7 @@ def parse_jmp_qmm(r: Reader, params_count: int,
         params_changes.append(ParameterChange.empty())
         params_conditions.append(JumpParameterCondition(
             mustFrom=quest_params[i].min,
-            mustTo=quest_params[i].max,
-            mustEqualValues=[],
-            mustEqualValuesEqual=False,
-            mustModValues=[],
-            mustModValuesMod=False))
+            mustTo=quest_params[i].max))
 
     affected_conditions_params_count = r.int32()
     for i in range(affected_conditions_params_count):

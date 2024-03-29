@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum, Flag
 from typing import Optional, List, Union
 
@@ -220,10 +220,10 @@ class LocationId(int):
 class JumpParameterCondition:
     mustFrom: int
     mustTo: int
-    mustEqualValues: List[int]
-    mustEqualValuesEqual: bool
-    mustModValues: List[int]
-    mustModValuesMod: bool
+    mustEqualValues: List[int] = field(default_factory=list)
+    mustEqualValuesEqual: bool = False
+    mustModValues: List[int] = field(default_factory=list)
+    mustModValuesMod: bool = False
 
 
 @dataclass
