@@ -62,7 +62,7 @@ def floor_ceil_range(rp: RangePart, rnd: RandomFunc,
 
 
 def js_mod(a, b):
-    res = a - int(a/b) * b
+    res = a - int(a / b) * b
     return res
 
 
@@ -79,16 +79,16 @@ def calculate_ast(ast: ExpressionCommon, rnd: RandomFunc,
         l_ranges = calc_range(l_) if isinstance(l_, RangeExpression) \
             else val_to_ranges(floor_ceil(calculate_ast(l_, rnd, params)))
 
-        right_ranges = calc_range(r_) if isinstance(r_, RangeExpression) \
+        r_ranges = calc_range(r_) if isinstance(r_, RangeExpression) \
             else val_to_ranges(floor_ceil(calculate_ast(r_, rnd, params)))
 
-        left_range_max = max(*map(lambda x: x.to, l_ranges), 0)
-        right_range_max = max(*map(lambda x: x.to, right_ranges), 0)
+        l_range_max = max(*map(lambda x: x.to, l_ranges), 0)
+        r_range_max = max(*map(lambda x: x.to, r_ranges), 0)
 
-        left_range_min = min(*map(lambda x: x.from_, l_ranges), MAX_NUMBER)
-        right_range_min = min(*map(lambda x: x.from_, right_ranges), MAX_NUMBER)
-        return [RangeCalculated(from_=min(left_range_min, right_range_min),
-                                to=max(left_range_max, right_range_max))]
+        l_range_min = min(*map(lambda x: x.from_, l_ranges), MAX_NUMBER)
+        r_range_min = min(*map(lambda x: x.from_, r_ranges), MAX_NUMBER)
+        return [RangeCalculated(from_=min(l_range_min, r_range_min),
+                                to=max(l_range_max, r_range_max))]
 
     def calc_range(node: ExpressionCommon) -> List[RangeCalculated]:
         if not isinstance(node, RangeExpression):

@@ -88,8 +88,8 @@ class Scanner:
                      text=self.str_[start_:self.pos])
 
     def look_ahead(self, count: int = 1):
-        return self.str_[
-            self.pos + count] if self.pos + count < self.end else None
+        return self.str_[self.pos + count] if self.pos + count < self.end \
+            else None
 
     def scan_identifier_or_keyword(self) -> Token:
         start = self.pos

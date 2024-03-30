@@ -7,7 +7,7 @@ from typing import cast
 from srqmplayer.qmplayer import JUMP_I_AGREE, JUMP_GO_BACK_TO_SHIP
 from srqmplayer.qmplayer.funcs import (
     State, get_ui_state, GameStateEnum,
-    get_game_log, perform_jump, init_game, Quest, GameLog
+    perform_jump, init_game, Quest, GameLog, GameState
 )
 from srqmplayer.qmplayer.player import DEFAULT_RUS_PLAYER
 from srqmplayer.qmreader import parse
@@ -23,6 +23,10 @@ date1 = datetime.strptime('2018-07-22T22:20:36.761Z', DT_FMT).time()
 date2 = datetime.strptime('2018-07-22T22:21:36.761Z', DT_FMT).time()
 date3 = datetime.strptime('2018-07-22T22:22:36.761Z', DT_FMT).time()
 date4 = datetime.strptime('2018-07-22T22:30:36.761Z', DT_FMT).time()
+
+
+def get_game_log(state: GameState) -> GameLog:
+    return GameLog(aleaSeed=state.aleaSeed, performedJumps=state.performedJumps)
 
 
 def validate_winning_log(quest: Quest, game_log: GameLog):

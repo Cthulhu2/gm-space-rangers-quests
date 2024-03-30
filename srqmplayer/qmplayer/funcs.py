@@ -964,10 +964,6 @@ def calc_loc(quest: Quest,
 # */
 
 
-def get_game_log(state: GameState) -> GameLog:
-    return GameLog(aleaSeed=state.aleaSeed, performedJumps=state.performedJumps)
-
-
 def sort_jumps(inp: List[Jump], rnd: RandomFunc) -> List[Jump]:
     output: List[Jump] = list(inp)
     for i in range(len(output)):

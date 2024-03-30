@@ -1,7 +1,5 @@
 # https://github.com/coverslide/node-alea/blob/master/alea.js
-# http://baagoe.com/en/RandomMusings/javascript/
 # https://github.com/dworthen/prng
-
 from math import floor
 from typing import Union, Optional
 
@@ -77,7 +75,6 @@ class Mash:
     n: Union[int, float] = 0xefc8249d
 
     def mash_func(self, data: str):
-        # data = data.toString();
         for i in range(len(data)):
             self.n += ord(data[i])
             h = 0.02519603282416938 * self.n
@@ -89,11 +86,3 @@ class Mash:
             self.n += h * 0x100000000  # 2^32
 
         return int(self.n) * 2.3283064365386963e-10  # 2^-32
-
-# /*
-# const a = new Alea('');
-# console.info(a.random(100));
-# console.info(a.random(100));
-# console.info(a.random(100));
-# console.info(a.random(100));
-# */

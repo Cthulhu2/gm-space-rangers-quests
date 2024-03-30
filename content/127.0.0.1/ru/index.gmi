@@ -8,3 +8,4 @@
 => /cgi-quests/action?qid=101 Проигрыватель
 => /cgi-quests/action?qid=15 Пятнашка
 => /cgi-quests/action?qid=104 Тюрьма
+=> /cgi-quests/action?qid=35 Эдельвейс
