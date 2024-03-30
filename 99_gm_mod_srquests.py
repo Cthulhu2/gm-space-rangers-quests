@@ -21,6 +21,7 @@ log = logging.getLogger()
 ACTION_URL = '/cgi-quests/action'
 IMG_URL = '/quests/img/'
 SND_URL = '/quests/snd/'
+TRACK_URL = '/quests/track/'
 QUEST_ID = 'qid'
 STEP_ID = 'sid'
 CHOICE_ID = 'cid'
@@ -328,9 +329,13 @@ def render_gemini_page(qid: int, sid: int, state: PlayerState,
             img += '.jpg'
         img = f'=> {IMG_URL}{img} {texts["image"]} ({img})\n'
 
-    snd = f'=> {SND_URL}{state.trackName.lower()}' \
-          f' {texts["track"]} ({state.trackName.lower()})\n' \
+    track = f'=> {TRACK_URL}{state.trackName.lower()}' \
+            f' {texts["track"]} ({state.trackName.lower()})\n' \
         if state.trackName else ''
+
+    snd = f'=> {SND_URL}{state.soundName.lower()}' \
+          f' {texts["sound"]} ({state.soundName.lower()})\n' \
+        if state.soundName else ''
 
     text = style(state.text)
 
@@ -354,7 +359,7 @@ def render_gemini_page(qid: int, sid: int, state: PlayerState,
     if not choices and state.gameState == GameStateEnum.dead:
         choices += f'=> /{lang.value} {texts["death"]} (death)'
 
-    return f'{img}{snd}{text}\n{inventory}{choices}'
+    return f'{img}{track}{snd}{text}\n{inventory}{choices}'
 
 
 def init(capsule: gmcapsule.Context):

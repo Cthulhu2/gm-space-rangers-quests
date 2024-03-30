@@ -6,8 +6,7 @@ from srqmplayer.formula import calculate, ParamValues
 from srqmplayer.qmmodels import QM, ParamType
 from srqmplayer.qmplayer import DEFAULT_DAYS_TO_PASS_QUEST
 from srqmplayer.qmplayer.funcs import sr_date_to_str, QMPlayer
-from srqmplayer.qmplayer.player import Lang
-from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
+from srqmplayer.qmplayer.player import Lang, PlayerSubstitute
 from srqmplayer.qmreader import parse
 from srqmplayer.substitution import substitute
 from tests import TEST_RESOURCE_DIR, math_rnd, pseudo_rnd

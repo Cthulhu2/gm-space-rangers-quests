@@ -22,9 +22,8 @@ from srqmplayer.qmplayer import (
     int2base
 )
 from srqmplayer.qmplayer.player import (
-    Lang, Player, DEFAULT_RUS_PLAYER, DEFAULT_ENG_PLAYER
+    Lang, Player, DEFAULT_RUS_PLAYER, DEFAULT_ENG_PLAYER, PlayerSubstitute
 )
-from srqmplayer.qmplayer.playerSubstitute import PlayerSubstitute
 from srqmplayer.substitution import substitute
 
 TEXTS_ENG = {'iAgree': 'I agree',
@@ -33,7 +32,8 @@ TEXTS_ENG = {'iAgree': 'I agree',
              'death': 'The great ranger\'s life was numbered',
              'image': 'Image',
              'track': 'Track',
-             'inv': 'Inventory'}
+             'inv': 'Inventory',
+             'sound': 'Sound'}
 
 TEXTS_RUS = {'iAgree': 'Я берусь за это задание',
              'next': 'Далее',
@@ -41,7 +41,8 @@ TEXTS_RUS = {'iAgree': 'Я берусь за это задание',
              'death': 'Жизнь великого рейнджера была сочтена',
              'image': 'Изображение',
              'track': 'Дорожка',
-             'inv': 'Инвентарь'}
+             'inv': 'Инвентарь',
+             'sound': 'Звук'}
 
 log = logging.getLogger()
 
