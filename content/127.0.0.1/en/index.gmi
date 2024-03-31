@@ -11,6 +11,7 @@ To do this you will need a ranger certificate. Don't worry, it's exactly the sam
 => /cgi-quests/action?qid=32 Driver
 => /cgi-quests/action?qid=36 Edelweiss
 => /cgi-quests/action?qid=40 Elus
+=> /cgi-quests/action?qid=43 Frames
 => /cgi-quests/action?qid=102 Player
 => /cgi-quests/action?qid=106 Prison
 => /cgi-quests/action?qid=16 Safecracking

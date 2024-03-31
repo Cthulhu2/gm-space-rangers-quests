@@ -77,130 +77,124 @@ class SkipWhitespaceTokenReader(TokenReader):
             self._current_token = self._reader()
 
 
-def parse_expression(reader_func: Callable[[], Token]):
-    reader = SkipWhitespaceTokenReader(reader_func)
+class Parser:
+    reader: TokenReader
 
-    def read_paren_expression() -> ExpressionCommon:
+    def __init__(self, reader_func: Callable[[], Token]):
+        self.reader = SkipWhitespaceTokenReader(reader_func)
+
+    def read_paren_expression(self) -> ExpressionCommon:
         """Expects current = open paren token
            Returns when position is after "close paren token
         """
-        reader.read_next()
+        self.reader.read_next()
 
-        if reader.current().kind == SyntaxKind.IDENTIFIER:
-            param_match = re.search(r'^p(\d+)$', reader.current().text)
+        if self.reader.current().kind == SyntaxKind.IDENTIFIER:
+            param_match = re.search(r'^p(\d+)$', self.reader.current().text)
 
             if not param_match:
                 raise SyntaxException(
-                    f'Unknown parameter \'{reader.current().text}\''
-                    f' at {reader.current().start}')
+                    f'Unknown parameter \'{self.reader.current().text}\''
+                    f' at {self.reader.current().start}')
             pid = int(param_match[1]) - 1
             exp = ParameterExpression(parameterId=pid)
-            reader.read_next()
+            self.reader.read_next()
 
-            if reader.current().kind != SyntaxKind.CLOSE_PAREN:
+            if self.reader.current().kind != SyntaxKind.CLOSE_PAREN:
                 raise SyntaxException(
-                    f'Expected ], but got \'{reader.current().text}\''
-                    f' at {reader.current().start}')
-            reader.read_next()
+                    f'Expected ], but got \'{self.reader.current().text}\''
+                    f' at {self.reader.current().start}')
+            self.reader.read_next()
             return exp
         else:
             ranges: List[RangePart] = []
             while True:
-                if reader.current().kind == SyntaxKind.SEMICOLON:
-                    reader.read_next()
+                if self.reader.current().kind == SyntaxKind.SEMICOLON:
+                    self.reader.read_next()
                     continue
 
-                if reader.current().kind == SyntaxKind.CLOSE_PAREN:
-                    reader.read_next()
+                if self.reader.current().kind == SyntaxKind.CLOSE_PAREN:
+                    self.reader.read_next()
                     break
 
-                from_ = read_expr()
-                if reader.current().kind == SyntaxKind.DOTDOT:
-                    reader.read_next()
-                    to = read_expr()
+                from_ = self.read_expr()
+                if self.reader.current().kind == SyntaxKind.DOTDOT:
+                    self.reader.read_next()
+                    to = self.read_expr()
 
                     ranges.append(RangePart(from_=from_, to=to))
-                elif reader.current().kind in (SyntaxKind.CLOSE_PAREN,
-                                               SyntaxKind.SEMICOLON):
+                elif self.reader.current().kind in (SyntaxKind.CLOSE_PAREN,
+                                                    SyntaxKind.SEMICOLON):
                     ranges.append(RangePart(from_=from_))
                 else:
                     raise SyntaxException(
                         f'Unexpected token inside paren'
-                        f' \'{reader.current().text}\''
-                        f' pos={reader.current().start} ')
+                        f' \'{self.reader.current().text}\''
+                        f' pos={self.reader.current().start} ')
             return RangeExpression(ranges=ranges)
 
-    def read_prim() -> ExpressionCommon:
-        prim_start_token = reader.current()
+    def read_prim(self) -> ExpressionCommon:
+        prim_start_token = self.reader.current()
 
         if prim_start_token.kind == SyntaxKind.NUM_LITERAL:
             val = prim_start_token.text.replace(',', '.').replace(' ', '')
             expr_ = NumberExpression(value=float(val))
-            reader.read_next()
+            self.reader.read_next()
             return expr_
         elif prim_start_token.kind == SyntaxKind.OPEN_PAREN:
-            return read_paren_expression()
+            return self.read_paren_expression()
         elif prim_start_token.kind == SyntaxKind.OPEN_BRACE:
-            reader.read_next()
-            expr_ = read_expr()
-            if reader.current().kind != SyntaxKind.CLOSE_BRACE:
+            self.reader.read_next()
+            expr_ = self.read_expr()
+            if self.reader.current().kind != SyntaxKind.CLOSE_BRACE:
                 raise SyntaxException(f'Expected close brace token but got'
-                                      f' {reader.current().text}'
-                                      f' at {reader.current().start}')
-            reader.read_next()
+                                      f' {self.reader.current().text}'
+                                      f' at {self.reader.current().start}')
+            self.reader.read_next()
             return expr_
         elif prim_start_token.kind == SyntaxKind.MINUS:
-            reader.read_next()
-            inner_expr = read_prim()
+            self.reader.read_next()
+            inner_expr = self.read_prim()
             return UnaryExpression(expression=inner_expr,
                                    operator=SyntaxKind.MINUS)
         else:
-            if reader.current().kind == SyntaxKind.END:
+            if self.reader.current().kind == SyntaxKind.END:
                 raise SyntaxException(
-                    f'Expected value at {reader.current().start}')
+                    f'Expected value at {self.reader.current().start}')
             else:
                 raise SyntaxException(
-                    f'Expecting primary value at {reader.current().start}'
-                    f' but got \'{reader.current().text}\''
-                    f' kind=${reader.current().kind}')
+                    f'Expecting primary value at {self.reader.current().start}'
+                    f' but got \'{self.reader.current().text}\''
+                    f' kind=${self.reader.current().kind}')
 
-    def read_expr(current_priority: int = MAX_PRECEDENCE) -> ExpressionCommon:
-        if current_priority == 0:
-            return read_prim()
+    def read_expr(self, cur_priority: int = MAX_PRECEDENCE) -> ExpressionCommon:
+        if cur_priority == 0:
+            return self.read_prim()
 
-        left = read_expr(current_priority - 1)
+        left = self.read_expr(cur_priority - 1)
         while True:
-            possible_binary_token_kind = reader.current().kind
+            possible_binary_token_kind = self.reader.current().kind
             if possible_binary_token_kind == SyntaxKind.END:
                 return left
 
             possible_binary_token = is_token_binary_operator(
-                current_priority, possible_binary_token_kind)
+                cur_priority, possible_binary_token_kind)
             if not possible_binary_token:
                 return left
 
-            reader.read_next()
+            self.reader.read_next()
 
-            right = read_expr(current_priority - 1)
+            right = self.read_expr(cur_priority - 1)
 
             new_left = BinaryExpression(operator=possible_binary_token,
                                         left=left, right=right)
             left = new_left
 
-    expr = read_expr()
-
-    if reader.current().kind != SyntaxKind.END:
-        raise SyntaxException(f'Unexpected data at {reader.current().start}:'
-                              f' \'{reader.current().text}\''
-                              f' kind={reader.current().kind}')
-    return expr
-
-# // const scanner = Scanner("1 + 2*5*(5-4)");
-# //const scanner = Scanner("1 + 2*5");
-# //const scanner = Scanner("2+(2 *2 +3   )+4");
-# /*
-# const scanner = Scanner("3 + [ -10 ..  -12; -3]");
-#
-# const exp = parseExpressionReader(scanner);
-# console.info(exp);
-# */
+    def parse(self):
+        expr = self.read_expr()
+        if self.reader.current().kind != SyntaxKind.END:
+            raise SyntaxException(
+                f'Unexpected data at {self.reader.current().start}:'
+                f' \'{self.reader.current().text}\''
+                f' kind={self.reader.current().kind}')
+        return expr

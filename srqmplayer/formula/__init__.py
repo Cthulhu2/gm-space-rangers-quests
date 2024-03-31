@@ -1,7 +1,7 @@
 from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_DOWN
 
 from srqmplayer.formula.calculator import calculate_ast
-from srqmplayer.formula.parser import parse_expression
+from srqmplayer.formula.parser import Parser
 from srqmplayer.formula.scanner import Scanner
 from srqmplayer.formula.types import ParamValues
 from srqmplayer import RandomFunc
@@ -10,7 +10,7 @@ from srqmplayer import RandomFunc
 def parse(str_: str):
     str_no_line_breaks = str_.replace('\r', ' ').replace('\n', ' ')
     scanner_ = Scanner(str_no_line_breaks)
-    ast = parse_expression(scanner_.scan)
+    ast = Parser(scanner_.scan).parse()
     # console.info(JSON.stringify(ast, null, 4));
     return ast
 
