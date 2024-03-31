@@ -51,10 +51,8 @@ def substitute(str_: str,
     search_pos = 0
     while True:
         d_idx = str_.find('[d', search_pos)
-
         if d_idx == -1:
             break
-
         scan_idx = d_idx + 2
 
         while True:
@@ -144,17 +142,10 @@ def substitute(str_: str,
 
         search_pos = scan_idx
 
-    while True:
-        m = re.search(r'\{[^\}]*\}', str_)
-        if not m:
-            break
-
-        formula_with_brackets = m[0]
-        result = calculate(
-            formula_with_brackets[1:len(formula_with_brackets) - 1],
-            rnd,
-            param_values)
-        str_ = str_.replace(formula_with_brackets, f'{clr}{result}{clrEnd}')
+    while matched := re.search(r'\{[^}]*}', str_):
+        formula = matched[0]  # with brackets
+        result = calculate(formula[1:len(formula) - 1], rnd, param_values)
+        str_ = str_.replace(formula, f'{clr}{result}{clrEnd}')
 
     for k in PLAYER_KEYS_TO_REPLACE:
         str_ = f'{clr}{getattr(player, k)}{clrEnd}'.join(str_.split(f'<{k}>'))

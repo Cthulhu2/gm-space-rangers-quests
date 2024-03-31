@@ -67,7 +67,7 @@ QUEST_NAMES = {1: 'Amnesia.qmm',
                37: 'Election.qmm',
                38: 'Election_eng.qm',
                39: 'Elus.qmm',
-               40: 'Elus_eng.qm',
+               40: 'Elus_eng.qmm',
                41: 'Energy.qm',
                42: 'Evidence.qmm',
                43: 'Evidence_eng.qm',
@@ -179,7 +179,8 @@ def parse_query(query: str):
 
 def quests_handler(req: gmcapsule.gemini.Request):
     if not req.identity:
-        return 60, 'User certificate required'
+        return 60, 'Ranger certificate required' \
+                   ' / Требуется сертификат рейнджера'
 
     try:
         qid, sid, cid = parse_query(req.query)
@@ -281,16 +282,19 @@ def process_quest_step(player: str, fp_cert: str,
     return next_sid, qmplayer.get_state(), lang
 
 
-def style(text: str, colorize: bool = True):
-    if colorize:
-        text = text.replace('<clr>', '\033[38;5;11m') \
-            .replace('<clrEnd>', '\033[0m') \
-            .replace('</clr>', '\033[0m')
-    else:
-        text = text.replace('<clr>', '*') \
-            .replace('<clrEnd>', '*') \
-            .replace('</clr>', '*')
+def cut_colors(text):
+    color_ranges = []
+    while clr := re.search(r'<clr>', text):
+        text = text[:clr.regs[0][0]] + text[clr.regs[0][1]:]
+        clr_end = re.search(r'<clrEnd>|</clr>', text)
+        if clr_end:
+            text = text[:clr_end.regs[0][0]] + text[clr_end.regs[0][1]:]
+            color_ranges.append((clr.regs[0][0], clr_end.regs[0][0]))
+    return color_ranges, text
 
+
+def style(text: str, colorize: bool = True):
+    # TODO: Tokenize string and pad nested tags properly
     # replace <fix> twice, to render one new line with preformatted
     # 1 - with new lines,
     # 2 - without new lines,
@@ -301,21 +305,62 @@ def style(text: str, colorize: bool = True):
         .replace('</fix>', '\n```') \
         .replace('<br>', '\n')
 
-    fmt_begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)
-    while fmt_begin:
+    while fmt_begin := re.search(r'<format=?(left|right|center)?,?(\d+)?>',
+                                 text):
         fmt_end = re.search(r'</format>', text)
         padding = fmt_begin[1]
         size = int(fmt_begin[2])
         body = text[fmt_begin.regs[0][1]:fmt_end.regs[0][0]]
+        colors_ranges, body = cut_colors(body)  # to correct padding
+
+        # not colorize -- insert emphasis mark BEFORE padding
+        if colors_ranges and not colorize:
+            for r in reversed(colors_ranges):
+                body = body[:r[1]] + '*' + body[r[1]:]
+                body = body[:r[0]] + '*' + body[r[0]:]
         if padding == 'left':
             body = f'{body:<{size}}'
+            # colorize -- insert color marks AFTER padding
+            if colors_ranges and colorize:
+                for r in reversed(colors_ranges):
+                    body = body[:r[1]] + '\033[0m' + body[r[1]:]
+                    body = body[:r[0]] + '\033[38;5;11m' + body[r[0]:]
         elif padding == 'center':
+            orig_body_len = len(body)
             body = f'{body:^{size}}'
+            # colorize -- insert color marks AFTER padding
+            if colors_ranges and colorize:
+                pad_len = len(body) - orig_body_len
+                pad_len_right = int(pad_len / 2)
+                for r in reversed(colors_ranges):
+                    body = (body[:r[1] + pad_len_right] + '\033[0m'
+                            + body[r[1] + pad_len_right:])
+                    body = (body[:r[0] + pad_len_right] + '\033[38;5;11m'
+                            + body[r[0] + pad_len_right:])
         elif padding == 'right':
+            orig_body_len = len(body)
             body = f'{body:>{size}}'
+            # colorize -- insert color marks AFTER padding
+            if colors_ranges and colorize:
+                pad_len = len(body) - orig_body_len
+                for r in reversed(colors_ranges):
+                    body = (body[:r[1] + pad_len] + '\033[0m'
+                            + body[r[1] + pad_len:])
+                    body = (body[:r[0] + pad_len] + '\033[38;5;11m'
+                            + body[r[0] + pad_len:])
+
+        # insert padded and colorized body
         text = text[:fmt_begin.regs[0][0]] + body + text[fmt_end.regs[0][1]:]
-        #
-        fmt_begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)
+
+    # simple colorize replace AFTER formatted
+    if colorize:
+        text = text.replace('<clr>', '\033[38;5;11m') \
+            .replace('<clrEnd>', '\033[0m') \
+            .replace('</clr>', '\033[0m')
+    else:
+        text = text.replace('<clr>', '*') \
+            .replace('<clrEnd>', '*') \
+            .replace('</clr>', '*')
     return text
 
 
@@ -339,7 +384,8 @@ def render_gemini_page(qid: int, sid: int, state: PlayerState,
 
     text = style(state.text)
 
-    inventory = '\n'.join(map(lambda p: style(p),
+    inventory = '\n'.join(map(lambda p: style(p.replace('<fix>', '')
+                                              .replace('</fix>', '')),
                               filter(lambda p: p, state.paramsState or [])))
     if inventory:
         inventory = f'```{texts["inv"]}\n' \

@@ -1,3 +1,8 @@
+# Ranger Center "Union"
+While reconstruction is underway here, it is already possible to carry out government tasks.
+
+To do this you will need a ranger certificate. Don't worry, it's exactly the same as yours. Are you a ranger? So you have the right certificate.
+
 ### Quests :: SR 2
 => /cgi-quests/action?qid=6 Banquet
 => /cgi-quests/action?qid=11 Borzukhan
@@ -5,6 +10,7 @@
 => /cgi-quests/action?qid=27 Disk
 => /cgi-quests/action?qid=32 Driver
 => /cgi-quests/action?qid=36 Edelweiss
+=> /cgi-quests/action?qid=40 Elus
 => /cgi-quests/action?qid=102 Player
 => /cgi-quests/action?qid=106 Prison
 => /cgi-quests/action?qid=16 Safecracking
