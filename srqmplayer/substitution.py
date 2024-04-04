@@ -49,17 +49,9 @@ def substitute(str_: str,
         str_ = str_.replace('<>', f'[p{diamond_idx + 1}]')
 
     search_pos = 0
-    while True:
-        d_idx = str_.find('[d', search_pos)
-        if d_idx == -1:
-            break
+    while (d_idx := str_.find('[d', search_pos)) != -1:
         scan_idx = d_idx + 2
-
-        while True:
-            current_char = str_[scan_idx]
-            if current_char not in ('0', '1', '2', '3', '4', '5', '6', '7',
-                                    '8', '9'):
-                break
+        while str_[scan_idx].isdigit():
             scan_idx += 1
 
         param_idx_str = str_[d_idx + 2:scan_idx]
@@ -70,9 +62,9 @@ def substitute(str_: str,
 
         p_idx = int(param_idx_str) - 1
 
-        param_value = param_values[p_idx] if len(param_values) > p_idx else None
+        p_val = param_values[p_idx] if len(param_values) > p_idx else None
 
-        if param_value is None:
+        if p_val is None:
             scan_idx += 1
             str_ = f'{str_[0:d_idx]}{clr}UNKNOWN_PARAM{clrEnd}{str_[scan_idx:]}'
             continue
@@ -120,7 +112,7 @@ def substitute(str_: str,
             if inside_curly_brackets_match:
                 formula = inside_curly_brackets_match[1]
 
-            param_value = calculate(formula, rnd, param_values)
+            p_val = calculate(formula, rnd, param_values)
         else:
             log.warning(f'Unknown symbol in \'{str_}\' at {scan_idx}')
             break
@@ -128,7 +120,7 @@ def substitute(str_: str,
         # TODO: This is very similar to getParamsState function,
         #       maybe better to refactor
         for showInfoRange in param_show_infos[p_idx].showingInfo:
-            if showInfoRange.from_ <= param_value <= showInfoRange.to:
+            if showInfoRange.from_ <= p_val <= showInfoRange.to:
                 param_str = substitute(showInfoRange.str,
                                        player,
                                        param_values,
@@ -148,7 +140,7 @@ def substitute(str_: str,
         str_ = str_.replace(formula, f'{clr}{result}{clrEnd}')
 
     for k in PLAYER_KEYS_TO_REPLACE:
-        str_ = f'{clr}{getattr(player, k)}{clrEnd}'.join(str_.split(f'<{k}>'))
+        str_ = str_.replace(f'<{k}>', f'{clr}{getattr(player, k)}{clrEnd}')
 
     for ii in range(len(param_values)):
         str_ = str_.replace(f'[p{ii + 1}]', f'{clr}{param_values[ii]}{clrEnd}')

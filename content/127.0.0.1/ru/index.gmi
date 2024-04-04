@@ -7,6 +7,7 @@
 => /cgi-quests/action?qid=5 Банкет
 => /cgi-quests/action?qid=10 Борзухан
 => /cgi-quests/action?qid=31 Водитель
+=> /cgi-quests/action?qid=37 Выборы
 => /cgi-quests/action?qid=22 Глубина
 => /cgi-quests/action?qid=26 Диск
 => /cgi-quests/action?qid=2 Плохой день рейнджера

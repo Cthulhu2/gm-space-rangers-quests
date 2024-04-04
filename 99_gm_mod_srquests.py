@@ -1,7 +1,7 @@
-import dataclasses
 import logging
 import os
 import re
+from dataclasses import dataclass, replace
 from os import listdir
 from os.path import join, dirname, realpath
 from typing import Dict, Optional, Tuple
@@ -262,8 +262,7 @@ def process_quest_step(player: str, fp_cert: str,
 
     prev_sid, state = load_state(fp_cert, quest_name)
     qmplayer = QMPlayer(qm, lang)
-    qmplayer.player = dataclasses.replace(qmplayer.player,
-                                          Ranger=player, Player=player)
+    qmplayer.player = replace(qmplayer.player, Ranger=player, Player=player)
     if state:
         qmplayer.load_saving(state)
 
@@ -293,6 +292,31 @@ def cut_colors(text):
     return color_ranges, text
 
 
+@dataclass
+class FormatToken:
+    beginIdx: int
+    endIdx: int
+    body: str
+    padding: Optional[str]
+    paddingSize: Optional[int]
+
+
+def find_format_tag(text: str) -> Optional[FormatToken]:
+    begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)
+    if not begin:
+        return None
+
+    end = re.search(r'</format>', text)
+    if not end:
+        end = re.search(r'$', text)  # end of text
+
+    return FormatToken(beginIdx=begin.regs[0][0],
+                       endIdx=end.regs[0][1],
+                       body=text[begin.regs[0][1]:end.regs[0][0]],
+                       padding=begin[1] if begin[1] else None,
+                       paddingSize=int(begin[2]) if begin[2] else 0)
+
+
 def style(text: str, colorize: bool = True):
     # TODO: Tokenize string and pad nested tags properly
     # replace <fix> twice, to render one new line with preformatted
@@ -305,12 +329,8 @@ def style(text: str, colorize: bool = True):
         .replace('</fix>', '\n```') \
         .replace('<br>', '\n')
 
-    while fmt_begin := re.search(r'<format=?(left|right|center)?,?(\d+)?>',
-                                 text):
-        fmt_end = re.search(r'</format>', text)
-        padding = fmt_begin[1]
-        size = int(fmt_begin[2])
-        body = text[fmt_begin.regs[0][1]:fmt_end.regs[0][0]]
+    while fmt := find_format_tag(text):
+        body = fmt.body
         colors_ranges, body = cut_colors(body)  # to correct padding
 
         # not colorize -- insert emphasis mark BEFORE padding
@@ -318,16 +338,16 @@ def style(text: str, colorize: bool = True):
             for r in reversed(colors_ranges):
                 body = body[:r[1]] + '*' + body[r[1]:]
                 body = body[:r[0]] + '*' + body[r[0]:]
-        if padding == 'left':
-            body = f'{body:<{size}}'
+        if fmt.padding == 'left':
+            body = f'{body:<{fmt.paddingSize}}'
             # colorize -- insert color marks AFTER padding
             if colors_ranges and colorize:
                 for r in reversed(colors_ranges):
                     body = body[:r[1]] + '\033[0m' + body[r[1]:]
                     body = body[:r[0]] + '\033[38;5;11m' + body[r[0]:]
-        elif padding == 'center':
+        elif fmt.padding == 'center':
             orig_body_len = len(body)
-            body = f'{body:^{size}}'
+            body = f'{body:^{fmt.paddingSize}}'
             # colorize -- insert color marks AFTER padding
             if colors_ranges and colorize:
                 pad_len = len(body) - orig_body_len
@@ -337,9 +357,9 @@ def style(text: str, colorize: bool = True):
                             + body[r[1] + pad_len_right:])
                     body = (body[:r[0] + pad_len_right] + '\033[38;5;11m'
                             + body[r[0] + pad_len_right:])
-        elif padding == 'right':
+        elif fmt.padding == 'right':
             orig_body_len = len(body)
-            body = f'{body:>{size}}'
+            body = f'{body:>{fmt.paddingSize}}'
             # colorize -- insert color marks AFTER padding
             if colors_ranges and colorize:
                 pad_len = len(body) - orig_body_len
@@ -350,7 +370,7 @@ def style(text: str, colorize: bool = True):
                             + body[r[0] + pad_len:])
 
         # insert padded and colorized body
-        text = text[:fmt_begin.regs[0][0]] + body + text[fmt_end.regs[0][1]:]
+        text = text[:fmt.beginIdx] + body + text[fmt.endIdx:]
 
     # simple colorize replace AFTER formatted
     if colorize:
