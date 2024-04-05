@@ -196,9 +196,9 @@ def quests_handler(req: gmcapsule.gemini.Request):
         sid, state, lang = process_quest_step(player, ident.fp_cert,
                                               qid, sid, cid)
 
-        return render_gemini_page(qid, sid, state, lang)
+        return render_page(qid, sid, state, lang)
     except Exception as ex:
-        log.warning(f'{ex}', ex)
+        log.warning(f'{ex}', exc_info=ex)
         return 50, f'{ex}'
 
 
@@ -278,18 +278,18 @@ def process_quest_step(player: str, fp_cert: str,
 
     player_state = qmplayer.get_state()
     del_state_at_the_end(player_state, fp_cert, QUEST_NAMES[qid])
-    return next_sid, qmplayer.get_state(), lang
+    return next_sid, player_state, lang
 
 
 def cut_colors(text):
-    color_ranges = []
+    ranges = []
     while clr := re.search(r'<clr>', text):
         text = text[:clr.regs[0][0]] + text[clr.regs[0][1]:]
         clr_end = re.search(r'<clrEnd>|</clr>', text)
         if clr_end:
             text = text[:clr_end.regs[0][0]] + text[clr_end.regs[0][1]:]
-            color_ranges.append((clr.regs[0][0], clr_end.regs[0][0]))
-    return color_ranges, text
+            ranges.append((clr.regs[0][0], clr_end.regs[0][0]))
+    return ranges, text
 
 
 @dataclass
@@ -318,7 +318,6 @@ def find_format_tag(text: str) -> Optional[FormatToken]:
 
 
 def style(text: str, colorize: bool = True):
-    # TODO: Tokenize string and pad nested tags properly
     # replace <fix> twice, to render one new line with preformatted
     # 1 - with new lines,
     # 2 - without new lines,
@@ -338,37 +337,22 @@ def style(text: str, colorize: bool = True):
             for r in reversed(colors_ranges):
                 body = body[:r[1]] + '*' + body[r[1]:]
                 body = body[:r[0]] + '*' + body[r[0]:]
+        pad = 0
         if fmt.padding == 'left':
             body = f'{body:<{fmt.paddingSize}}'
-            # colorize -- insert color marks AFTER padding
-            if colors_ranges and colorize:
-                for r in reversed(colors_ranges):
-                    body = body[:r[1]] + '\033[0m' + body[r[1]:]
-                    body = body[:r[0]] + '\033[38;5;11m' + body[r[0]:]
         elif fmt.padding == 'center':
             orig_body_len = len(body)
             body = f'{body:^{fmt.paddingSize}}'
-            # colorize -- insert color marks AFTER padding
-            if colors_ranges and colorize:
-                pad_len = len(body) - orig_body_len
-                pad_len_right = int(pad_len / 2)
-                for r in reversed(colors_ranges):
-                    body = (body[:r[1] + pad_len_right] + '\033[0m'
-                            + body[r[1] + pad_len_right:])
-                    body = (body[:r[0] + pad_len_right] + '\033[38;5;11m'
-                            + body[r[0] + pad_len_right:])
+            pad = int((len(body) - orig_body_len) / 2)
         elif fmt.padding == 'right':
             orig_body_len = len(body)
             body = f'{body:>{fmt.paddingSize}}'
-            # colorize -- insert color marks AFTER padding
-            if colors_ranges and colorize:
-                pad_len = len(body) - orig_body_len
-                for r in reversed(colors_ranges):
-                    body = (body[:r[1] + pad_len] + '\033[0m'
-                            + body[r[1] + pad_len:])
-                    body = (body[:r[0] + pad_len] + '\033[38;5;11m'
-                            + body[r[0] + pad_len:])
-
+            pad = len(body) - orig_body_len
+        # colorize -- insert color marks AFTER padding
+        if colors_ranges and colorize:
+            for r in reversed(colors_ranges):
+                body = body[:r[1] + pad] + '\033[0m' + body[r[1] + pad:]
+                body = body[:r[0] + pad] + '\033[38;5;11m' + body[r[0] + pad:]
         # insert padded and colorized body
         text = text[:fmt.beginIdx] + body + text[fmt.endIdx:]
 
@@ -384,8 +368,7 @@ def style(text: str, colorize: bool = True):
     return text
 
 
-def render_gemini_page(qid: int, sid: int, state: PlayerState,
-                       lang: Lang) -> str:
+def render_page(qid: int, sid: int, state: PlayerState, lang: Lang) -> str:
     texts = TEXTS_RUS if lang == Lang.ru else TEXTS_ENG
     img = ''
     if state.imageName:

@@ -255,9 +255,7 @@ def calc_loc_showing_text_id(loc: Location,
                              state: GameState,
                              rnd: RandomFunc,
                              debug: bool) -> int:
-    loc_texts_w_text = list(filter(
-        lambda tpl: tpl[1],
-        map(lambda tpl: (tpl[0], tpl[1]), enumerate(loc.texts))))
+    texts = [(i, txt) for i, txt in enumerate(loc.texts) if txt]
 
     if loc.isTextByFormula:
         if loc.textSelectFormula:
@@ -276,12 +274,11 @@ def calc_loc_showing_text_id(loc: Location,
             if debug:
                 log.warning(f'Location id={loc.id} text by formula is set,'
                             f' but no formula')
-            text_num = rnd(len(loc_texts_w_text))
-            return loc_texts_w_text[text_num][0]
+            text_num = rnd(len(texts))
+            return texts[text_num][0] if texts else 0
     else:
-        text_num = state.locationVisitCount[loc.id] % len(loc_texts_w_text) \
-            if len(loc_texts_w_text) > 0 else 0
-        return loc_texts_w_text[text_num][0] if len(loc_texts_w_text) > 0 else 0
+        text_num = state.locationVisitCount[loc.id] % len(texts) if texts else 0
+        return texts[text_num][0] if texts else 0
 
 
 def get_ui_state(quest: Quest, state: GameState, player: Player,
