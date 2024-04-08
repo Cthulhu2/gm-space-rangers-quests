@@ -13,6 +13,7 @@ To do this you will need a ranger certificate. Don't worry, it's exactly the sam
 => /cgi-quests/action?qid=38 Election
 => /cgi-quests/action?qid=40 Elus
 => /cgi-quests/action?qid=51 Fishing Championship
+=> /cgi-quests/action?qid=53 Foncers
 => /cgi-quests/action?qid=43 Frames
 => /cgi-quests/action?qid=102 Player
 => /cgi-quests/action?qid=106 Prison

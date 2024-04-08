@@ -1148,8 +1148,8 @@ def test_player_on_test_qm():
     log.info('Starting location jumps count')
     state2 = player.get_state()
     # log.info(state2)
-    assert len(list(filter(lambda x: x.active, state2.choices))) == 2
-    assert len(list(filter(lambda x: not x.active, state2.choices))) == 5
+    assert len([x for x in state2.choices if x.active]) == 2
+    assert len([x for x in state2.choices if not x.active]) == 5
 
     assert 'p2 / 5' in state2.choices[0].text, 'Choices have p2/5'
     assert 'Видно активен по формуле' in state2.choices[6].text
@@ -1157,8 +1157,7 @@ def test_player_on_test_qm():
     log.info('Jumps on jumpId > 2')
     state2 = player.get_state()
 
-    player.perform_jump(list(filter(lambda x: x.jumpId > 2, state2.choices))
-                        [0].jumpId)
+    player.perform_jump([x for x in state2.choices if x.jumpId > 2][0].jumpId)
     state3 = player.get_state()
     # log.info(state3)
 

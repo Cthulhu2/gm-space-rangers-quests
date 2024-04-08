@@ -16,8 +16,8 @@ TEST_RESOURCE_DIR = f'{dirname(realpath(__file__))}/resources'
 
 def jump_to(player: QMPlayer, text: str = ''):
     state = player.get_state()
-    jump = next(filter(lambda x: text in x.text and x.active, state.choices),
-                None)
+    jump = next(filter(lambda x: text in x.text and x.active,
+                       state.choices), None)
     if not jump:
         raise Exception(f'OLOLO: No jump {text} in {state}')
     player.perform_jump(jump.jumpId)

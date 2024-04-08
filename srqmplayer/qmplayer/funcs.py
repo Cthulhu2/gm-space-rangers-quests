@@ -164,7 +164,7 @@ def init_game(quest: Quest, seed: str) -> GameState:
                          ParamValues([]))
 
     starting_params = ParamValues(list(map(calc_param, quest.params)))
-    starting_showing = list(map(lambda x: True, quest.params))
+    starting_showing = [True] * len(quest.params)
 
     state = GameState(state=State.starting,
                       locationId=start_loc.id,
@@ -692,9 +692,8 @@ def calc_loc(quest: Quest,
             # а проходимость закончилась.
             # Это вообще дикость какая-то, потому как там вполне может быть
             # критичный параметр завершить квест
-            jumps_from_dest = list(filter(
-                lambda x: x.fromLocationId == jump.toLocationId,
-                quest.jumps))
+            jumps_from_dest = [x for x in quest.jumps
+                               if x.fromLocationId == jump.toLocationId]
             if not jumps_from_dest:
                 # Но если там вообще переходов не было, то всё ок
                 return True
@@ -709,9 +708,9 @@ def calc_loc(quest: Quest,
         else:
             return True
 
-    all_jumps_from_this_loc: List[Jump] = list(filter(
-        lambda x: x.fromLocationId == state.locationId and filter_jumps(x),
-        quest.jumps))
+    all_jumps_from_this_loc: List[Jump] = [
+        x for x in quest.jumps
+        if x.fromLocationId == state.locationId and filter_jumps(x)]
 
     def is_jump_active(jump: Jump):
         for i in range(quest.paramsCount):
@@ -764,9 +763,9 @@ def calc_loc(quest: Quest,
     # console.info('sorted', all_jumps_from_this_loc_sorted
     #   .map(x => `id=${x.id} prio=${x.showingOrder}`).join(', '));
     #
-    all_possible_jumps: List[JumpActive] = list(map(
-        lambda j: JumpActive.of(j, active=is_jump_active(j)),
-        all_jumps_from_this_loc_sorted))
+    all_possible_jumps: List[JumpActive] = [
+        JumpActive.of(x, active=is_jump_active(x))
+        for x in all_jumps_from_this_loc_sorted]
 
     possible_jumps_with_same_text_grouped: List[JumpActive] = []
 
@@ -776,8 +775,8 @@ def calc_loc(quest: Quest,
         if j.text in seen_texts and seen_texts[j.text]:
             continue
         seen_texts[j.text] = True
-        jumps_with_same_text = list(filter(lambda x: x.text == j.text,
-                                           all_possible_jumps))
+        jumps_with_same_text = [x for x in all_possible_jumps
+                                if x.text == j.text]
         if len(jumps_with_same_text) == 1:
             if j.priority < 1 and j.active:
                 accuracy = 1000
@@ -787,18 +786,18 @@ def calc_loc(quest: Quest,
             if j.active or j.alwaysShow:
                 possible_jumps_with_same_text_grouped.append(j)
         else:
-            jumps_active_with_same_text = list(filter(lambda x: x.active,
-                                                      jumps_with_same_text))
-            if len(jumps_active_with_same_text) > 0:
+            jumps_active_with_same_text = [x for x in jumps_with_same_text
+                                           if x.active]
+            if jumps_active_with_same_text:
                 max_prio = reduce(
                     lambda max_, jump:
                     jump.priority if jump.priority > max_ else max_,
                     jumps_active_with_same_text,
                     0)
 
-                jumps_with_not_so_low_prio = list(filter(
-                    lambda x: x.priority * 100 >= max_prio,
-                    jumps_active_with_same_text))
+                jumps_with_not_so_low_prio = [
+                    x for x in jumps_active_with_same_text
+                    if x.priority * 100 >= max_prio]
                 prio_sum = sum(map(lambda x: x.priority,
                                    jumps_with_not_so_low_prio))
 
@@ -838,18 +837,16 @@ def calc_loc(quest: Quest,
     #             }
     #         })
     #         */
-    new_jumps_without_empty = list(filter(lambda x: x.text,
-                                          possible_jumps_with_same_text_grouped))
-    new_active_jumps_only_empty = list(
-        filter(lambda x: x.active and not x.text,
-               possible_jumps_with_same_text_grouped))
-    new_active_jumps_only_one_empty = [new_active_jumps_only_empty[0]] \
-        if new_active_jumps_only_empty else []
+    new_jumps_w_text = [x for x in possible_jumps_with_same_text_grouped
+                        if x.text]
+    new_active_jumps_empty = [x for x in possible_jumps_with_same_text_grouped
+                              if x.active and not x.text]
+    new_active_jumps_empty_single = [new_active_jumps_empty[0]] \
+        if new_active_jumps_empty else []
 
-    state_possible_jumps = list(map(
-        lambda x: PossibleJump(id=x.id, active=x.active),
-        new_jumps_without_empty if new_jumps_without_empty
-        else new_active_jumps_only_one_empty))
+    state_possible_jumps = [PossibleJump(id=x.id, active=x.active)
+                            for x in new_jumps_w_text
+                            or new_active_jumps_empty_single]
 
     state = dataclasses.replace(state, possibleJumps=state_possible_jumps)
 

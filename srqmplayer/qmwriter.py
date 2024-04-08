@@ -172,11 +172,9 @@ def write_qmm(quest: QM, data: io.BytesIO):
             else LocationType.Ordinary
         w.byte(type_)
 
-        affected_params_change = list(filter(
-            lambda tpl: is_param_change_changed(tpl[1]),
-            map(lambda tpl: (tpl[0], tpl[1]),
-                enumerate(loc.paramsChanges))
-        ))
+        affected_params_change = [(i, param)
+                                  for i, param in enumerate(loc.paramsChanges)
+                                  if is_param_change_changed(param)]
 
         w.int32(len(affected_params_change))
         for i, param in affected_params_change:
@@ -203,12 +201,12 @@ def write_qmm(quest: QM, data: io.BytesIO):
         w.int32(jump.jumpingCountLimit)
         w.int32(jump.showingOrder)
 
-        affected_jump_condition_params = list(filter(
-            lambda tpl: is_jump_parameter_condition_changed(
-                tpl[1], quest.params[tpl[0]]),
-            map(lambda tpl: (tpl[0], tpl[1]),
-                enumerate(jump.paramsConditions))
-        ))
+        affected_jump_condition_params = [
+            (i, param)
+            for i, param in enumerate(jump.paramsConditions)
+            if is_jump_parameter_condition_changed(param, quest.params[i])
+        ]
+
         w.int32(len(affected_jump_condition_params))
         for i, cond in affected_jump_condition_params:
             w.int32(i + 1)
@@ -225,11 +223,9 @@ def write_qmm(quest: QM, data: io.BytesIO):
             for val in cond.mustModValues:
                 w.int32(val)
 
-        affected_params_change = list(filter(
-            lambda tpl: is_param_change_changed(tpl[1]),
-            map(lambda tpl: (tpl[0], tpl[1]),
-                enumerate(jump.paramsChanges))
-        ))
+        affected_params_change = [(i, param)
+                                  for i, param in enumerate(jump.paramsChanges)
+                                  if is_param_change_changed(param)]
         w.int32(len(affected_params_change))
         for i, param in affected_params_change:
             write_param_change(w, param, i)
