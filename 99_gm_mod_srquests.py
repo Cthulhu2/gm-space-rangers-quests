@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from os import listdir
 from os.path import join, dirname, realpath
 from typing import Dict, Optional, Tuple
@@ -261,15 +261,12 @@ def process_quest_step(player: str, fp_cert: str,
     lang = Lang.en if '_eng.' in quest_name else Lang.ru
 
     prev_sid, state = load_state(fp_cert, quest_name)
-    qmplayer = QMPlayer(qm, lang)
-    qmplayer.player = replace(qmplayer.player, Ranger=player, Player=player)
+    qmplayer = QMPlayer(qm, lang, ranger=player)
     if state:
         qmplayer.load_saving(state)
 
-    if cid is None or sid is None or prev_sid != sid:
-        save_state(fp_cert, quest_name, str(prev_sid), qmplayer.state)
+    if prev_sid != sid or not qmplayer.is_available_jump(cid):
         player_state = qmplayer.get_state()
-        del_state_at_the_end(player_state, fp_cert, QUEST_NAMES[qid])
         return prev_sid, player_state, lang
 
     qmplayer.perform_jump(cid)

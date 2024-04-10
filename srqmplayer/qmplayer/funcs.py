@@ -986,26 +986,41 @@ class QMPlayer:
     quest: QM
     player: Player
     state: GameState
+    playerState: PlayerState
 
-    def __init__(self, quest, lang: Lang):
+    def __init__(self, quest, lang: Lang, ranger: str = None):
         self.quest = quest
-        self.state = init_game(cast(Quest, quest),
-                               int2base(random() * 10_000_000_000, 36))
         self.player = DEFAULT_RUS_PLAYER if lang == Lang.ru \
             else DEFAULT_ENG_PLAYER
+        if ranger:
+            self.player = dataclasses.replace(self.player,
+                                              Ranger=ranger, Player=ranger)
+        self.start()
 
     def start(self):
         self.state = init_game(cast(Quest, self.quest),
                                int2base(random() * 10_000_000_000, 36))
+        self.playerState = get_ui_state(
+            cast(Quest, self.quest), self.state, self.player)
+
+    def is_available_jump(self, jump_id: int):
+        return any(filter(lambda x: x.jumpId == jump_id and x.active,
+                          self.get_state().choices))
 
     def get_state(self) -> PlayerState:
-        return get_ui_state(cast(Quest, self.quest), self.state, self.player)
+        return self.playerState
 
     def perform_jump(self, jump_id: int):
+        if not self.is_available_jump(jump_id):
+            raise Exception(f'Not available jumpId={jump_id}')
         self.state = perform_jump(jump_id, cast(Quest, self.quest), self.state)
+        self.playerState = get_ui_state(
+            cast(Quest, self.quest), self.state, self.player)
 
     def get_saving(self):
         return self.state
 
     def load_saving(self, state: GameState):
         self.state = state
+        self.playerState = get_ui_state(
+            cast(Quest, self.quest), self.state, self.player)
