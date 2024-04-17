@@ -1,7 +1,14 @@
+from datetime import timedelta, datetime
+import hashlib
+import hmac
 import os
 from os import listdir
-from os.path import join
+from os.path import join, isfile, islink
+from pathlib import Path
 from typing import Dict, Optional
+
+import gmcapsule
+from OpenSSL.crypto import load_certificate, FILETYPE_ASN1, X509
 
 from srqmplayer.qmmodels import QM
 from srqmplayer.qmplayer.funcs import GameState, PlayerState, GameStateEnum
@@ -147,15 +154,146 @@ QUEST_NAMES = {1: 'Amnesia.qmm',
                138: 'Xenopark_eng.qm'}
 
 
+def get_username(users_dir: str, fp_cert: str):
+    user_dir = join(users_dir, fp_cert)
+    if islink(user_dir):
+        return Path(user_dir).resolve().name
+    else:
+        return None
+
+
+def get_user_certs(users_dir: str, username: str):
+    if username:
+        certs = [c.name for c in Path(users_dir).iterdir()
+                 if islink(c) and c.resolve().name == username]
+        return certs
+    else:
+        return None
+
+
+def del_user_cert(users_dir: str, fp_cert: str):
+    user_dir = join(users_dir, fp_cert)
+    if islink(user_dir):
+        os.unlink(user_dir)
+
+
+def get_cert_info(users_dir: str, fp_cert: str):
+    user_dir = join(users_dir, fp_cert)
+    cert_info = join(user_dir, f'{fp_cert}.info')
+
+    if isfile(cert_info):
+        with open(cert_info, 'r') as f:
+            cn = f.readline().strip()
+            not_after = f.readline().strip()
+            not_after = datetime.strptime(not_after, '%Y%m%d%H%M%SZ')
+        return cn, not_after
+    return None
+
+
+def save_cert_info(users_dir: str, ident: gmcapsule.Identity):
+    cn = ident.subject()['CN'] if 'CN' in ident.subject() else 'None'
+    cert: X509 = load_certificate(FILETYPE_ASN1, ident.cert)
+    user_dir = join(users_dir, ident.fp_cert)
+    with open(join(user_dir, f'{ident.fp_cert}.info'), 'w') as f:
+        f.write(cn)
+        f.write('\n')
+        f.write(cert.get_notAfter().decode('ascii'))
+
+
+def get_pass_expires(users_dir: str, username: str) -> Optional[datetime]:
+    if not username:
+        return None
+    user_dir = join(users_dir, username)
+    pw_ts = join(user_dir, 'pw.ts')
+    if isfile(pw_ts):
+        with open(pw_ts, 'r') as f:
+            return datetime.fromisoformat(f.readline()) + timedelta(minutes=30)
+    return None
+
+
+def is_valid_pass(users_dir: str, username: str, password: str) -> bool:
+    user_dir = join(users_dir, username)
+    try:
+        with open(join(user_dir, 'pw.hash'), 'rb') as f:
+            pw_hash = f.read()
+        with open(join(user_dir, 'pw.salt'), 'rb') as f:
+            salt = f.read()
+        with open(join(user_dir, 'pw.ts'), 'r') as f:
+            when = datetime.fromisoformat(f.readline())
+    except Exception as ex:
+        return False
+
+    if (when + timedelta(minutes=30)) < datetime.utcnow():
+        return False
+
+    return hmac.compare_digest(
+        pw_hash,
+        hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
+    )
+
+
+def set_pass(users_dir: str, fp_cert: str, password: str):
+    user_dir = join(users_dir, fp_cert)
+    os.makedirs(user_dir, exist_ok=True)
+    pw_hash = join(user_dir, 'pw.hash')
+    pw_salt = join(user_dir, 'pw.salt')
+    pw_ts = join(user_dir, 'pw.ts')
+    if password:
+        salt = os.urandom(16)
+        sha256 = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
+        with open(pw_hash, 'wb') as f:
+            f.write(sha256)
+        with open(pw_salt, 'wb') as f:
+            f.write(salt)
+        with open(pw_ts, 'w') as f:
+            f.write(f'{datetime.utcnow().isoformat()}')
+    else:
+        if isfile(pw_hash):
+            os.remove(pw_hash)
+        if isfile(pw_salt):
+            os.remove(pw_salt)
+        if isfile(pw_ts):
+            os.remove(pw_ts)
+
+
+def save_lang(users_dir: str, fp_cert: str, lang: str):
+    user_dir = join(users_dir, fp_cert)
+    os.makedirs(user_dir, exist_ok=True)
+    with open(join(user_dir, 'lang'), 'w') as f:
+        f.write(lang)
+
+
+def load_lang(users_dir: str, fp_cert):
+    lang_file = join(users_dir, fp_cert, 'lang')
+    if isfile(lang_file):
+        with open(lang_file, 'r') as f:
+            return f.readline()
+    return 'en'
+
+
+def save_ansi(users_dir: str, fp_cert, ansi: bool):
+    user_dir = join(users_dir, fp_cert)
+    os.makedirs(user_dir, exist_ok=True)
+
+    with open(join(user_dir, 'ansi'), 'w') as f:
+        f.write('1' if ansi else '0')
+
+
+def load_ansi(users_dir: str, fp_cert):
+    ansi_file = join(users_dir, fp_cert, 'ansi')
+    if isfile(ansi_file):
+        with open(ansi_file, 'r') as f:
+            return f.readline().startswith('1')
+    return False
+
+
 # TODO: Use SQLite to store user session
 def load_state(users_dir: str, fp_cert, quest_name):
     user_dir = join(users_dir, fp_cert)
-    if fp_cert not in listdir(users_dir):
-        os.makedirs(user_dir)
+    os.makedirs(user_dir, exist_ok=True)
 
     quest_dir = join(user_dir, quest_name)
-    if quest_name not in listdir(user_dir):
-        os.makedirs(quest_dir)
+    os.makedirs(quest_dir, exist_ok=True)
 
     if 'game_state.json' not in listdir(quest_dir):
         return 0, None  #

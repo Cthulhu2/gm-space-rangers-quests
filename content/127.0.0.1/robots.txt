@@ -1,2 +1,2 @@
 User-agent: *
-Disallow: /cgi-quests/
+Disallow: /cgi/

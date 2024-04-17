@@ -1,23 +1,26 @@
 # Ranger Center "Union"
-While reconstruction is underway here, it is already possible to carry out government tasks.
+To perform government assignments, you will need a ranger certificate. Don't worry, it's exactly the same as yours. Do you have a certificate, right? Are you a ranger? Are you a ranger? So you have the right certificate.
 
-To do this you will need a ranger certificate. Don't worry, it's exactly the same as yours. Are you a ranger? So you have the right certificate.
+Come on in and register:
+=> /cgi/?lang=en Registration
+You can skip registration, but you will still need a certificate.
+=> /cgi/opts?lang=en  ⚙ Options
 
 ### Quests :: SR 2
-=> /cgi-quests/action?qid=6 Banquet
-=> /cgi-quests/action?qid=11 Borzukhan
-=> /cgi-quests/action?qid=23 Depth
-=> /cgi-quests/action?qid=27 Disk
-=> /cgi-quests/action?qid=32 Driver
-=> /cgi-quests/action?qid=36 Edelweiss
-=> /cgi-quests/action?qid=38 Election
-=> /cgi-quests/action?qid=40 Elus
-=> /cgi-quests/action?qid=51 Fishing Championship
-=> /cgi-quests/action?qid=53 Foncers
-=> /cgi-quests/action?qid=43 Frames
-=> /cgi-quests/action?qid=64 Jumper
-=> /cgi-quests/action?qid=68 Leonardo da Vinci
-=> /cgi-quests/action?qid=102 Player
-=> /cgi-quests/action?qid=106 Prison
-=> /cgi-quests/action?qid=16 Safecracking
-=> /cgi-quests/action?qid=3 Ranger's Bad Day
+=> /cgi/act?qid=6   Banquet
+=> /cgi/act?qid=11  Borzukhan
+=> /cgi/act?qid=23  Depth
+=> /cgi/act?qid=27  Disk
+=> /cgi/act?qid=32  Driver
+=> /cgi/act?qid=36  Edelweiss
+=> /cgi/act?qid=38  Election
+=> /cgi/act?qid=40  Elus
+=> /cgi/act?qid=51  Fishing Championship
+=> /cgi/act?qid=53  Foncers
+=> /cgi/act?qid=43  Frames
+=> /cgi/act?qid=64  Jumper
+=> /cgi/act?qid=68  Leonardo da Vinci
+=> /cgi/act?qid=102 Player
+=> /cgi/act?qid=106 Prison
+=> /cgi/act?qid=3   Ranger's Bad Day
+=> /cgi/act?qid=16  Safecracking

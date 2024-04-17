@@ -7,8 +7,9 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
-from gmsrq.queststore import (
-    QUEST_CACHE, QUEST_NAMES, load_state, save_state, del_state_at_the_end
+from gmsrq.store import (
+    QUEST_CACHE, QUEST_NAMES, load_state, save_state, del_state_at_the_end,
+    load_ansi, get_username
 )
 from srqmplayer.qmplayer.funcs import (
     PlayerState, GameStateEnum, QMPlayer, TEXTS_RUS, TEXTS_ENG
@@ -27,7 +28,7 @@ CHOICE_ID = 'cid'
 class Config:
     users_dir: str
     quests_dir: str
-    action_url: str
+    act_url: str
     img_url: str
     snd_url: str
     track_url: str
@@ -69,7 +70,7 @@ def find_format_tag(text: str) -> Optional[FormatToken]:
                        paddingSize=int(begin[2]) if begin[2] else 0)
 
 
-def style(text: str, colorize: bool = True):
+def style(text: str, ansi: bool = True):
     # replace <fix> twice, to render one new line with preformatted
     # 1 - with new lines,
     # 2 - without new lines,
@@ -85,7 +86,7 @@ def style(text: str, colorize: bool = True):
         colors_ranges, body = cut_colors(body)  # to correct padding
 
         # not colorize -- insert emphasis mark BEFORE padding
-        if colors_ranges and not colorize:
+        if colors_ranges and not ansi:
             for r in reversed(colors_ranges):
                 body = body[:r[1]] + '*' + body[r[1]:]
                 body = body[:r[0]] + '*' + body[r[0]:]
@@ -101,7 +102,7 @@ def style(text: str, colorize: bool = True):
             body = f'{body:>{fmt.paddingSize}}'
             pad = len(body) - orig_body_len
         # colorize -- insert color marks AFTER padding
-        if colors_ranges and colorize:
+        if colors_ranges and ansi:
             for r in reversed(colors_ranges):
                 body = body[:r[1] + pad] + '\033[0m' + body[r[1] + pad:]
                 body = body[:r[0] + pad] + '\033[38;5;11m' + body[r[0] + pad:]
@@ -109,7 +110,7 @@ def style(text: str, colorize: bool = True):
         text = text[:fmt.beginIdx] + body + text[fmt.endIdx:]
 
     # simple colorize replace AFTER formatted
-    if colorize:
+    if ansi:
         text = text.replace('<clr>', '\033[38;5;11m') \
             .replace('<clrEnd>', '\033[0m') \
             .replace('</clr>', '\033[0m')
@@ -121,7 +122,8 @@ def style(text: str, colorize: bool = True):
 
 
 def render_page(cfg: Config, qid: int, sid: int,
-                state: PlayerState, lang: Lang) -> str:
+                state: PlayerState, lang: Lang,
+                ansi: bool = False) -> str:
     texts = TEXTS_RUS if lang == Lang.ru else TEXTS_ENG
     img = ''
     if state.imageName:
@@ -138,23 +140,23 @@ def render_page(cfg: Config, qid: int, sid: int,
           f' {texts["sound"]} ({state.soundName.lower()})\n' \
         if state.soundName else ''
 
-    text = style(state.text)
+    text = style(state.text, ansi)
 
-    inventory = '\n'.join(map(lambda p: style(p.replace('<fix>', '')
-                                              .replace('</fix>', '')),
-                              filter(lambda p: p, state.paramsState or [])))
+    inventory = '\n'.join(map(
+        lambda p: style(p.replace('<fix>', '').replace('</fix>', ''), ansi),
+        filter(lambda p: p, state.paramsState or [])))
     if inventory:
         inventory = f'```{texts["inv"]}\n' \
                     f'{inventory}\n' \
                     f'```\n'
 
     choices = '\n'.join(list(map(
-        lambda x: f'=> {cfg.action_url}'
+        lambda x: f'=> {cfg.act_url}'
                   f'?{QUEST_ID}={qid}'
                   f'&{STEP_ID}={sid}'
                   f'&{CHOICE_ID}={x.jumpId}'
-                  f' {style(x.text)}'
-        if x.active else style(x.text),
+                  f' {style(x.text, ansi)}'
+        if x.active else style(x.text, ansi),
         state.choices)))
 
     if not choices and state.gameState == GameStateEnum.fail:
@@ -192,15 +194,14 @@ class GmQuestsHandler:
                 return 50, f'Unknown quest id={qid}'
 
             ident: gmcapsule.Identity = req.identity
-            if 'CN' in ident.subject() and ident.subject()['CN']:
-                player = ident.subject()['CN']
-            else:
-                player = 'Ranger'
+            player = get_username(self.cfg.users_dir, ident.fp_cert)
+            if not player and 'CN' in ident.subject() and ident.subject()['CN']:
+                player = ident.subject()['CN'] or 'Ranger'
 
             sid, state, lang = self.process_quest_step(
                 player, ident.fp_cert, qid, sid, cid)
-
-            return render_page(self.cfg, qid, sid, state, lang)
+            ansi = load_ansi(self.cfg.users_dir, ident.fp_cert)
+            return render_page(self.cfg, qid, sid, state, lang, ansi)
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
             return 50, f'{ex}'
