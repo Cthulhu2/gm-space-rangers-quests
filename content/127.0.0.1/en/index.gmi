@@ -9,6 +9,7 @@ You can skip registration, but you will still need a certificate.
 ### Quests :: SR 2
 => /cgi/act?qid=6   Banquet
 => /cgi/act?qid=11  Borzukhan
+=> /cgi/act?qid=125 Cosmic Lines
 => /cgi/act?qid=23  Depth
 => /cgi/act?qid=27  Disk
 => /cgi/act?qid=32  Driver
@@ -20,7 +21,27 @@ You can skip registration, but you will still need a certificate.
 => /cgi/act?qid=43  Frames
 => /cgi/act?qid=64  Jumper
 => /cgi/act?qid=68  Leonardo da Vinci
+=> /cgi/act?qid=70  Logic
+=> /cgi/act?qid=80  Ministry
+=> /cgi/act?qid=84  Music Festival
+=> /cgi/act?qid=87  Olympics (Clerks without End)
+=> /cgi/act?qid=89  Pachvarash
+=> /cgi/act?qid=95  Pilot
+=> /cgi/act?qid=100 Pizza
+=> /cgi/act?qid=116 Plasmo-checkers
 => /cgi/act?qid=102 Player
 => /cgi/act?qid=106 Prison
 => /cgi/act?qid=3   Ranger's Bad Day
+=> /cgi/act?qid=110 Rally
+=> /cgi/act?qid=112 Robots
 => /cgi/act?qid=16  Safecracking
+=> /cgi/act?qid=118 Sibolusovtus
+=> /cgi/act?qid=121 Ski Resort
+=> /cgi/act?qid=123 Sorting
+=> /cgi/act?qid=128 Stealth Ship
+=> /cgi/act?qid=130 Swarokok
+=> /cgi/act?qid=138 Xenopark
+
+### Info
+=> gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS
+=> https://github.com/Cthulhu2/gm-space-rangers-quests Source code and Issues

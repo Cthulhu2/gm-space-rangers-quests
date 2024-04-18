@@ -14,13 +14,34 @@
 => /cgi/act?qid=22  Глубина
 => /cgi/act?qid=63  Джампер
 => /cgi/act?qid=26  Диск
+=> /cgi/act?qid=124 Космолинии
+=> /cgi/act?qid=137 Ксенопарк
 => /cgi/act?qid=67  Леонардо да Винчи
+=> /cgi/act?qid=69  Логика
+=> /cgi/act?qid=120 Лыжный курорт
+=> /cgi/act?qid=79  Министерство
+=> /cgi/act?qid=83  Музон
+=> /cgi/act?qid=86  Олимпиада (Клерки без границ)
+=> /cgi/act?qid=88  Пачвараш
+=> /cgi/act?qid=94  Пилот
+=> /cgi/act?qid=99  Пицца
+=> /cgi/act?qid=115 Плазмошашки
 => /cgi/act?qid=2   Плохой день рейнджера
 => /cgi/act?qid=42  Подстава
 => /cgi/act?qid=101 Проигрыватель
 => /cgi/act?qid=15  Пятнашка
+=> /cgi/act?qid=109 Ралли
+=> /cgi/act?qid=111 Роботы
+=> /cgi/act?qid=129 Сварокок
+=> /cgi/act?qid=122 Сортировка
+=> /cgi/act?qid=127 Стелс
 => /cgi/act?qid=104 Тюрьма
+=> /cgi/act?qid=117 Ухоногий сиболусовт
 => /cgi/act?qid=52  Фонсеры
 => /cgi/act?qid=50  Чемпионат по рыбалке
 => /cgi/act?qid=35  Эдельвейс
 => /cgi/act?qid=39  Элус
+
+### Info
+=> gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS
+=> https://github.com/Cthulhu2/gm-space-rangers-quests Исходники и ишьюсы
