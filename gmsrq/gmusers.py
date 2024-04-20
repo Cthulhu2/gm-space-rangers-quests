@@ -10,6 +10,7 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
+from gmsrq import Config
 from gmsrq.store import save_lang, load_lang, load_ansi, save_ansi, \
     get_username, get_user_certs, is_valid_pass, del_user_cert, set_pass, \
     save_cert_info, get_cert_info, get_pass_expires
@@ -77,9 +78,9 @@ def ask_name_to_attach(lang: str):
 
 def ask_del_cert(lang: str, cert: str):
     return 10, (
-        f'Del certificate {cert[0:10]}. Are you sure? Type "yes"'
+        f'Del certificate {cert[0:10].upper()}. Are you sure? Type "yes"'
         if lang == 'en' else
-        f'Удалить сертификат {cert[0:10]}. Точно? Введите "yes"'
+        f'Удалить сертификат {cert[0:10].upper()}. Точно? Введите "yes"'
     )
 
 
@@ -88,26 +89,26 @@ def ask_password(lang: str):
         else 'Пароль?'
 
 
-def opts_en(url, ansi, username, fp_cert, certs=None, pass_expires_ts=None):
-    certs_items = opts_en_certs(username, certs, fp_cert, pass_expires_ts)
+def opts_en(cfg, ansi, username, fp_cert, certs=None, pass_expires_ts=None):
+    certs_items = opts_en_certs(cfg, username, certs, fp_cert, pass_expires_ts)
     return (
         f'# Options\n'
-        f'=> {url}?save=t&ansi={"f" if ansi else "t"} {"☑" if ansi else "☐"}'
-        f' Use ANSI-colors\n'
+        f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
+        f' {"☑" if ansi else "☐"} Use ANSI-colors\n'
         f'\n'
         f'{certs_items}\n'
         f'=> /en/ Back\n'
     )
 
 
-def opts_en_certs(username, certs, fp_cert, pass_expires_ts):
+def opts_en_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
     if not username:
         return ''  # no certificates management for unregistered users
     minutes = pass_expires_minutes(pass_expires_ts)
     expires = f'valid {minutes} min' if minutes else 'not set'
     certs_items = (
         f'## Certificates\n'
-        f'=> /cgi/opts/pass 🔑 Certificate password ({expires})\n'
+        f'=> {cfg.opts_pass_url} 🔑 Certificate password ({expires})\n'
         'For adding other certificates you need set password.'
         ' Then just try register for this username.\n\n'
         f'### Registered to {username}\n'
@@ -118,7 +119,7 @@ def opts_en_certs(username, certs, fp_cert, pass_expires_ts):
             certs_items += f'{title} (current)\n\n'
         else:
             certs_items += f'{title}\n' \
-                           f'=> /cgi/reg/del/{c} ✘ Remove\n\n'
+                           f'=> {cfg.reg_del_url}{c} ✘ Remove\n\n'
     return certs_items
 
 
@@ -129,26 +130,26 @@ def cert_title(cert: str, info):
             if info else cert[0:10].upper())
 
 
-def opts_ru(url, ansi, username, fp_cert, certs=None, pass_expires_ts=None):
-    certs_items = opts_ru_certs(username, certs, fp_cert, pass_expires_ts)
+def opts_ru(cfg, ansi, username, fp_cert, certs=None, pass_expires_ts=None):
+    certs_items = opts_ru_certs(cfg, username, certs, fp_cert, pass_expires_ts)
     return (
         f'# Опции\n'
-        f'=> {url}?save=t&ansi={"f" if ansi else "t"} {"☑" if ansi else "☐"}'
-        f' Использовать ANSI-цвета\n'
+        f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
+        f' {"☑" if ansi else "☐"} Использовать ANSI-цвета\n'
         f'\n'
         f'{certs_items}\n'
         f'=> /ru/ Назад\n'
     )
 
 
-def opts_ru_certs(username, certs, fp_cert, pass_expires_ts):
+def opts_ru_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
     if not username:
         return ''  # no certificates management for unregistered users
     minutes = pass_expires_minutes(pass_expires_ts)
     expires = f'на {minutes} мин' if minutes else 'не установлен'
     certs_items = (
         f'## Сертификаты\n'
-        f'=> /cgi/opts/pass 🔑 Пароль на сертификаты ({expires})\n'
+        f'=> {cfg.opts_pass_url} 🔑 Пароль на сертификаты ({expires})\n'
         f'Для добавления других сертификатов нужно установить пароль.'
         f' Потом просто просто попытаться зарегистрировать на этот логин.\n\n'
         f'### Зарегистрировано на {username}\n'
@@ -159,7 +160,7 @@ def opts_ru_certs(username, certs, fp_cert, pass_expires_ts):
             certs_items += f'{title} (текущий)\n\n'
         else:
             certs_items += f'{title}\n' \
-                           f'=> /cgi/reg/del/{c} ✘ Удалить\n\n'
+                           f'=> {cfg.reg_del_url}{c} ✘ Удалить\n\n'
     return certs_items
 
 
@@ -183,54 +184,54 @@ def already_used(reg_url: str, reg_url_add_ident: str, player: str, lang):
 
 
 class GmUsersHandler:
-    users_dir: str
-    reg_url: str
-    reg_add_url: str
-    reg_del_url: str
-    opts_url: str
+    cfg: Config
 
-    def __init__(self, users_dir: str, reg_url: str,
-                 reg_add_url: str, reg_del_url: str, opts_url):
-        self.users_dir = users_dir
-        self.reg_url = reg_url
-        self.reg_add_url = reg_add_url
-        self.reg_del_url = reg_del_url
-        self.opts_url = opts_url
+    def __init__(self, cfg: Config):
+        self.cfg = cfg
+
+    def init(self, capsule: gmcapsule.Context):
+        # registration
+        capsule.add(self.cfg.cgi_url, self.handle)
+        capsule.add(self.cfg.reg_add_url + '*', self.handle_reg_add)
+        capsule.add(self.cfg.reg_del_url + '*', self.handle_reg_del)
+        capsule.add(self.cfg.reg_url + '*', self.handle_reg)
+        # options
+        capsule.add(self.cfg.opts_url, self.handle_opts)
+        capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass)
 
     def handle(self, req: gmcapsule.gemini.Request):
         # handle base /cgi/ to ask cert once, with saving selected language
         lang = parse_query(req.query)
         if not lang and not req.identity:
-            lang = load_lang(self.users_dir, req.remote_address[0])
+            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
             return ask_cert(lang)
         try:
             if lang and not req.identity:
                 # save selected lang by IP
-                save_lang(self.users_dir, req.remote_address[0], lang)
-                return 30, '/cgi/'  # to ask cert for all /cgi/* urls
+                save_lang(self.cfg.users_dir, req.remote_address[0], lang)
+                return 30, self.cfg.cgi_url  # to ask cert for all /cgi/* urls
             if not lang and req.identity:
-                # re-save selected lang by cert
-                lang = load_lang(self.users_dir, req.remote_address[0])
-                save_lang(self.users_dir, req.identity.fp_cert, lang)
-            return 30, self.reg_url
+                lang = load_lang(self.cfg.users_dir, req.remote_address[0])
+            # re-save selected lang by cert
+            save_lang(self.cfg.users_dir, req.identity.fp_cert, lang)
+            return 30, self.cfg.reg_url
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
             return 50, f'{ex}'
 
     def handle_reg(self, req: gmcapsule.gemini.Request):
-        lang = load_lang(self.users_dir, req.remote_address[0])
         if not req.identity:
+            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
             return ask_cert(lang)
         try:
-            lang = lang or load_lang(self.users_dir, req.identity.fp_cert)
-            cert_dir = join(self.users_dir, req.identity.fp_cert)
+            lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
+            cert_dir = join(self.cfg.users_dir, req.identity.fp_cert)
             if is_already_registered(cert_dir):
-                save_lang(self.users_dir, req.identity.fp_cert, lang)
                 return hello_ranger(cert_dir, lang)
             elif not is_valid_name(req.query):
                 return ask_name(lang)
-            elif is_username_used(self.users_dir, req.query):
-                return already_used(self.reg_url, self.reg_add_url,
+            elif is_username_used(self.cfg.users_dir, req.query):
+                return already_used(self.cfg.reg_url, self.cfg.reg_add_url,
                                     req.query, lang)
             return self.register(req)
         except Exception as ex:
@@ -239,13 +240,13 @@ class GmUsersHandler:
 
     def handle_reg_add(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            lang = load_lang(self.users_dir, req.remote_address[0])
+            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
             return ask_cert(lang)
         try:
-            lang = load_lang(self.users_dir, req.identity.fp_cert)
+            lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
             if not req.path.endswith('/'):
                 return 30, req.path + '/'
-            path = req.path[len(self.reg_add_url):].split('/')
+            path = req.path[len(self.cfg.reg_add_url):].split('/')
             if len(path) < 1:
                 return ask_name_to_attach(lang)
             username = path[0]
@@ -253,49 +254,49 @@ class GmUsersHandler:
                 return 50, f'Invalid username'
             if not req.query:
                 return ask_password(lang)
-            if is_valid_pass(self.users_dir, username, req.query):
+            if is_valid_pass(self.cfg.users_dir, username, req.query):
                 self.attach(username, req.identity)
-            return 30, self.opts_url
+            return 30, self.cfg.opts_url
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
             return 50, f'{ex}'
 
     def handle_reg_del(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            lang = load_lang(self.users_dir, req.remote_address[0])
+            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
             return ask_cert(lang)
         try:
-            lang = load_lang(self.users_dir, req.identity.fp_cert)
+            lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
             if not req.path.endswith('/'):
                 return 30, req.path + '/'
-            path = req.path[len(self.reg_del_url):].split('/')
+            path = req.path[len(self.cfg.reg_del_url):].split('/')
             del_cert = path[0]
             if not req.query:
                 return ask_del_cert(lang, del_cert)
             if 'yes' == req.query:
-                username = get_username(self.users_dir, req.identity.fp_cert)
-                if del_cert in get_user_certs(self.users_dir, username):
-                    del_user_cert(self.users_dir, del_cert)
-            return 30, self.opts_url
+                name = get_username(self.cfg.users_dir, req.identity.fp_cert)
+                if del_cert in get_user_certs(self.cfg.users_dir, name):
+                    del_user_cert(self.cfg.users_dir, del_cert)
+            return 30, self.cfg.opts_url
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
             return 50, f'{ex}'
 
     def attach(self, username, ident: gmcapsule.Identity):
-        cert_dir = join(self.users_dir, ident.fp_cert)
-        user_dir = join(self.users_dir, username)
+        cert_dir = join(self.cfg.users_dir, ident.fp_cert)
+        user_dir = join(self.cfg.users_dir, username)
         rmtree(cert_dir, ignore_errors=True)
 
         try:
             Path(cert_dir).symlink_to(user_dir, True)
         except FileExistsError:
             pass
-        save_cert_info(self.users_dir, ident)
+        save_cert_info(self.cfg.users_dir, ident)
 
     def register(self, req: gmcapsule.gemini.Request):
-        user_dir = join(self.users_dir, req.query)
-        cert_dir = join(self.users_dir, req.identity.fp_cert)
-        lang = load_lang(self.users_dir, req.identity.fp_cert)
+        user_dir = join(self.cfg.users_dir, req.query)
+        cert_dir = join(self.cfg.users_dir, req.identity.fp_cert)
+        lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
 
         os.makedirs(user_dir, exist_ok=True)
         if isdir(cert_dir):
@@ -303,7 +304,7 @@ class GmUsersHandler:
                 move(join(cert_dir, file), user_dir)
             rmtree(cert_dir, ignore_errors=True)
         Path(cert_dir).symlink_to(user_dir, True)
-        save_cert_info(self.users_dir, req.identity)
+        save_cert_info(self.cfg.users_dir, req.identity)
         return 30, f'/{lang}/'
 
     def handle_opts(self, req: gmcapsule.gemini.Request):
@@ -312,9 +313,9 @@ class GmUsersHandler:
             return ask_cert(lang)
         try:
             if not lang:
-                lang = load_lang(self.users_dir, req.identity.fp_cert)
+                lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
             else:
-                save_lang(self.users_dir, req.identity.fp_cert, lang)
+                save_lang(self.cfg.users_dir, req.identity.fp_cert, lang)
             return self.opts(req, lang)
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
@@ -325,19 +326,19 @@ class GmUsersHandler:
         fp_cert = req.identity.fp_cert
         if save:
             if ansi is not None:
-                save_ansi(self.users_dir, fp_cert, ansi)
-        ansi = load_ansi(self.users_dir, fp_cert)
-        username = get_username(self.users_dir, fp_cert)
-        user_certs = get_user_certs(self.users_dir, username)
+                save_ansi(self.cfg.users_dir, fp_cert, ansi)
+        ansi = load_ansi(self.cfg.users_dir, fp_cert)
+        username = get_username(self.cfg.users_dir, fp_cert)
+        user_certs = get_user_certs(self.cfg.users_dir, username)
         if user_certs:
-            user_certs = [(c, get_cert_info(self.users_dir, c))
+            user_certs = [(c, get_cert_info(self.cfg.users_dir, c))
                           for c in user_certs]
-        pass_expires_ts = get_pass_expires(self.users_dir, username)
+        pass_expires_ts = get_pass_expires(self.cfg.users_dir, username)
         if lang == 'en':
-            return opts_en(self.opts_url, ansi, username, fp_cert, user_certs,
+            return opts_en(self.cfg, ansi, username, fp_cert, user_certs,
                            pass_expires_ts)
         else:
-            return opts_ru(self.opts_url, ansi, username, fp_cert, user_certs,
+            return opts_ru(self.cfg, ansi, username, fp_cert, user_certs,
                            pass_expires_ts)
 
     def handle_opts_pass(self, req: gmcapsule.gemini.Request):
@@ -345,11 +346,11 @@ class GmUsersHandler:
             return ask_cert()
         try:
             fp_cert = req.identity.fp_cert
-            lang = load_lang(self.users_dir, fp_cert)
+            lang = load_lang(self.cfg.users_dir, fp_cert)
             if req.query is None:
                 return ask_password(lang)
-            set_pass(self.users_dir, fp_cert, req.query)
-            return 30, self.opts_url
+            set_pass(self.cfg.users_dir, fp_cert, req.query)
+            return 30, self.cfg.opts_url
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
             return 50, f'{ex}'

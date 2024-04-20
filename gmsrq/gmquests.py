@@ -7,6 +7,7 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
+from gmsrq.config import Config
 from gmsrq.store import (
     QUEST_CACHE, QUEST_NAMES, load_state, save_state, del_state_at_the_end,
     load_ansi, get_username
@@ -22,16 +23,6 @@ log = logging.getLogger()
 QUEST_ID = 'qid'
 STEP_ID = 'sid'
 CHOICE_ID = 'cid'
-
-
-@dataclass
-class Config:
-    users_dir: str
-    quests_dir: str
-    act_url: str
-    img_url: str
-    snd_url: str
-    track_url: str
 
 
 def cut_colors(text):
@@ -75,10 +66,8 @@ def style(text: str, ansi: bool = True):
     # 1 - with new lines,
     # 2 - without new lines,
     text = text.replace('\r\n', '\n') \
-        .replace('<fix>\n', '```\n') \
-        .replace('\n</fix>', '\n```') \
-        .replace('<fix>', '```\n') \
-        .replace('</fix>', '\n```') \
+        .replace('<fix>\n', '```\n').replace('\n</fix>', '\n```') \
+        .replace('<fix>', '```\n').replace('</fix>', '\n```') \
         .replace('<br>', '\n')
 
     while fmt := find_format_tag(text):
@@ -182,6 +171,9 @@ class GmQuestsHandler:
 
     def __init__(self, cfg: Config):
         self.cfg = cfg
+
+    def init(self, capsule):
+        capsule.add(self.cfg.act_url, self.handle)
 
     def handle(self, req: gmcapsule.gemini.Request):
         if not req.identity:
