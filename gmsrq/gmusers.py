@@ -1,23 +1,15 @@
 import logging
-import os
-import re
 from datetime import datetime
-from os import listdir
 from os.path import join, islink, isdir
-from pathlib import Path
-from shutil import rmtree, move
 from urllib.parse import parse_qs
 
 import gmcapsule
 
 from gmsrq import Config
-from gmsrq.store import save_lang, load_lang, load_ansi, save_ansi, \
-    get_username, get_user_certs, is_valid_pass, del_user_cert, set_pass, \
-    save_cert_info, get_cert_info, get_pass_expires
+from gmsrq.config import err_handler
+from gmsrq.sqlstore import IpOptions, Cert, db, Options, Ranger
 
 log = logging.getLogger()
-
-VALID_NAME_REGEX = r'^[a-zA-Zа-яА-ЯёЁ\d\-_\.]*$'
 
 
 def parse_query(query: str):
@@ -31,14 +23,14 @@ def parse_opts_query(query: str):
             params['ansi'][0].lower() == 't' if 'ansi' in params else None)
 
 
-def hello_ranger(cert_dir: str, lang: str):
-    player = Path(cert_dir).readlink().name
+def hello_ranger(ranger: Ranger):
+    lang = ranger.get_opts().lang
     if lang == 'en':
-        return f'Wow! This is the famous ranger, {player}!' \
+        return f'Wow! This is the famous ranger, {ranger.name}!' \
                f' You are already registered.\n' \
                f'=> /{lang}/ Back\n'
     else:
-        return f'Ба! Да это же знаменитый рейнджер, {player}!' \
+        return f'Ба! Да это же знаменитый рейнджер, {ranger.name}!' \
                f' Вы уже зарегистрированы.\n' \
                f'=> /{lang}/ Назад\n'
 
@@ -53,7 +45,7 @@ def is_username_used(users_dir, username):
 
 
 def is_valid_name(name: str):
-    return name and len(name) < 125 and re.match(VALID_NAME_REGEX, name)
+    return name and len(name) < 128
 
 
 def ask_cert(lang: str = None):
@@ -89,8 +81,11 @@ def ask_password(lang: str):
         else 'Пароль?'
 
 
-def opts_en(cfg, ansi, username, fp_cert, certs=None, pass_expires_ts=None):
-    certs_items = opts_en_certs(cfg, username, certs, fp_cert, pass_expires_ts)
+def opts_en(cfg, ranger: Ranger, fp_cert):
+    opts = ranger.get_opts()
+    ansi = opts.ansi
+    certs_items = opts_en_certs(cfg, ranger.name, ranger.get_certs(), fp_cert,
+                                opts.get_pass_expires())
     return (
         f'# Options\n'
         f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
@@ -113,9 +108,9 @@ def opts_en_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
         ' Then just try register for this username.\n\n'
         f'### Registered to {username}\n'
     )
-    for c, info in certs:
-        title = cert_title(c, info)
-        if fp_cert == c:
+    for c in certs:
+        title = cert_title(c)
+        if fp_cert == c.fp:
             certs_items += f'{title} (current)\n\n'
         else:
             certs_items += f'{title}\n' \
@@ -123,15 +118,17 @@ def opts_en_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
     return certs_items
 
 
-def cert_title(cert: str, info):
-    return (f'{cert[0:10].upper()}'
-            f' · Expires {datetime.strftime(info[1], "%Y-%m-%d")}'
-            f' · Subject: {info[0]}'
-            if info else cert[0:10].upper())
+def cert_title(cert: Cert):
+    return (f'{cert.fp[0:10].upper()}'
+            f' · Expires {datetime.strftime(cert.expire, "%Y-%m-%d")}'
+            f' · Subject: {cert.subj}')
 
 
-def opts_ru(cfg, ansi, username, fp_cert, certs=None, pass_expires_ts=None):
-    certs_items = opts_ru_certs(cfg, username, certs, fp_cert, pass_expires_ts)
+def opts_ru(cfg, ranger: Ranger, fp_cert):
+    opts = ranger.get_opts()
+    ansi = opts.ansi
+    certs_items = opts_ru_certs(cfg, ranger.name, ranger.get_certs(), fp_cert,
+                                opts.get_pass_expires())
     return (
         f'# Опции\n'
         f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
@@ -154,9 +151,9 @@ def opts_ru_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
         f' Потом просто просто попытаться зарегистрировать на этот логин.\n\n'
         f'### Зарегистрировано на {username}\n'
     )
-    for c, info in certs:
-        title = cert_title(c, info)
-        if fp_cert == c:
+    for c in certs:
+        title = cert_title(c)
+        if fp_cert == c.fp:
             certs_items += f'{title} (текущий)\n\n'
         else:
             certs_items += f'{title}\n' \
@@ -199,158 +196,132 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_url, self.handle_opts)
         capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass)
 
+    @err_handler
     def handle(self, req: gmcapsule.gemini.Request):
         # handle base /cgi/ to ask cert once, with saving selected language
         lang = parse_query(req.query)
         if not lang and not req.identity:
-            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
-            return ask_cert(lang)
-        try:
-            if lang and not req.identity:
-                # save selected lang by IP
-                save_lang(self.cfg.users_dir, req.remote_address[0], lang)
-                return 30, self.cfg.cgi_url  # to ask cert for all /cgi/* urls
-            if not lang and req.identity:
-                lang = load_lang(self.cfg.users_dir, req.remote_address[0])
-            # re-save selected lang by cert
-            save_lang(self.cfg.users_dir, req.identity.fp_cert, lang)
-            return 30, self.cfg.reg_url
-        except Exception as ex:
-            log.warning(f'{ex}', exc_info=ex)
-            return 50, f'{ex}'
+            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
 
+        if lang and not req.identity:
+            # save selected lang by IP
+            with db.atomic():
+                IpOptions.save_lang(req.remote_address[0], lang)
+            return 30, self.cfg.cgi_url  # to ask cert for all /cgi/* urls
+        if not lang and req.identity:
+            lang = IpOptions.lang_by_ip(req.remote_address[0])
+
+        with db.atomic():
+            Ranger.create_anon(req.identity)
+            # re-save selected lang by cert
+            Options.save_lang(req.identity.fp_cert, lang)
+        return 30, self.cfg.reg_url
+
+    @err_handler
     def handle_reg(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
-            return ask_cert(lang)
-        try:
-            lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
-            cert_dir = join(self.cfg.users_dir, req.identity.fp_cert)
-            if is_already_registered(cert_dir):
-                return hello_ranger(cert_dir, lang)
-            elif not is_valid_name(req.query):
-                return ask_name(lang)
-            elif is_username_used(self.cfg.users_dir, req.query):
-                return already_used(self.cfg.reg_url, self.cfg.reg_add_url,
-                                    req.query, lang)
-            return self.register(req)
-        except Exception as ex:
-            log.warning(f'{ex}', exc_info=ex)
-            return 50, f'{ex}'
+            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
 
+        ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+        if not ranger.is_anon:
+            return hello_ranger(ranger)
+        elif not is_valid_name(req.query):
+            return ask_name(ranger.get_opts().lang)
+        with db.atomic():
+            if Ranger.exists_name(req.query):
+                return already_used(self.cfg.reg_url, self.cfg.reg_add_url,
+                                    req.query, ranger.get_opts().lang)
+            ranger.name = req.query
+            ranger.is_anon = False
+            ranger.save()
+        return 30, self.cfg.opts_url
+
+    @err_handler
     def handle_reg_add(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
-            return ask_cert(lang)
-        try:
-            lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
-            if not req.path.endswith('/'):
-                return 30, req.path + '/'
-            path = req.path[len(self.cfg.reg_add_url):].split('/')
-            if len(path) < 1:
-                return ask_name_to_attach(lang)
-            username = path[0]
-            if not is_valid_name(username):
-                return 50, f'Invalid username'
-            if not req.query:
-                return ask_password(lang)
-            if is_valid_pass(self.cfg.users_dir, username, req.query):
-                self.attach(username, req.identity)
-            return 30, self.cfg.opts_url
-        except Exception as ex:
-            log.warning(f'{ex}', exc_info=ex)
-            return 50, f'{ex}'
+            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
 
+        if not req.path.endswith('/'):
+            return 30, req.path + '/'
+
+        lang = Options.lang_by(fp_cert=req.identity.fp_cert)
+        path = req.path[len(self.cfg.reg_add_url):].split('/')
+        if len(path) < 1:
+            return ask_name_to_attach(lang)
+        username = path[0]
+        if not is_valid_name(username):
+            return 50, f'Invalid username'
+        if not req.query:
+            return ask_password(lang)
+        if Options.is_valid_pass(username, req.query):
+            with db.atomic():
+                ranger: Ranger = Ranger.by(name=username)
+                anon: Ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+                anon_cert: Cert = Cert.by(fp_cert=req.identity.fp_cert)
+                anon_cert.ranger = ranger
+                anon_cert.save()
+                anon.delete()
+        return 30, self.cfg.opts_url
+
+    @err_handler
     def handle_reg_del(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            lang = load_lang(self.cfg.users_dir, req.remote_address[0])
-            return ask_cert(lang)
-        try:
-            lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
-            if not req.path.endswith('/'):
-                return 30, req.path + '/'
-            path = req.path[len(self.cfg.reg_del_url):].split('/')
-            del_cert = path[0]
-            if not req.query:
-                return ask_del_cert(lang, del_cert)
-            if 'yes' == req.query:
-                name = get_username(self.cfg.users_dir, req.identity.fp_cert)
-                if del_cert in get_user_certs(self.cfg.users_dir, name):
-                    del_user_cert(self.cfg.users_dir, del_cert)
-            return 30, self.cfg.opts_url
-        except Exception as ex:
-            log.warning(f'{ex}', exc_info=ex)
-            return 50, f'{ex}'
+            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
 
-    def attach(self, username, ident: gmcapsule.Identity):
-        cert_dir = join(self.cfg.users_dir, ident.fp_cert)
-        user_dir = join(self.cfg.users_dir, username)
-        rmtree(cert_dir, ignore_errors=True)
+        if not req.path.endswith('/'):
+            return 30, req.path + '/'
 
-        try:
-            Path(cert_dir).symlink_to(user_dir, True)
-        except FileExistsError:
-            pass
-        save_cert_info(self.cfg.users_dir, ident)
+        path = req.path[len(self.cfg.reg_del_url):].split('/')
+        del_cert = path[0]
+        if not req.query:
+            lang = Options.lang_by(fp_cert=req.identity.fp_cert)
+            return ask_del_cert(lang, del_cert)
+        if 'yes' == req.query:
+            with db.atomic():
+                ranger: Ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+                cert = Cert.by(fp_cert=del_cert)
+                if cert in ranger.get_certs():
+                    cert.delete_instance()
+        return 30, self.cfg.opts_url
 
-    def register(self, req: gmcapsule.gemini.Request):
-        user_dir = join(self.cfg.users_dir, req.query)
-        cert_dir = join(self.cfg.users_dir, req.identity.fp_cert)
-        lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
-
-        os.makedirs(user_dir, exist_ok=True)
-        if isdir(cert_dir):
-            for file in listdir(cert_dir):
-                move(join(cert_dir, file), user_dir)
-            rmtree(cert_dir, ignore_errors=True)
-        Path(cert_dir).symlink_to(user_dir, True)
-        save_cert_info(self.cfg.users_dir, req.identity)
-        return 30, f'/{lang}/'
-
+    @err_handler
     def handle_opts(self, req: gmcapsule.gemini.Request):
         lang = parse_query(req.query)
         if not req.identity:
             return ask_cert(lang)
-        try:
-            if not lang:
-                lang = load_lang(self.cfg.users_dir, req.identity.fp_cert)
-            else:
-                save_lang(self.cfg.users_dir, req.identity.fp_cert, lang)
-            return self.opts(req, lang)
-        except Exception as ex:
-            log.warning(f'{ex}', exc_info=ex)
-            return 50, f'{ex}'
+
+        if not lang:
+            lang = Options.lang_by(fp_cert=req.identity.fp_cert)
+        else:
+            Options.save_lang(req.identity.fp_cert, lang)
+        return self.opts(req, lang)
 
     def opts(self, req: gmcapsule.gemini.Request, lang):
         save, ansi = parse_opts_query(req.query)
-        fp_cert = req.identity.fp_cert
+        ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+        if not ranger:
+            with db.atomic():
+                Ranger.create_anon(req.identity)
+                ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+        opts = ranger.get_opts()
         if save:
             if ansi is not None:
-                save_ansi(self.cfg.users_dir, fp_cert, ansi)
-        ansi = load_ansi(self.cfg.users_dir, fp_cert)
-        username = get_username(self.cfg.users_dir, fp_cert)
-        user_certs = get_user_certs(self.cfg.users_dir, username)
-        if user_certs:
-            user_certs = [(c, get_cert_info(self.cfg.users_dir, c))
-                          for c in user_certs]
-        pass_expires_ts = get_pass_expires(self.cfg.users_dir, username)
+                opts.ansi = ansi
+                opts.save()
+        fp_cert = req.identity.fp_cert
+        ranger = Ranger.by(fp_cert=fp_cert)
         if lang == 'en':
-            return opts_en(self.cfg, ansi, username, fp_cert, user_certs,
-                           pass_expires_ts)
+            return opts_en(self.cfg, ranger, fp_cert)
         else:
-            return opts_ru(self.cfg, ansi, username, fp_cert, user_certs,
-                           pass_expires_ts)
+            return opts_ru(self.cfg, ranger, fp_cert)
 
+    @err_handler
     def handle_opts_pass(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert()
-        try:
-            fp_cert = req.identity.fp_cert
-            lang = load_lang(self.cfg.users_dir, fp_cert)
-            if req.query is None:
-                return ask_password(lang)
-            set_pass(self.cfg.users_dir, fp_cert, req.query)
-            return 30, self.cfg.opts_url
-        except Exception as ex:
-            log.warning(f'{ex}', exc_info=ex)
-            return 50, f'{ex}'
+            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+
+        fp_cert = req.identity.fp_cert
+        if req.query is None:
+            return ask_password(Options.lang_by(fp_cert=fp_cert))
+        Options.save_pass(fp_cert, req.query)
+        return 30, self.cfg.opts_url

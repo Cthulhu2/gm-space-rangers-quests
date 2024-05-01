@@ -7,10 +7,10 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
-from gmsrq.config import Config
+from gmsrq.config import Config, err_handler
+from gmsrq.sqlstore import Ranger, db, Cert
 from gmsrq.store import (
-    QUEST_CACHE, QUEST_NAMES, load_state, save_state, del_state_at_the_end,
-    load_ansi, get_username
+    QUEST_CACHE, QUEST_NAMES, load_state, save_state, del_state_at_the_end
 )
 from srqmplayer.qmplayer.funcs import (
     PlayerState, GameStateEnum, QMPlayer, TEXTS_RUS, TEXTS_ENG
@@ -175,28 +175,26 @@ class GmQuestsHandler:
     def init(self, capsule):
         capsule.add(self.cfg.act_url, self.handle)
 
+    @err_handler
     def handle(self, req: gmcapsule.gemini.Request):
         if not req.identity:
             return 60, 'Ranger certificate required' \
                        ' / Требуется сертификат рейнджера'
 
-        try:
-            qid, sid, cid = parse_query(req.query)
-            if not qid or qid not in QUEST_NAMES:
-                return 50, f'Unknown quest id={qid}'
+        qid, sid, cid = parse_query(req.query)
+        if not qid or qid not in QUEST_NAMES:
+            return 50, f'Unknown quest id={qid}'
 
+        with db.atomic():
             ident: gmcapsule.Identity = req.identity
-            player = get_username(self.cfg.users_dir, ident.fp_cert)
-            if not player and 'CN' in ident.subject() and ident.subject()['CN']:
-                player = ident.subject()['CN'] or 'Ranger'
+            Cert.create_anon(ident)
+        ranger = Ranger.by(fp_cert=ident.fp_cert)
+        player = ranger.name or ident.subject()['CN'] or 'Ranger'
 
-            sid, state, lang = self.process_quest_step(
-                player, ident.fp_cert, qid, sid, cid)
-            ansi = load_ansi(self.cfg.users_dir, ident.fp_cert)
-            return render_page(self.cfg, qid, sid, state, lang, ansi)
-        except Exception as ex:
-            log.warning(f'{ex}', exc_info=ex)
-            return 50, f'{ex}'
+        sid, state, lang = self.process_quest_step(
+            player, ident.fp_cert, qid, sid, cid)
+        return render_page(self.cfg, qid, sid, state, lang,
+                           ranger.get_opts().ansi)
 
     def process_quest_step(self, player: str, fp_cert: str,
                            qid: int, sid: int, cid: int

@@ -9,3 +9,17 @@
 [0]: https://github.com/roginvs/space-rangers-quest
 [1]: https://codeberg.org/skyjake/gmcapsule
 [2]: https://geminiprotocol.net/
+
+Create migration:
+```shell
+$ pw_migrate create --auto \
+  --database "sqlite:/./users/gmsrq.sqlite" \
+  --directory ./gmsrq/migrations \
+  <migration_name>
+```
+Migrate:
+```shell
+$ pw_migrate migrate \
+  --database "sqlite:/./users/gmsrq.sqlite" \ 
+  --directory ./gmsrq/migrations
+```
