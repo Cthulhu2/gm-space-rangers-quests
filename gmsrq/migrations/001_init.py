@@ -7,6 +7,7 @@ with suppress(ImportError):
     pass
 
 
+# noinspection PyUnusedLocal
 def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
     @migrator.create_model
     class Ranger(pw.Model):
@@ -60,6 +61,7 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
         name = pw.CharField(max_length=128)
         file = pw.CharField(max_length=128)
         lang = pw.CharField(max_length=5)
+        gameVer = pw.CharField(max_length=128)
 
         class Meta:
             table_name = "quest"
@@ -79,6 +81,7 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
             primary_key = pw.CompositeKey('ranger', 'quest')
 
 
+# noinspection PyUnusedLocal
 def rollback(migrator: Migrator, database: pw.Database, *, fake=False):
     migrator.remove_model('queststate')
     migrator.remove_model('quest')

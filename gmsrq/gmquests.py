@@ -2,18 +2,17 @@ import logging
 import re
 from dataclasses import dataclass
 from os.path import join
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 from urllib.parse import parse_qs
 
 import gmcapsule
 
 from gmsrq.config import Config, err_handler
-from gmsrq.sqlstore import Ranger, db, Cert
-from gmsrq.store import (
-    QUEST_CACHE, QUEST_NAMES, load_state, save_state, del_state_at_the_end
-)
+from gmsrq.gmusers import ask_cert
+from gmsrq.sqlstore import Ranger, db, QuestState, Quest, IpOptions
+from srqmplayer.qmmodels import QM
 from srqmplayer.qmplayer.funcs import (
-    PlayerState, GameStateEnum, QMPlayer, TEXTS_RUS, TEXTS_ENG
+    PlayerState, GameStateEnum, QMPlayer, TEXTS_RUS, TEXTS_ENG, GameState
 )
 from srqmplayer.qmplayer.player import Lang
 from srqmplayer.qmreader import parse
@@ -23,6 +22,7 @@ log = logging.getLogger()
 QUEST_ID = 'qid'
 STEP_ID = 'sid'
 CHOICE_ID = 'cid'
+QUEST_CACHE: Dict[int, Optional[QM]] = {}
 
 
 def cut_colors(text):
@@ -110,7 +110,7 @@ def style(text: str, ansi: bool = True):
     return text
 
 
-def render_page(cfg: Config, qid: int, sid: int,
+def render_page(cfg: Config, quest: Quest, sid: int,
                 state: PlayerState, lang: Lang,
                 ansi: bool = False) -> str:
     texts = TEXTS_RUS if lang == Lang.ru else TEXTS_ENG
@@ -141,7 +141,7 @@ def render_page(cfg: Config, qid: int, sid: int,
 
     choices = '\n'.join(list(map(
         lambda x: f'=> {cfg.act_url}'
-                  f'?{QUEST_ID}={qid}'
+                  f'?{QUEST_ID}={quest.id}'
                   f'&{STEP_ID}={sid}'
                   f'&{CHOICE_ID}={x.jumpId}'
                   f' {style(x.text, ansi)}'
@@ -155,7 +155,7 @@ def render_page(cfg: Config, qid: int, sid: int,
     if not choices and state.gameState == GameStateEnum.dead:
         choices += f'=> /{lang.value} {texts["death"]} (death)'
 
-    return f'# {QUEST_NAMES[qid]}\n' \
+    return f'# {quest.name}\n' \
            f'{img}{track}{snd}{text}\n{inventory}{choices}'
 
 
@@ -178,39 +178,40 @@ class GmQuestsHandler:
     @err_handler
     def handle(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return 60, 'Ranger certificate required' \
-                       ' / Требуется сертификат рейнджера'
+            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
 
         qid, sid, cid = parse_query(req.query)
-        if not qid or qid not in QUEST_NAMES:
+        quest = Quest.by(qid=qid)
+        if not quest:
             return 50, f'Unknown quest id={qid}'
 
         with db.atomic():
             ident: gmcapsule.Identity = req.identity
-            Cert.create_anon(ident)
+            Ranger.create_anon(ident)
         ranger = Ranger.by(fp_cert=ident.fp_cert)
         player = ranger.name or ident.subject()['CN'] or 'Ranger'
 
         sid, state, lang = self.process_quest_step(
-            player, ident.fp_cert, qid, sid, cid)
-        return render_page(self.cfg, qid, sid, state, lang,
+            player, ident.fp_cert, quest, sid, cid)
+        return render_page(self.cfg, quest, sid, state, lang,
                            ranger.get_opts().ansi)
 
     def process_quest_step(self, player: str, fp_cert: str,
-                           qid: int, sid: int, cid: int
+                           quest: Quest, sid: int, cid: int
                            ) -> Tuple[int, PlayerState, Lang]:
-        qm = QUEST_CACHE[qid] if qid in QUEST_CACHE else None
-        quest_name = QUEST_NAMES[qid]
+        qm = QUEST_CACHE[quest.id] if quest.id in QUEST_CACHE else None
         if not qm:
-            with open(join(self.cfg.quests_dir, quest_name), 'rb') as f:
+            with open(join(self.cfg.quests_dir, quest.file), 'rb') as f:
                 qm = parse(f)
-            QUEST_CACHE[qid] = qm
-        lang = Lang.en if '_eng.' in quest_name else Lang.ru
+            QUEST_CACHE[quest.id] = qm
+        lang = Lang.en if quest.lang == 'en' else Lang.ru
 
-        prev_sid, state = load_state(self.cfg.users_dir, fp_cert, quest_name)
         qmplayer = QMPlayer(qm, lang, ranger=player)
-        if state:
-            qmplayer.load_saving(state)
+        if state := QuestState.by(fp_cert=fp_cert, qid=quest.id):
+            qmplayer.load_saving(GameState.from_json(state.state))
+            prev_sid = state.sId
+        else:
+            prev_sid = 0
 
         if prev_sid != sid or not qmplayer.is_available_jump(cid):
             player_state = qmplayer.get_state()
@@ -218,10 +219,8 @@ class GmQuestsHandler:
 
         qmplayer.perform_jump(cid)
         next_sid = prev_sid + 1
-        save_state(self.cfg.users_dir,
-                   fp_cert, quest_name, str(next_sid), qmplayer.state)
+        QuestState.save_state(fp_cert, quest.id, next_sid, qmplayer.state)
 
         player_state = qmplayer.get_state()
-        del_state_at_the_end(self.cfg.users_dir,
-                             player_state, fp_cert, QUEST_NAMES[qid])
+        QuestState.del_state_at_the_end(player_state, fp_cert, quest.id)
         return next_sid, player_state, lang

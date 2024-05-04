@@ -1,8 +1,8 @@
 import hashlib
 import hmac
 import os
-from typing import Optional, List
 from datetime import datetime, timedelta
+from typing import Optional, List
 
 import gmcapsule
 from OpenSSL.crypto import X509, load_certificate, FILETYPE_ASN1
@@ -11,12 +11,14 @@ from peewee import (
     BlobField, TimestampField, TextField, SqliteDatabase, CompositeKey
 )
 
+from srqmplayer.qmplayer.funcs import GameState, PlayerState, GameStateEnum
+
 db = SqliteDatabase(
     'gmsrq.sqlite',
+    # https://www.sqlite.org/pragma.html
     pragmas={'journal_mode': 'wal',
              'foreign_keys': 1,
-             'ignore_check_constraints': 0,
-             'synchronous': 0})
+             'synchronous': 1})
 
 PASS_EXPIRE = timedelta(minutes=30)
 
@@ -26,15 +28,19 @@ class BaseModel(Model):
         database = db
 
 
-LANG_RU = 'ru'
-LANG_EN = 'en'
-
-
 class Quest(BaseModel):
     id = IntegerField(primary_key=True)
     name = CharField(max_length=128, null=False)
     file = CharField(max_length=128, null=False)
     lang = CharField(max_length=5, null=False)
+    gameVer = CharField(max_length=128, null=False)
+
+    @staticmethod
+    def by(*, qid=None) -> 'Quest':
+        if qid:
+            return Quest.select().where(Quest.id == qid).first()
+        else:
+            raise Exception('Quest id required')
 
 
 class Ranger(BaseModel):
@@ -162,20 +168,52 @@ class QuestState(BaseModel):
     class Meta:
         primary_key = CompositeKey('ranger', 'quest')
 
+    @staticmethod
+    def by(*, fp_cert, qid) -> Optional['QuestState']:
+        return (QuestState.select()
+                .join(Quest)
+                .switch(QuestState)
+                .join(Ranger)
+                .join(Cert)
+                .where((Cert.fp == fp_cert) & (Quest.id == qid))
+                .first())
+
+    @staticmethod
+    def save_state(fp_cert, qid, sid, state: GameState):
+        if q_state := QuestState.by(fp_cert=fp_cert, qid=qid):
+            q_state.state = state.to_json()
+            q_state.sId = sid
+            q_state.save()
+        else:
+            ranger = Ranger.by(fp_cert=fp_cert)
+            QuestState.create(ranger=ranger, quest=qid, sId=sid,
+                              state=state.to_json())
+        return sid, state
+
+    @staticmethod
+    def del_state_at_the_end(state: PlayerState, fp_cert, qid):
+        if state.gameState == GameStateEnum.running:
+            return  # do nothing
+        if q_state := QuestState.by(fp_cert=fp_cert, qid=qid):
+            q_state.delete_instance()
+
 
 class IpOptions(BaseModel):
     addr = TextField(primary_key=True)
     lang = CharField(max_length=5, null=False, default='en')
 
     @staticmethod
+    def by(*, addr):
+        return IpOptions.select().where(IpOptions.addr == addr).first()
+
+    @staticmethod
     def lang_by_ip(addr):
-        opts = IpOptions.select().where(IpOptions.addr == addr).first()
+        opts = IpOptions.by(addr=addr)
         return opts.lang if opts else 'en'
 
     @staticmethod
     def save_lang(addr, lang):
-        opts = IpOptions.select().where(IpOptions.addr == addr).first()
-        if opts:
+        if opts := IpOptions.by(addr=addr):
             opts.lang = lang
             opts.save()
         else:
