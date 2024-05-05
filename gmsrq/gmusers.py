@@ -259,7 +259,8 @@ class GmUsersHandler:
                 anon_cert: Cert = Cert.by(fp_cert=req.identity.fp_cert)
                 anon_cert.ranger = ranger
                 anon_cert.save()
-                anon.delete()
+                anon.delete_instance()
+
         return 30, self.cfg.opts_url
 
     @err_handler

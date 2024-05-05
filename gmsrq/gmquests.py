@@ -121,13 +121,19 @@ def render_page(cfg: Config, quest: Quest, sid: int,
             img += '.jpg'
         img = f'=> {cfg.img_url}{img} {texts["image"]} ({img})\n'
 
-    track = f'=> {cfg.track_url}{state.trackName.lower()}' \
-            f' {texts["track"]} ({state.trackName.lower()})\n' \
-        if state.trackName else ''
+    track = ''
+    if state.trackName:
+        track = state.trackName.lower()
+        if not track.endswith('.mp3'):
+            track += '.mp3'
+        track = f'=> {cfg.track_url}{track} {texts["track"]} ({track})\n'
 
-    snd = f'=> {cfg.snd_url}{state.soundName.lower()}' \
-          f' {texts["sound"]} ({state.soundName.lower()})\n' \
-        if state.soundName else ''
+    snd = ''
+    if state.soundName:
+        snd = state.soundName.lower()
+        if not snd.endswith('.mp3'):
+            snd += '.mp3'
+        snd = f'=> {cfg.snd_url}{snd} {texts["sound"]} ({snd})\n'
 
     text = style(state.text, ansi)
 
