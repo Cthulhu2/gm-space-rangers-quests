@@ -6,41 +6,119 @@
 Можно пропустить регистрацию, но сертификат понадобится всё равно.
 => /cgi/opts?lang=ru ⚙ Настройки
 
-### Квесты :: КР 2
+### Квесты :: КР 1
+=> /cgi/act?qid=4   Банк
+=> /cgi/act?qid=9   Бондиана
+=> /cgi/act?qid=24  Бриллиант
+=> /cgi/act?qid=56  Галактика
+=> /cgi/act?qid=57  Гладиатор
+=> /cgi/act?qid=60  Гобзавр
+=> /cgi/act?qid=113 Гонка
+=> /cgi/act?qid=133 Гробница
+=> /cgi/act?qid=62  Иикэ-Баана
+=> /cgi/act?qid=13  Казино
+=> /cgi/act?qid=18  Коммандо
+=> /cgi/act?qid=7   Лодка
+=> /cgi/act?qid=78  Мензолы
+=> /cgi/act?qid=85  Неофлора
+=> /cgi/act?qid=119 Осада
+=> /cgi/act?qid=91  Пенетратор
+=> /cgi/act?qid=103 Порода
+=> /cgi/act?qid=49  Рыбалка
+=> /cgi/act?qid=25  Страшная смерть
+=> /cgi/act?qid=12  Стройка
+=> /cgi/act?qid=105 Тюрьма
+=> /cgi/act?qid=82  Убийство
+=> /cgi/act?qid=61  Хэчбол
+=> /cgi/act?qid=126 Шпион
+=> /cgi/act?qid=41  Энергия
+=> /cgi/act?qid=45  Экзамен
+
+### Квесты :: КР 2 Доминаторы
+=> /cgi/act?qid=1   Амнезия
 => /cgi/act?qid=5   Банкет
+=> /cgi/act?qid=8   Бомбер
 => /cgi/act?qid=10  Борзухан
 => /cgi/act?qid=31  Водитель
+=> /cgi/act?qid=28  Водолаз
+=> /cgi/act?qid=114 Военкомат
 => /cgi/act?qid=37  Выборы
+=> /cgi/act?qid=55  Гайд-нет
 => /cgi/act?qid=22  Глубина
 => /cgi/act?qid=63  Джампер
-=> /cgi/act?qid=26  Диск
-=> /cgi/act?qid=124 Космолинии
+=> /cgi/act?qid=136 Ксенолог
 => /cgi/act?qid=137 Ксенопарк
-=> /cgi/act?qid=67  Леонардо да Винчи
-=> /cgi/act?qid=69  Логика
+=> /cgi/act?qid=76  Лабиринт
 => /cgi/act?qid=120 Лыжный курорт
+=> /cgi/act?qid=34  Лёгкая работа
+=> /cgi/act?qid=81  Мастер Иике-Бааны
 => /cgi/act?qid=79  Министерство
 => /cgi/act?qid=83  Музон
+=> /cgi/act?qid=33  Наркотики
 => /cgi/act?qid=86  Олимпиада (Клерки без границ)
+=> /cgi/act?qid=90  Парк аттракционов
 => /cgi/act?qid=88  Пачвараш
 => /cgi/act?qid=94  Пилот
 => /cgi/act?qid=99  Пицца
 => /cgi/act?qid=115 Плазмошашки
-=> /cgi/act?qid=2   Плохой день рейнджера
-=> /cgi/act?qid=42  Подстава
 => /cgi/act?qid=101 Проигрыватель
-=> /cgi/act?qid=15  Пятнашка
-=> /cgi/act?qid=109 Ралли
 => /cgi/act?qid=111 Роботы
 => /cgi/act?qid=129 Сварокок
+=> /cgi/act?qid=104 Тюрьма
+=> /cgi/act?qid=92  Фараон
+=> /cgi/act?qid=46  Фарюки
+=> /cgi/act?qid=52  Фонсеры
+=> /cgi/act?qid=14  Цитадели
+=> /cgi/act?qid=39  Элус
+
+### Квесты :: КР 2 Доминаторы: Перезагрузка
+=> /cgi/act?qid=135 Вулканический остров
+=> /cgi/act?qid=58  Главный редактор
+=> /cgi/act?qid=98  Гнездо пиратов
+=> /cgi/act?qid=44  Злой гений
+=> /cgi/act?qid=17  Колонизация
+=> /cgi/act?qid=67  Леонардо да Винчи
+=> /cgi/act?qid=69  Логика
+=> /cgi/act?qid=73  Мафия
+=> /cgi/act?qid=29  Община свидетелей доминаторов
+=> /cgi/act?qid=2   Плохой день рейнджера
+=> /cgi/act?qid=72  Потерянный герой
+=> /cgi/act?qid=107 Пропролог
+=> /cgi/act?qid=15  Пятнашка
 => /cgi/act?qid=122 Сортировка
 => /cgi/act?qid=127 Стелс
-=> /cgi/act?qid=104 Тюрьма
-=> /cgi/act?qid=117 Ухоногий сиболусовт
-=> /cgi/act?qid=52  Фонсеры
+=> /cgi/act?qid=132 Тестинг
+=> /cgi/act?qid=134 Туристы
+=> /cgi/act?qid=93  Фоторобот
+=> /cgi/act?qid=47  Фэянская психушка
 => /cgi/act?qid=50  Чемпионат по рыбалке
 => /cgi/act?qid=35  Эдельвейс
-=> /cgi/act?qid=39  Элус
+
+### Квесты :: КР 2 HD: Революция
+Оригинальные
+=> /cgi/act?qid=59  Глюки
+=> /cgi/act?qid=21  Живым или мёртвым
+=> /cgi/act?qid=42  Подстава
+=> /cgi/act?qid=66  Похищенный
+=> /cgi/act?qid=108 Провода
+=> /cgi/act?qid=48  Филиал
+=> /cgi/act?qid=54  Форум
+Фанатские
+=> /cgi/act?qid=26  Диск
+=> /cgi/act?qid=30  Доомино
+=> /cgi/act?qid=65  Киберразум
+=> /cgi/act?qid=19  Комплекс
+=> /cgi/act?qid=124 Космолинии
+=> /cgi/act?qid=77  Мегатест
+=> /cgi/act?qid=109 Ралли
+=> /cgi/act?qid=131 Таксист
+=> /cgi/act?qid=117 Ухоногий сиболусовт
+
+### Квесты :: Фанатские
+=> /cgi/act?qid=71  LongLiveTheRanger
+=> /cgi/act?qid=74  mark05
+=> /cgi/act?qid=20  Киберспорт
+=> /cgi/act?qid=75  Массакри
 
 ### Info
 => gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS
