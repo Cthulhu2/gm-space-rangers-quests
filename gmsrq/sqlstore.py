@@ -2,10 +2,7 @@ import hashlib
 import hmac
 import logging
 import os
-import shutil
 from datetime import datetime, timedelta
-from os.path import islink
-from pathlib import Path
 from typing import Optional, List
 
 import gmcapsule
@@ -16,7 +13,6 @@ from peewee import (
     DateTimeField
 )
 
-from gmsrq.store import load_lang, load_ansi, load_state
 from srqmplayer.qmplayer.funcs import GameState, PlayerState, GameStateEnum
 
 db = SqliteDatabase(
@@ -104,30 +100,6 @@ class Ranger(BaseModel):
             cert.subj = cn
             cert.expire = not_after
             cert.save()
-
-    @staticmethod
-    def create_anon_fp(fp_cert):
-        cert = Cert.by(fp_cert=fp_cert)
-        if cert:
-            return  #
-        anon = Ranger.create()
-        Options.create(ranger=anon, passWhen=None)
-        Cert.create(ranger=anon, fp=fp_cert, subj=None, expire=None)
-
-    @staticmethod
-    def import_registered(name, certs_info: List[Path]):
-        ranger = Ranger.by(name=name)
-        if ranger:
-            return  #
-        ranger = Ranger.create(name=name, is_anon=False)
-        Options.create(ranger=ranger, passWhen=None)
-        for ci in certs_info:
-            with open(ci, 'r') as f:
-                cn = f.readline().strip()
-                not_after = f.readline().strip()
-                not_after = datetime.strptime(not_after, '%Y%m%d%H%M%SZ')
-            Cert.create(ranger=ranger, fp=ci.name[0:-5],  # strip '.info'
-                        subj=cn, expire=not_after)
 
 
 class Cert(BaseModel):
@@ -234,24 +206,6 @@ class QuestState(BaseModel):
         return sid, state
 
     @staticmethod
-    def save_state_by_name(name, qid, sid, state: GameState):
-        q_state = (QuestState.select()
-                   .join(Quest)
-                   .switch(QuestState)
-                   .join(Ranger)
-                   .where((Ranger.name == name) & (Quest.id == qid))
-                   .first())
-        if q_state:
-            q_state.state = state.to_json()
-            q_state.sId = sid
-            q_state.save()
-        else:
-            ranger = Ranger.by(name=name)
-            QuestState.create(ranger=ranger, quest=qid, sId=sid,
-                              state=state.to_json())
-        return sid, state
-
-    @staticmethod
     def del_state_at_the_end(state: PlayerState, fp_cert, qid):
         if state.gameState == GameStateEnum.running:
             return  # do nothing
@@ -279,101 +233,3 @@ class IpOptions(BaseModel):
             opts.save()
         else:
             IpOptions.create(addr=addr, lang=lang)
-
-
-def import_users(users_dir):
-    registered_ranger_certs_links: List[Path] = []
-    ip_addr_dirs: List[Path] = []
-    empty_dirs: List[Path] = []
-    registered_ranger_dirs: List[Path] = []
-    anon_cert_dir: List[Path] = []
-
-    for it in Path(users_dir).iterdir():
-        if islink(it):
-            registered_ranger_certs_links.append(it)
-        elif it.is_file():
-            pass
-        elif len(it.name.split('.')) == 4:
-            ip_addr_dirs.append(it)
-        elif is_empty_dir(it):
-            empty_dirs.append(it)
-        elif next(it.glob('*.info'), None):
-            registered_ranger_dirs.append(it)
-        else:
-            anon_cert_dir.append(it)
-
-    for it in empty_dirs:
-        log.info(f'Remove empty dir {it.name}')
-        shutil.rmtree(it)
-
-    for it in registered_ranger_certs_links:
-        log.info(f'Remove cert links {it.name}')
-        it.unlink(missing_ok=True)
-
-    for it in ip_addr_dirs:
-        log.info(f'Import IP sessions {it.name}')
-        lang = load_lang(users_dir, it.name)
-        IpOptions.save_lang(it.name, lang=lang)
-        shutil.rmtree(it)
-
-    with db.atomic():
-        for it in anon_cert_dir:
-            log.info(f'Import anon ranger {it.name}')
-            Ranger.create_anon_fp(it.name)
-            ranger = Ranger.by(fp_cert=it.name)
-            ranger.created = datetime.fromtimestamp(os.path.getmtime(it))
-            ranger.activity = datetime.fromtimestamp(os.path.getmtime(it))
-            ranger.save()
-            opts = ranger.get_opts()
-            opts.lang = load_lang(users_dir, it.name)
-            opts.ansi = load_ansi(users_dir, it.name)
-            opts.save()
-            for quest_dir in it.iterdir():
-                if not quest_dir.is_dir() or is_empty_dir(quest_dir):
-                    continue
-                log.info(f'Import anon ranger {it.name} quest {quest_dir.name}')
-                sid, state = load_state(users_dir, it.name, quest_dir.name)
-                if state:
-                    quest = Quest.by(file=quest_dir.name)
-                    QuestState.save_state(it.name, quest.id, sid, state)
-    for it in anon_cert_dir:
-        log.info(f'Remove anon dir {it.name}')
-        shutil.rmtree(it)
-
-    with db.atomic():
-        for it in registered_ranger_dirs:
-            log.info(f'Import registered ranger {it.name}')
-            certs = [*it.glob('*.info')]
-            Ranger.import_registered(it.name, certs)
-            #
-            ranger = Ranger.by(name=it.name)
-            ranger.created = datetime.fromtimestamp(os.path.getmtime(it))
-            ranger.activity = datetime.fromtimestamp(os.path.getmtime(it))
-            ranger.save()
-            opts = ranger.get_opts()
-            opts.lang = load_lang(users_dir, it.name)
-            opts.ansi = load_ansi(users_dir, it.name)
-            opts.save()
-            for quest_dir in it.iterdir():
-                if not quest_dir.is_dir() or is_empty_dir(quest_dir):
-                    continue
-                log.info(f'Import registered ranger {it.name}'
-                         f' quest {quest_dir.name}')
-                sid, state = load_state(users_dir, it.name, quest_dir.name)
-                if state:
-                    quest = Quest.by(file=quest_dir.name)
-                    QuestState.save_state_by_name(it.name, quest.id, sid, state)
-
-    for it in registered_ranger_dirs:
-        log.info(f'Remove registered ranger dir {it.name}')
-        shutil.rmtree(it)
-
-
-def is_empty_dir(dir_: Path):
-    sub = os.listdir(dir_)
-    if not sub:
-        return True
-    return all(list(map(
-        lambda it: (Path(dir_).joinpath(it).is_dir()
-                    and is_empty_dir(Path(dir_).joinpath(it))),
-        sub)))
