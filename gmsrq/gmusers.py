@@ -119,9 +119,8 @@ def opts_en_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
 
 
 def cert_title(cert: Cert):
-    return (f'{cert.fp[0:10].upper()}'
-            f' · Expires {datetime.strftime(cert.expire, "%Y-%m-%d")}'
-            f' · Subject: {cert.subj}')
+    expire = datetime.strftime(cert.expire, "%Y-%m-%d") if cert.expire else '-'
+    return f'{cert.fp[0:10].upper()} · Expires {expire} · Subject: {cert.subj}'
 
 
 def opts_ru(cfg, ranger: Ranger, fp_cert):

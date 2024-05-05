@@ -1,10 +1,5 @@
-from contextlib import suppress
-
 import peewee as pw
 from peewee_migrate import Migrator
-
-with suppress(ImportError):
-    pass
 
 
 # noinspection PyUnusedLocal
@@ -14,8 +9,8 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
         id = pw.IntegerField(primary_key=True)
         name = pw.CharField(max_length=128, null=True, unique=True)
         is_anon = pw.BooleanField(default=True)
-        created = pw.TimestampField()
-        activity = pw.TimestampField()
+        created = pw.DateTimeField()
+        activity = pw.DateTimeField()
 
         class Meta:
             table_name = "ranger"
@@ -25,8 +20,8 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
         fp = pw.CharField(max_length=64, primary_key=True)
         ranger = pw.ForeignKeyField(column_name='rId', field='id',
                                     model=migrator.orm['ranger'])
-        subj = pw.CharField(max_length=256)
-        expire = pw.TimestampField()
+        subj = pw.CharField(max_length=256, null=True)
+        expire = pw.DateTimeField(null=True)
 
         class Meta:
             table_name = "cert"
@@ -49,7 +44,7 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
         lang = pw.CharField(default='en', max_length=5)
         passHash = pw.BlobField(null=True)
         passSalt = pw.BlobField(null=True)
-        passWhen = pw.TimestampField(null=True)
+        passWhen = pw.DateTimeField(null=True)
 
         class Meta:
             table_name = "options"

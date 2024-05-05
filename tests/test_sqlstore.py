@@ -1,4 +1,5 @@
 import os
+from os.path import dirname, realpath
 from pathlib import Path
 
 import gmcapsule
@@ -8,7 +9,7 @@ from peewee_migrate import Router
 
 from gmsrq.migrations import MIGRATE_DIR
 from gmsrq.sqlstore import db, Ranger, Cert, IpOptions, Options, Quest, \
-    QuestState
+    QuestState, is_empty_dir
 from srqmplayer.alea import AleaState
 from srqmplayer.formula import ParamValues
 from srqmplayer.qmplayer.funcs import GameState, State, PlayerState, \
@@ -16,16 +17,19 @@ from srqmplayer.qmplayer.funcs import GameState, State, PlayerState, \
 
 # noinspection SpellCheckingInspection
 FP_CERT = '54eeaeb3288d6a24676ccfbe60a175d8c161872f5f399eb683a83745e01d4448'
+TEMP = f'{dirname(realpath(__file__))}/../.tmp'
 
 
 @pytest.fixture
 def temp_db():
-    [os.remove(x) for x in Path('../.tmp/').glob('test.sqlite*')]
-    db.init(database='../.tmp/test.sqlite')
-    router = Router(db)
-    router.migrate_dir = Path('../gmsrq/migrations')
+    temp = Path(TEMP)
+    temp.mkdir(exist_ok=True)
+    [os.remove(x) for x in temp.glob('test.sqlite*')]
+    db.init(database=f'{TEMP}/test.sqlite')
+    router = Router(db, migrate_dir=MIGRATE_DIR)
     router.run()
-    return db
+    yield db
+    db.close()
 
 
 @pytest.fixture
@@ -112,3 +116,18 @@ def test_quest_state(temp_db, temp_cert):
     QuestState.del_state_at_the_end(
         PlayerState(text='', gameState=GameStateEnum.fail), FP_CERT, qid=138)
     assert QuestState.by(fp_cert=FP_CERT, qid=138) is None
+
+
+def test_is_empty_dir():
+    empty = Path(TEMP).joinpath('empty')
+    empty.mkdir(exist_ok=True)
+    assert is_empty_dir(empty)
+    subdir = empty.joinpath('subdir')
+    subdir.mkdir(exist_ok=True)
+    assert is_empty_dir(empty)
+    sid = subdir.joinpath('sid')
+    sid.touch()
+    assert not is_empty_dir(empty)
+    os.remove(sid)
+    subdir.rmdir()
+    empty.rmdir()
