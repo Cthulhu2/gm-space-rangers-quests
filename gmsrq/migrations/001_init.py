@@ -19,7 +19,8 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
     class Cert(pw.Model):
         fp = pw.CharField(max_length=64, primary_key=True)
         ranger = pw.ForeignKeyField(column_name='rId', field='id',
-                                    model=migrator.orm['ranger'])
+                                    model=migrator.orm['ranger'],
+                                    on_delete='cascade')
         subj = pw.CharField(max_length=256, null=True)
         expire = pw.DateTimeField(null=True)
 

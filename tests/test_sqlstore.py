@@ -5,8 +5,6 @@ from pathlib import Path
 import gmcapsule
 import pytest
 from OpenSSL.crypto import load_certificate, FILETYPE_PEM
-from _pytest.outcomes import fail
-from peewee import IntegrityError
 from peewee_migrate import Router
 
 from gmsrq.migrations import MIGRATE_DIR
@@ -89,7 +87,6 @@ def test_certs(temp_db, temp_cert):
 def test_migrations(temp_db):
     router = Router(temp_db, migrate_dir=MIGRATE_DIR)
     assert Quest.select().count() == 138
-    router.rollback()  # 003
     router.rollback()  # 002
     assert Quest.select().count() == 0
     router.rollback()  # 001
@@ -97,10 +94,8 @@ def test_migrations(temp_db):
     assert Quest.select().count() == 138
 
 
-def test_migrations_cert_foreign_key_cascade(temp_db, temp_cert):
-    router = Router(temp_db, migrate_dir=MIGRATE_DIR)
+def test_cert_foreign_key_cascade(temp_db, temp_cert):
     assert Quest.select().count() == 138
-    router.rollback()  # 003
 
     with temp_db.atomic():
         ident = gmcapsule.Identity(temp_cert)
@@ -118,18 +113,11 @@ def test_migrations_cert_foreign_key_cascade(temp_db, temp_cert):
 
     assert QuestState.select().count() == 1
     assert Options.select().count() == 1
-    try:
-        ranger.delete_instance()
-        fail('Error expected!')
-    except IntegrityError as ex:
-        assert 'FOREIGN KEY constraint failed' == ex.args[0]
-    #
-    router.run()
-    #
     assert len(ranger.get_certs()) == 1
     ranger.delete_instance()
     assert QuestState.select().count() == 0
     assert Options.select().count() == 0
+    assert Cert.select().count() == 0
 
 
 def test_quest_state(temp_db, temp_cert):
