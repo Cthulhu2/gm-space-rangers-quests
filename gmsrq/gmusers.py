@@ -5,8 +5,7 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
-from gmsrq import Config
-from gmsrq.config import err_handler
+from gmsrq.utils import Config, err_handler, mark_ranger_activity
 from gmsrq.sqlstore import IpOptions, Cert, db, Options, Ranger
 
 log = logging.getLogger()
@@ -196,6 +195,7 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass)
 
     @err_handler
+    @mark_ranger_activity
     def handle(self, req: gmcapsule.gemini.Request):
         # handle base /cgi/ to ask cert once, with saving selected language
         lang = parse_query(req.query)
@@ -217,6 +217,7 @@ class GmUsersHandler:
         return 30, self.cfg.reg_url
 
     @err_handler
+    @mark_ranger_activity
     def handle_reg(self, req: gmcapsule.gemini.Request):
         if not req.identity:
             return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
@@ -232,10 +233,12 @@ class GmUsersHandler:
                                     req.query, ranger.get_opts().lang)
             ranger.name = req.query
             ranger.is_anon = False
+            ranger.activity = datetime.now()
             ranger.save()
         return 30, self.cfg.opts_url
 
     @err_handler
+    @mark_ranger_activity
     def handle_reg_add(self, req: gmcapsule.gemini.Request):
         if not req.identity:
             return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
@@ -259,11 +262,14 @@ class GmUsersHandler:
                 anon_cert: Cert = Cert.by(fp_cert=req.identity.fp_cert)
                 anon_cert.ranger = ranger
                 anon_cert.save()
+                ranger.activity = datetime.now()
+                ranger.save()
                 anon.delete_instance()
 
         return 30, self.cfg.opts_url
 
     @err_handler
+    @mark_ranger_activity
     def handle_reg_del(self, req: gmcapsule.gemini.Request):
         if not req.identity:
             return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
@@ -279,12 +285,15 @@ class GmUsersHandler:
         if 'yes' == req.query:
             with db.atomic():
                 ranger: Ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+                ranger.activity = datetime.now()
+                ranger.save()
                 cert = Cert.by(fp_cert=del_cert)
                 if cert in ranger.get_certs():
                     cert.delete_instance()
         return 30, self.cfg.opts_url
 
     @err_handler
+    @mark_ranger_activity
     def handle_opts(self, req: gmcapsule.gemini.Request):
         lang = parse_query(req.query)
         if not req.identity:
@@ -316,6 +325,7 @@ class GmUsersHandler:
             return opts_ru(self.cfg, ranger, fp_cert)
 
     @err_handler
+    @mark_ranger_activity
     def handle_opts_pass(self, req: gmcapsule.gemini.Request):
         if not req.identity:
             return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))

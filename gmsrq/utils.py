@@ -1,6 +1,10 @@
 import logging
 from dataclasses import dataclass
 
+from gmcapsule.gemini import Request
+
+from gmsrq.sqlstore import Ranger
+
 log = logging.getLogger()
 
 
@@ -29,4 +33,14 @@ def err_handler(func):
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
             return 50, f'{ex}'
+    return decorator
+
+
+def mark_ranger_activity(func):
+    def decorator(*args, **kwargs):
+        req: Request = next(filter(lambda arg: isinstance(arg, Request), args),
+                            None)
+        if req and req.identity:
+            Ranger.update_activity(req.identity.fp_cert)
+        return func(*args, **kwargs)
     return decorator

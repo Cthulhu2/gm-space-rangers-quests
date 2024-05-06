@@ -7,9 +7,9 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
-from gmsrq.config import Config, err_handler
 from gmsrq.gmusers import ask_cert
 from gmsrq.sqlstore import Ranger, db, QuestState, Quest, IpOptions
+from gmsrq.utils import Config, err_handler, mark_ranger_activity
 from srqmplayer.qmmodels import QM
 from srqmplayer.qmplayer.funcs import (
     PlayerState, GameStateEnum, QMPlayer, TEXTS_RUS, TEXTS_ENG, GameState
@@ -182,6 +182,7 @@ class GmQuestsHandler:
         capsule.add(self.cfg.act_url, self.handle)
 
     @err_handler
+    @mark_ranger_activity
     def handle(self, req: gmcapsule.gemini.Request):
         if not req.identity:
             return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))

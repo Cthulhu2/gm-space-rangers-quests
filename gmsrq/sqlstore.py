@@ -102,6 +102,12 @@ class Ranger(BaseModel):
             cert.expire = not_after
             cert.save()
 
+    @staticmethod
+    def update_activity(fp_cert):
+        (Ranger.update(activity=datetime.now()).from_(Cert)
+         .where((Cert.fp == fp_cert) & (Ranger.id == Cert.ranger))
+         .execute())
+
 
 class Cert(BaseModel):
     ranger = ForeignKeyField(Ranger, backref='_certs', column_name='rId',
@@ -137,7 +143,7 @@ class Options(BaseModel):
 
     @staticmethod
     def lang_by(*, fp_cert=None):
-        ranger = Ranger.select().join(Cert).where(Cert.fp == fp_cert).first()
+        ranger = Ranger.by(fp_cert=fp_cert)
         return ranger.get_opts().lang if ranger else 'en'
 
     @staticmethod
