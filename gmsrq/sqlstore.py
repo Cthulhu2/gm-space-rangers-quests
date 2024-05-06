@@ -20,7 +20,8 @@ db = SqliteDatabase(
     # https://www.sqlite.org/pragma.html
     pragmas={'journal_mode': 'wal',
              'foreign_keys': 1,
-             'synchronous': 1})
+             'synchronous': 1,
+             'journal_size_limit': 1024 * 512})
 
 log = logging.getLogger()
 PASS_EXPIRE = timedelta(minutes=30)
@@ -103,7 +104,8 @@ class Ranger(BaseModel):
 
 
 class Cert(BaseModel):
-    ranger = ForeignKeyField(Ranger, backref='_certs', column_name='rId')
+    ranger = ForeignKeyField(Ranger, backref='_certs', column_name='rId',
+                             on_delete='cascade')
     fp = CharField(max_length=64, primary_key=True)
     subj = CharField(max_length=256, null=True)
     expire = DateTimeField(null=True)

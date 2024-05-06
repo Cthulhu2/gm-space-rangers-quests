@@ -5,11 +5,13 @@ from pathlib import Path
 import gmcapsule
 import pytest
 from OpenSSL.crypto import load_certificate, FILETYPE_PEM
+from _pytest.outcomes import fail
+from peewee import IntegrityError
 from peewee_migrate import Router
 
 from gmsrq.migrations import MIGRATE_DIR
 from gmsrq.sqlstore import db, Ranger, Cert, IpOptions, Options, Quest, \
-    QuestState, is_empty_dir
+    QuestState
 from srqmplayer.alea import AleaState
 from srqmplayer.formula import ParamValues
 from srqmplayer.qmplayer.funcs import GameState, State, PlayerState, \
@@ -28,14 +30,18 @@ def temp_db():
     db.init(database=f'{TEMP}/test.sqlite')
     router = Router(db, migrate_dir=MIGRATE_DIR)
     router.run()
-    yield db
-    db.close()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @pytest.fixture
 def temp_cert():
     with open('test.crt', 'rb') as cert:
-        return load_certificate(FILETYPE_PEM, cert.read())
+        cert = load_certificate(FILETYPE_PEM, cert.read())
+    yield cert
+    del cert
 
 
 def test_create_anon(temp_db, temp_cert):
@@ -81,13 +87,49 @@ def test_certs(temp_db, temp_cert):
 
 
 def test_migrations(temp_db):
-    router = Router(db, migrate_dir=MIGRATE_DIR)
+    router = Router(temp_db, migrate_dir=MIGRATE_DIR)
     assert Quest.select().count() == 138
+    router.rollback()  # 003
     router.rollback()  # 002
     assert Quest.select().count() == 0
     router.rollback()  # 001
     router.run()
     assert Quest.select().count() == 138
+
+
+def test_migrations_cert_foreign_key_cascade(temp_db, temp_cert):
+    router = Router(temp_db, migrate_dir=MIGRATE_DIR)
+    assert Quest.select().count() == 138
+    router.rollback()  # 003
+
+    with temp_db.atomic():
+        ident = gmcapsule.Identity(temp_cert)
+        Ranger.create_anon(ident)
+        ranger = Ranger.by(fp_cert=FP_CERT)
+        state = GameState(state=State.starting, critParamId=-1, locationId=-2,
+                          lastJumpId=-3, possibleJumps=[],
+                          paramValues=ParamValues(), paramShow=[],
+                          jumpedCount={}, locationVisitCount={}, daysPassed=-4,
+                          imageName='1', trackName='2', soundName='3',
+                          aleaState=AleaState(), aleaSeed='4',
+                          performedJumps=[])
+        Options.save_lang(FP_CERT, 'ru')
+        QuestState.save_state(FP_CERT, 138, 99, state)
+
+    assert QuestState.select().count() == 1
+    assert Options.select().count() == 1
+    try:
+        ranger.delete_instance()
+        fail('Error expected!')
+    except IntegrityError as ex:
+        assert 'FOREIGN KEY constraint failed' == ex.args[0]
+    #
+    router.run()
+    #
+    assert len(ranger.get_certs()) == 1
+    ranger.delete_instance()
+    assert QuestState.select().count() == 0
+    assert Options.select().count() == 0
 
 
 def test_quest_state(temp_db, temp_cert):
@@ -116,18 +158,3 @@ def test_quest_state(temp_db, temp_cert):
     QuestState.del_state_at_the_end(
         PlayerState(text='', gameState=GameStateEnum.fail), FP_CERT, qid=138)
     assert QuestState.by(fp_cert=FP_CERT, qid=138) is None
-
-
-def test_is_empty_dir():
-    empty = Path(TEMP).joinpath('empty')
-    empty.mkdir(exist_ok=True)
-    assert is_empty_dir(empty)
-    subdir = empty.joinpath('subdir')
-    subdir.mkdir(exist_ok=True)
-    assert is_empty_dir(empty)
-    sid = subdir.joinpath('sid')
-    sid.touch()
-    assert not is_empty_dir(empty)
-    os.remove(sid)
-    subdir.rmdir()
-    empty.rmdir()
