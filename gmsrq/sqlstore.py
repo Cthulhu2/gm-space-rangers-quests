@@ -67,7 +67,7 @@ class Ranger(BaseModel):
 
     @staticmethod
     def exists_name(name):
-        return Ranger.select().where(Ranger.name == name).exists()
+        return Ranger.select().where(Ranger.name ** name).exists()
 
     @staticmethod
     def by(*, fp_cert=None, name=None) -> 'Ranger':

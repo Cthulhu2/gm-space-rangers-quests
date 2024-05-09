@@ -84,6 +84,20 @@ def test_certs(temp_db, temp_cert):
         assert anon.get_certs() == [cert]
 
 
+def test_ranger_exists_case_insensitive(temp_db, temp_cert):
+    with temp_db.atomic():
+        ident = gmcapsule.Identity(temp_cert)
+        Ranger.create_anon(ident)
+        ranger = Ranger.by(fp_cert=FP_CERT)
+        ranger.name = 'Qwerty'
+        ranger.is_anon = False
+        ranger.save()
+        #
+    assert not Ranger.exists_name('Qwertyuiop')
+    assert Ranger.exists_name('Qwerty')
+    assert Ranger.exists_name('qWERTY')
+
+
 def test_migrations(temp_db):
     router = Router(temp_db, migrate_dir=MIGRATE_DIR)
     assert Quest.select().count() == 138
