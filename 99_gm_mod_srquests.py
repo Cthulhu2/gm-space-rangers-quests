@@ -17,6 +17,7 @@ def init(capsule: gmcapsule.Context):
     """Extension module initialization."""
     srq_cfg = gmsrq.Config(
         users_dir=USERS_DIR, quests_dir=QUEST_DIR,
+        root_dir=capsule.cfg.root_dir(),
         act_url=f'{CGI_URL}act',
         img_url='/quests/img/',
         snd_url='/quests/snd/',

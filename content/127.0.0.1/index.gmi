@@ -15,5 +15,5 @@
                                              SSt  `------'`
 ```
 # Ranger Center "Union"
-=> /en Welcome!
-=> /ru Добро пожаловать!
+=> /en/ Welcome!
+=> /ru/ Добро пожаловать!

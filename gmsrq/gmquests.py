@@ -8,6 +8,7 @@ from urllib.parse import parse_qs
 import gmcapsule
 
 from gmsrq.gmusers import ask_cert
+from gmsrq.page_index import meta
 from gmsrq.sqlstore import Ranger, db, QuestState, Quest, IpOptions
 from gmsrq.utils import Config, err_handler, mark_ranger_activity
 from srqmplayer.qmmodels import QM
@@ -155,11 +156,11 @@ def render_page(cfg: Config, quest: Quest, sid: int,
         state.choices)))
 
     if not choices and state.gameState == GameStateEnum.fail:
-        choices += f'=> /{lang.value} {texts["goBackToShip"]} (fail)'
+        choices += f'=> /{lang.value}/ {texts["goBackToShip"]} (fail)'
     if not choices and state.gameState == GameStateEnum.win:
-        choices += f'=> /{lang.value} {texts["goBackToShip"]} (win)'
+        choices += f'=> /{lang.value}/ {texts["goBackToShip"]} (win)'
     if not choices and state.gameState == GameStateEnum.dead:
-        choices += f'=> /{lang.value} {texts["death"]} (death)'
+        choices += f'=> /{lang.value}/ {texts["death"]} (death)'
 
     return f'# {quest.name}\n' \
            f'{img}{track}{snd}{text}\n{inventory}{choices}'
@@ -200,8 +201,9 @@ class GmQuestsHandler:
 
         sid, state, lang = self.process_quest_step(
             player, ident.fp_cert, quest, sid, cid)
-        return render_page(self.cfg, quest, sid, state, lang,
-                           ranger.get_opts().ansi)
+        return (20, meta(quest.lang),
+                render_page(self.cfg, quest, sid, state, lang,
+                            ranger.get_opts().ansi))
 
     def process_quest_step(self, player: str, fp_cert: str,
                            quest: Quest, sid: int, cid: int

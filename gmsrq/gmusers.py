@@ -5,8 +5,9 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
-from gmsrq.utils import Config, err_handler, mark_ranger_activity
+from gmsrq.page_index import meta, page_index
 from gmsrq.sqlstore import IpOptions, Cert, db, Options, Ranger
+from gmsrq.utils import Config, err_handler, mark_ranger_activity
 
 log = logging.getLogger()
 
@@ -22,8 +23,7 @@ def parse_opts_query(query: str):
             params['ansi'][0].lower() == 't' if 'ansi' in params else None)
 
 
-def hello_ranger(ranger: Ranger):
-    lang = ranger.get_opts().lang
+def hello_ranger(ranger: Ranger, lang):
     if lang == 'en':
         return f'Wow! This is the famous ranger, {ranger.name}!' \
                f' You are already registered.\n' \
@@ -49,9 +49,9 @@ def is_valid_name(name: str):
 
 def ask_cert(lang: str = None):
     return 60, (
-        'Ranger certificate required'
-        if lang == 'en' else
         'Требуется сертификат рейнджера'
+        if lang == 'ru' else
+        'Ranger certificate required'
     )
 
 
@@ -185,6 +185,9 @@ class GmUsersHandler:
         self.cfg = cfg
 
     def init(self, capsule: gmcapsule.Context):
+        # index
+        capsule.add('/en/', self.index)
+        capsule.add('/ru/', self.index)
         # registration
         capsule.add(self.cfg.cgi_url, self.handle)
         capsule.add(self.cfg.reg_add_url + '*', self.handle_reg_add)
@@ -193,6 +196,25 @@ class GmUsersHandler:
         # options
         capsule.add(self.cfg.opts_url, self.handle_opts)
         capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass)
+
+    @err_handler
+    @mark_ranger_activity
+    def index(self, req: gmcapsule.gemini.Request):
+        lang = req.path.split('/')[1]
+        if not req.identity:
+            IpOptions.save_lang(req.remote_address[0], lang)
+            return page_index(None, lang,
+                              self.cfg.root_dir.joinpath(req.hostname))
+
+        with db.atomic():
+            ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+            if not ranger:
+                Ranger.create_anon(req.identity)
+                ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+            # re-save selected lang by cert
+            Options.save_lang(req.identity.fp_cert, lang)
+            return page_index(ranger, lang,
+                              self.cfg.root_dir.joinpath(req.hostname))
 
     @err_handler
     @mark_ranger_activity
@@ -223,14 +245,16 @@ class GmUsersHandler:
             return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
 
         ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+        lang = ranger.get_opts().lang
         if not ranger.is_anon:
-            return hello_ranger(ranger)
+            return 20, meta(lang), hello_ranger(ranger)
         elif not is_valid_name(req.query):
-            return ask_name(ranger.get_opts().lang)
+            return ask_name(lang)
         with db.atomic():
             if Ranger.exists_name(req.query):
-                return already_used(self.cfg.reg_url, self.cfg.reg_add_url,
-                                    req.query, ranger.get_opts().lang)
+                return (20, meta(lang),
+                        already_used(self.cfg.reg_url, self.cfg.reg_add_url,
+                                     req.query, lang))
             ranger.name = req.query
             ranger.is_anon = False
             ranger.activity = datetime.now()
@@ -320,9 +344,9 @@ class GmUsersHandler:
         fp_cert = req.identity.fp_cert
         ranger = Ranger.by(fp_cert=fp_cert)
         if lang == 'en':
-            return opts_en(self.cfg, ranger, fp_cert)
+            return 20, meta(lang), opts_en(self.cfg, ranger, fp_cert)
         else:
-            return opts_ru(self.cfg, ranger, fp_cert)
+            return 20, meta(lang), opts_ru(self.cfg, ranger, fp_cert)
 
     @err_handler
     @mark_ranger_activity

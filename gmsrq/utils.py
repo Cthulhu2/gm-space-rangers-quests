@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from pathlib import Path
 
 from gmcapsule.gemini import Request
 
@@ -12,6 +13,7 @@ log = logging.getLogger()
 class Config:
     users_dir: str
     quests_dir: str
+    root_dir: Path
     #
     act_url: str
     img_url: str
