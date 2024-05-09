@@ -247,7 +247,7 @@ class GmUsersHandler:
         ranger = Ranger.by(fp_cert=req.identity.fp_cert)
         lang = ranger.get_opts().lang
         if not ranger.is_anon:
-            return 20, meta(lang), hello_ranger(ranger)
+            return 20, meta(lang), hello_ranger(ranger, lang)
         elif not is_valid_name(req.query):
             return ask_name(lang)
         with db.atomic():
