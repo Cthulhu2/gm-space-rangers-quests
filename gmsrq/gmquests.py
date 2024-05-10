@@ -108,6 +108,22 @@ def style(text: str, ansi: bool = True):
         text = text.replace('<clr>', '*') \
             .replace('<clrEnd>', '*') \
             .replace('</clr>', '*')
+
+    while clr := re.search(r'<color=?(\d+)?,?(\d+)?,?(\d+)?>', text):
+        if ansi:
+            color = (f'\033[38;2;'
+                     f'{text[clr.regs[1][0]:clr.regs[1][1]]};'
+                     f'{text[clr.regs[2][0]:clr.regs[2][1]]};'
+                     f'{text[clr.regs[3][0]:clr.regs[3][1]]}m')
+            end = '\033[0m'
+        else:
+            color = '*'
+            end = '*'
+        text = text[:clr.regs[0][0]] + color + text[clr.regs[0][1]:]
+        clr_end = re.search(r'</color>', text)
+        if clr_end:
+            text = text[:clr_end.regs[0][0]] + end + text[clr_end.regs[0][1]:]
+
     return text
 
 
