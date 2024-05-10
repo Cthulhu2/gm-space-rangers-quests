@@ -102,7 +102,7 @@ QUEST_NAMES = [
     ( 92, 'ru', 'Pharaon.qmm',             'Фараон',                        'КР 2 Доминаторы',                          ),  # noqa
     ( 93, 'ru', 'Photorobot.qmm',          'Фоторобот',                     'КР 2 Доминаторы Перезагрузка',             ),  # noqa
     ( 94, 'ru', 'Pilot.qmm',               'Пилот',                         'КР 2 Доминаторы',                          ),  # noqa
-    ( 95, 'ru', 'Pilot_eng.qm',            'Pilot',                         'SR 2.1.2121 eng',                          ),  # noqa
+    ( 95, 'en', 'Pilot_eng.qm',            'Pilot',                         'SR 2.1.2121 eng',                          ),  # noqa
     ( 96, 'ru', 'PirateClanPrison.qmm',    'Тюрьма (пиратская)',            'SR 2.1.2170',                              ),  # noqa
     ( 97, 'en', 'PirateClanPrison_eng.qm', 'Prison (pirate)',               'SR 2.1.2121 eng',                          ),  # noqa
     ( 98, 'ru', 'Piratesnest.qmm',         'Гнездо пиратов',                'КР 2 Доминаторы Перезагрузка',             ),  # noqa

@@ -3,7 +3,7 @@ import hmac
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Optional, List
+from typing import Optional, List, Iterator
 
 import gmcapsule
 from OpenSSL.crypto import X509, load_certificate, FILETYPE_ASN1
@@ -41,15 +41,23 @@ class Quest(BaseModel):
 
     @staticmethod
     def by(*, qid=None, file=None) -> 'Quest':
-        if qid and file:
-            return Quest.select().where((Quest.id == qid)
-                                        & (Quest.file == file)).first()
-        elif qid:
-            return Quest.select().where(Quest.id == qid).first()
-        elif file:
-            return Quest.select().where(Quest.file == file).first()
-        else:
-            raise Exception('Quest id or file required')
+        query = Quest.select()
+        if qid:
+            query = query.where(Quest.id == qid)
+        if file:
+            query = query.where(Quest.file == file)
+        return query.first()
+
+    @staticmethod
+    def all_by(*, lang=None, game=None) -> Iterator['Quest']:
+        query = Quest.select()
+        if lang:
+            query = query.where(Quest.lang == lang)
+        if game and isinstance(game, str):
+            query = query.where(Quest.gameVer == game)
+        if game and isinstance(game, list):
+            query = query.where(Quest.gameVer << game)
+        return query.order_by(Quest.name).execute()
 
 
 class Ranger(BaseModel):
@@ -202,6 +210,13 @@ class QuestState(BaseModel):
                 .first())
 
     @staticmethod
+    def in_progress(*, rid) -> List[int]:
+        return list(QuestState.select(QuestState.quest.id)
+                    .join(Quest)
+                    .where(QuestState.ranger == rid)
+                    .scalars())
+
+    @staticmethod
     def save_state(fp_cert, qid, sid, state: GameState):
         if q_state := QuestState.by(fp_cert=fp_cert, qid=qid):
             q_state.state = state.to_json()
@@ -214,11 +229,42 @@ class QuestState(BaseModel):
         return sid, state
 
     @staticmethod
-    def del_state_at_the_end(state: PlayerState, fp_cert, qid):
+    def del_state_at_the_end(state: PlayerState, fp_cert, qid, rid):
         if state.gameState == GameStateEnum.running:
             return  # do nothing
         if q_state := QuestState.by(fp_cert=fp_cert, qid=qid):
             q_state.delete_instance()
+        if state.gameState == GameStateEnum.win:
+            QuestCompleted.get_or_create(ranger=rid, quest=qid)
+
+
+class QuestCompleted(BaseModel):
+    ranger = ForeignKeyField(Ranger, column_name='rId', backref='_completed',
+                             on_delete='cascade')
+    quest = ForeignKeyField(Quest, column_name='qId')
+
+    class Meta:
+        primary_key = CompositeKey('ranger', 'quest')
+        indexes = ((('ranger',), False),
+                   (('quest',), False),)
+
+    @staticmethod
+    def save_by(*, rid, qid):
+        completed = (QuestCompleted.select()
+                     .where((QuestCompleted.ranger == rid)
+                            & (QuestCompleted.quest == qid))
+                     .first())
+        if not completed:
+            QuestCompleted.create(ranger=rid, quest=qid)
+
+    @staticmethod
+    def by(*, rid, qid=None) -> List[int]:
+        query = (QuestCompleted.select(QuestCompleted.quest.id)
+                 .join(Quest)
+                 .where(QuestCompleted.ranger == rid))
+        if qid:
+            return list(query.where(QuestCompleted.quest == qid).scalars())
+        return list(query.scalars())
 
 
 class IpOptions(BaseModel):

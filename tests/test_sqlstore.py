@@ -9,11 +9,18 @@ from peewee_migrate import Router
 
 from gmsrq.migrations import MIGRATE_DIR
 from gmsrq.sqlstore import db, Ranger, Cert, IpOptions, Options, Quest, \
-    QuestState
+    QuestState, QuestCompleted
 from srqmplayer.alea import AleaState
 from srqmplayer.formula import ParamValues
 from srqmplayer.qmplayer.funcs import GameState, State, PlayerState, \
     GameStateEnum
+
+GAME_STATE = GameState(
+    state=State.starting, critParamId=-1, locationId=-2,
+    lastJumpId=-3, possibleJumps=[], paramValues=ParamValues(),
+    paramShow=[], jumpedCount={}, locationVisitCount={},
+    daysPassed=-4, imageName='1', trackName='2', soundName='3',
+    aleaState=AleaState(), aleaSeed='4', performedJumps=[])
 
 # noinspection SpellCheckingInspection
 FP_CERT = '54eeaeb3288d6a24676ccfbe60a175d8c161872f5f399eb683a83745e01d4448'
@@ -101,6 +108,7 @@ def test_ranger_exists_case_insensitive(temp_db, temp_cert):
 def test_migrations(temp_db):
     router = Router(temp_db, migrate_dir=MIGRATE_DIR)
     assert Quest.select().count() == 138
+    router.rollback()  # 003
     router.rollback()  # 002
     assert Quest.select().count() == 0
     router.rollback()  # 001
@@ -115,15 +123,8 @@ def test_cert_foreign_key_cascade(temp_db, temp_cert):
         ident = gmcapsule.Identity(temp_cert)
         Ranger.create_anon(ident)
         ranger = Ranger.by(fp_cert=FP_CERT)
-        state = GameState(state=State.starting, critParamId=-1, locationId=-2,
-                          lastJumpId=-3, possibleJumps=[],
-                          paramValues=ParamValues(), paramShow=[],
-                          jumpedCount={}, locationVisitCount={}, daysPassed=-4,
-                          imageName='1', trackName='2', soundName='3',
-                          aleaState=AleaState(), aleaSeed='4',
-                          performedJumps=[])
         Options.save_lang(FP_CERT, 'ru')
-        QuestState.save_state(FP_CERT, 138, 99, state)
+        QuestState.save_state(FP_CERT, 138, 99, GAME_STATE)
 
     assert QuestState.select().count() == 1
     assert Options.select().count() == 1
@@ -138,25 +139,37 @@ def test_quest_state(temp_db, temp_cert):
     with temp_db.atomic():
         ident = gmcapsule.Identity(temp_cert)
         Ranger.create_anon(ident)
-        #
-    state = GameState(state=State.starting, critParamId=-1, locationId=-2,
-                      lastJumpId=-3, possibleJumps=[],
-                      paramValues=ParamValues(), paramShow=[],
-                      jumpedCount={}, locationVisitCount={}, daysPassed=-4,
-                      imageName='1', trackName='2', soundName='3',
-                      aleaState=AleaState(), aleaSeed='4', performedJumps=[])
+        rid = Ranger.by(fp_cert=FP_CERT).id
 
-    sid, st = QuestState.save_state(FP_CERT, 138, 99, state)
+    sid, st = QuestState.save_state(FP_CERT, 138, 99, GAME_STATE)
     assert sid == 99
-    assert st == state
+    assert st == GAME_STATE
     assert QuestState.by(fp_cert=FP_CERT, qid=137) is None
-    assert QuestState.by(fp_cert=FP_CERT, qid=138).state == state.to_json()
+    assert QuestState.by(fp_cert=FP_CERT, qid=138).state == GAME_STATE.to_json()
     assert QuestState.by(fp_cert=FP_CERT, qid=999) is None
     #
     QuestState.del_state_at_the_end(
-        PlayerState(text='', gameState=GameStateEnum.running), FP_CERT, qid=138)
+        PlayerState(text='', gameState=GameStateEnum.running),
+        FP_CERT, qid=138, rid=rid)
     assert QuestState.by(fp_cert=FP_CERT, qid=138) is not None
     #
     QuestState.del_state_at_the_end(
-        PlayerState(text='', gameState=GameStateEnum.fail), FP_CERT, qid=138)
+        PlayerState(text='', gameState=GameStateEnum.win),
+        FP_CERT, qid=138, rid=rid)
     assert QuestState.by(fp_cert=FP_CERT, qid=138) is None
+    assert QuestCompleted.by(rid=rid, qid=138) == [138]
+
+
+def test_quest_completed(temp_db, temp_cert):
+    with temp_db.atomic():
+        ident = gmcapsule.Identity(temp_cert)
+        Ranger.create_anon(ident)
+        rid = Ranger.by(fp_cert=FP_CERT).id
+        QuestState.save_state(FP_CERT, 138, 99, GAME_STATE)
+        QuestCompleted.save_by(rid=rid, qid=137)
+        #
+    in_progress = QuestState.in_progress(rid=rid)
+    assert 138 in in_progress
+    assert QuestCompleted.by(rid=rid, qid=138) == []
+    assert QuestCompleted.by(rid=rid) == [137]
+    assert QuestCompleted.by(rid=rid, qid=137) == [137]

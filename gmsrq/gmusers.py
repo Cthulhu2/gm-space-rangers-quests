@@ -203,7 +203,7 @@ class GmUsersHandler:
         lang = req.path.split('/')[1]
         if not req.identity:
             IpOptions.save_lang(req.remote_address[0], lang)
-            return page_index(None, lang,
+            return page_index(None, lang, self.cfg,
                               self.cfg.root_dir.joinpath(req.hostname))
 
         with db.atomic():
@@ -213,7 +213,7 @@ class GmUsersHandler:
                 ranger = Ranger.by(fp_cert=req.identity.fp_cert)
             # re-save selected lang by cert
             Options.save_lang(req.identity.fp_cert, lang)
-            return page_index(ranger, lang,
+            return page_index(ranger, lang, self.cfg,
                               self.cfg.root_dir.joinpath(req.hostname))
 
     @err_handler

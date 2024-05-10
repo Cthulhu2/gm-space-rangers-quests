@@ -200,14 +200,15 @@ class GmQuestsHandler:
         player = ranger.name or ident.subject()['CN'] or 'Ranger'
 
         sid, state, lang = self.process_quest_step(
-            player, ident.fp_cert, quest, sid, cid)
+            player, ident.fp_cert, quest, sid, cid, ranger.id)
+
         return (20, meta(quest.lang),
                 render_page(self.cfg, quest, sid, state, lang,
                             ranger.get_opts().ansi))
 
     def process_quest_step(self, player: str, fp_cert: str,
-                           quest: Quest, sid: int, cid: int
-                           ) -> Tuple[int, PlayerState, Lang]:
+                           quest: Quest, sid: int, cid: int,
+                           rid: int) -> Tuple[int, PlayerState, Lang]:
         qm = QUEST_CACHE[quest.id] if quest.id in QUEST_CACHE else None
         if not qm:
             with open(join(self.cfg.quests_dir, quest.file), 'rb') as f:
@@ -231,5 +232,5 @@ class GmQuestsHandler:
         QuestState.save_state(fp_cert, quest.id, next_sid, qmplayer.state)
 
         player_state = qmplayer.get_state()
-        QuestState.del_state_at_the_end(player_state, fp_cert, quest.id)
+        QuestState.del_state_at_the_end(player_state, fp_cert, quest.id, rid)
         return next_sid, player_state, lang
