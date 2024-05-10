@@ -157,7 +157,7 @@ def index_ranger_en(cfg: Config, ranger: Ranger):
     quest_urls = build_quest_urls_en(cfg, ranger)
     return (
         f'{TITLE_EN}'
-        f'=> Wow! This is the famous ranger {ranger.name}!\n'
+        f'Wow! This is the famous ranger {ranger.name}!\n'
         f'=> {cfg.opts_url}?lang=en ⚙ Options\n'
         f'{quest_urls}\n'
         f'{FOOTER_EN}')
