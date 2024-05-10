@@ -261,7 +261,7 @@ def calc_loc_showing_text_id(loc: Location,
         if loc.textSelectFormula:
             id_ = calculate(loc.textSelectFormula, rnd,
                             state.paramValues) - 1
-            if len(loc.texts) > id_ and loc.texts[id_]:
+            if 0 <= id_ < len(loc.texts) and loc.texts[id_]:
                 return id_
             else:
                 if debug:
