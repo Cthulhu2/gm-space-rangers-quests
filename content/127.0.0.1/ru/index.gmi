@@ -119,5 +119,6 @@
 => /cgi/act?qid=75  Массакри
 
 ### Info
+=> /ru/gemlog/ Гемлог
 => gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS
 => https://github.com/Cthulhu2/gm-space-rangers-quests Исходники и ишьюсы

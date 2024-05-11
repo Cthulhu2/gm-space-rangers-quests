@@ -8,16 +8,18 @@ TITLE_EN = '# Ranger Center "Union"\n'
 TITLE_RU = '# Центр рейнджеров "Союз"\n'
 
 FOOTER_EN = (
-    f'### Info\n'
-    f'=> gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS\n'
-    f'=> https://github.com/Cthulhu2/gm-space-rangers-quests'
-    f' Source code and Issues\n')
+    '### Info\n'
+    '=> /en/gemlog/ Gemlog\n'
+    '=> gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS\n'
+    '=> https://github.com/Cthulhu2/gm-space-rangers-quests'
+    ' Source code and Issues\n')
 
 FOOTER_RU = (
-    f'### Info\n'
-    f'=> gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS\n'
-    f'=> https://github.com/Cthulhu2/gm-space-rangers-quests'
-    f' Исходники и ишьюсы\n')
+    '### Info\n'
+    '=> /ru/gemlog/ Гемлог\n'
+    '=> gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS\n'
+    '=> https://github.com/Cthulhu2/gm-space-rangers-quests'
+    ' Исходники и ишьюсы\n')
 
 
 def meta(lang):
