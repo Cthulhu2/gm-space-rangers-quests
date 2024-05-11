@@ -127,8 +127,9 @@ def index_anon_ru(cfg: Config, ranger: Ranger):
 
     return (
         f'{TITLE_RU}'
-        f'=> {cfg.reg_url}?lang=ru Регистрация\n'
-        f'=> {cfg.opts_url}?lang=ru ⚙ Настройки\n'
+        f'Входи, рейнджер, твой сертификат прошёл проверку.\n'
+        f'=> {cfg.reg_url} Регистрация\n'
+        f'=> {cfg.opts_url} ⚙ Настройки\n'
         f'{quest_urls}'
         f'{FOOTER_RU}')
 
@@ -137,8 +138,9 @@ def index_anon_en(cfg: Config, ranger: Ranger):
     quest_urls = build_quest_urls_en(cfg, ranger)
     return (
         f'{TITLE_EN}'
-        f'=> {cfg.reg_url}?lang=en Registration\n'
-        f'=> {cfg.opts_url}?lang=en ⚙ Options\n'
+        f'Come in, ranger, your certificate is valid.\n'
+        f'=> {cfg.reg_url} Registration\n'
+        f'=> {cfg.opts_url} ⚙ Options\n'
         f'{quest_urls}\n'
         f'{FOOTER_EN}')
 
@@ -148,7 +150,7 @@ def index_ranger_ru(cfg: Config, ranger: Ranger):
     return (
         f'{TITLE_RU}'
         f'Ба! Да это же знаменитый рейнджер {ranger.name}!\n'
-        f'=> {cfg.opts_url}?lang=ru ⚙ Настройки\n'
+        f'=> {cfg.opts_url} ⚙ Настройки\n'
         f'{quest_urls}'
         f'{FOOTER_RU}')
 
@@ -158,6 +160,6 @@ def index_ranger_en(cfg: Config, ranger: Ranger):
     return (
         f'{TITLE_EN}'
         f'Wow! This is the famous ranger {ranger.name}!\n'
-        f'=> {cfg.opts_url}?lang=en ⚙ Options\n'
+        f'=> {cfg.opts_url} ⚙ Options\n'
         f'{quest_urls}\n'
         f'{FOOTER_EN}')

@@ -25,9 +25,10 @@ def init(capsule: gmcapsule.Context):
         cgi_url=CGI_URL,
         reg_url=f'{CGI_URL}reg',
         reg_add_url=f'{CGI_URL}reg/add/',
-        reg_del_url=f'{CGI_URL}reg/del/',
         opts_url=f'{CGI_URL}opts',
-        opts_pass_url=f'{CGI_URL}opts/pass')
+        opts_pass_url=f'{CGI_URL}opts/pass',
+        opts_del_acc_url=f'{CGI_URL}opts/del/acc/',
+        opts_del_cert_url=f'{CGI_URL}opts/del/cert/')
 
     db.database = USERS_DIR + '/gmsrq.sqlite'
     router = Router(db, migrate_dir=MIGRATE_DIR, logger=logging.getLogger())

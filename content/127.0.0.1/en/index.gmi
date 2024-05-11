@@ -1,10 +1,7 @@
 # Ranger Center "Union"
 To perform government assignments, you will need a ranger certificate. Don't worry, it's exactly the same as yours. Do you have a certificate, right? Are you a ranger? So you have the right certificate.
 
-Come on in and register:
-=> /cgi/?lang=en Registration
-You can skip registration, but you will still need a certificate.
-=> /cgi/opts?lang=en  ⚙ Options
+=> /cgi/?lang=en Show Ranger's certificate
 
 ### Quests :: SR 2
 => /cgi/act?qid=6   Banquet

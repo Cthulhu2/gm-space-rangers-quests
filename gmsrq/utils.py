@@ -23,9 +23,10 @@ class Config:
     cgi_url: str
     reg_url: str
     reg_add_url: str
-    reg_del_url: str
     opts_url: str
     opts_pass_url: str
+    opts_del_acc_url: str
+    opts_del_cert_url: str
 
 
 def err_handler(func):
