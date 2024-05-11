@@ -6,7 +6,9 @@ Finally, we have marking of completed quests. And uncompleted quests too!
 ☑ Pizza
 ```
 And if you've always wanted to delete your account, but were shy to ask, now you can do it! Delete account, i mean. There is menu item in "Options" page. But beware of the artful Lagrange, which remembers the association of the certificate with the authorization page. I recommend open the pages linked to the certificate in separate tabs, and unpin the certificate after deleting the account.
-=> /en/ Main
+
+Renaming rangers also supported.
+=> /en/ To Main
 ```
 Created: 2024-05-12
 ```

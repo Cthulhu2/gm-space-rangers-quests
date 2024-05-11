@@ -88,6 +88,11 @@ def ask_password(lang: str):
                 'Пароль?')
 
 
+def invalid_name(lang: str):
+    return 20, meta(lang), ('Invalid ranger name' if lang == 'en' else
+                            'Неподходяще имя для рейнджера')
+
+
 def opts_en(cfg, ranger: Ranger, fp_cert):
     opts = ranger.get_opts()
     ansi = opts.ansi
@@ -96,6 +101,8 @@ def opts_en(cfg, ranger: Ranger, fp_cert):
     certs_items = opts_en_certs(cfg, ranger.name, certs, fp_cert,
                                 opts.get_pass_expires())
     ranger_name = ranger.name or cert.subj
+    rename_ranger = (f'=> {cfg.opts_rename_url} Rename ranger\n\n'
+                     if not ranger.is_anon else '')
     return (
         f'# Options\n'
         f'=> {cfg.cgi_url} Back\n\n'
@@ -103,8 +110,10 @@ def opts_en(cfg, ranger: Ranger, fp_cert):
         f' {"☑" if ansi else "☐"} Use ANSI-colors\n'
         f'\n'
         f'{certs_items}\n'
+        f'## Account\n'
+        f'{rename_ranger}'
         f'=> {cfg.opts_del_acc_url} ⚠ Delete ranger {ranger_name}\n'
-        f'All quests progress and registered certificates will be deleted'
+        f'All quests progress and registered certificates will be deleted\n'
     )
 
 
@@ -144,6 +153,8 @@ def opts_ru(cfg, ranger: Ranger, fp_cert):
     certs_items = opts_ru_certs(cfg, ranger.name, certs, fp_cert,
                                 opts.get_pass_expires())
     ranger_name = ranger.name or cert.subj
+    rename_ranger = (f'=> {cfg.opts_rename_url} Переименовать рейнджера\n\n'
+                     if not ranger.is_anon else '')
     return (
         f'# Опции\n'
         f'=> {cfg.cgi_url} Назад\n\n'
@@ -151,8 +162,10 @@ def opts_ru(cfg, ranger: Ranger, fp_cert):
         f' {"☑" if ansi else "☐"} Использовать ANSI-цвета\n'
         f'\n'
         f'{certs_items}\n'
+        f'## Аккаунт\n'
+        f'{rename_ranger}'
         f'=> {cfg.opts_del_acc_url} ⚠ Удалить рейнджера {ranger_name}\n'
-        f'Будет удалён весь прогресс и все связанные сертификаты'
+        f'Будет удалён весь прогресс и все связанные сертификаты\n'
     )
 
 
@@ -187,7 +200,7 @@ def pass_expires_minutes(pass_expires_ts):
 
 
 def already_used(reg_url: str, reg_url_add_ident: str, player: str, lang):
-    return (
+    return 20, meta(lang), (
         (f'Ranger {player} already registered.\n'
          f'=> {reg_url} Choose different name\n'
          f'=> {reg_url_add_ident}/{player} Yes, it is me\n')
@@ -217,6 +230,7 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass)
         capsule.add(self.cfg.opts_del_cert_url + '*', self.handle_opts_del_cert)
         capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc)
+        capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename)
 
     @err_handler
     @mark_ranger_activity
@@ -280,12 +294,10 @@ class GmUsersHandler:
             return ask_name(lang)
         with db.atomic():
             if Ranger.exists_name(req.query):
-                return (20, meta(lang),
-                        already_used(self.cfg.reg_url, self.cfg.reg_add_url,
-                                     req.query, lang))
+                return already_used(self.cfg.reg_url, self.cfg.reg_add_url,
+                                    req.query, lang)
             ranger.name = req.query
             ranger.is_anon = False
-            ranger.activity = datetime.now()
             ranger.save()
         return 30, self.cfg.opts_url
 
@@ -304,8 +316,7 @@ class GmUsersHandler:
             return ask_name_to_attach(lang)
         username = path[0]
         if not is_valid_name(username):
-            return 20, meta(lang), ('Invalid ranger name' if lang == 'en' else
-                                    'Неподходяще имя для рейнджера')
+            return invalid_name(lang)
         if not req.query:
             return ask_password(lang)
         if Options.is_valid_pass(username, req.query):
@@ -397,3 +408,31 @@ class GmUsersHandler:
             with db.atomic():
                 ranger.delete_instance()
         return 30, f'/{lang}/'
+
+    @err_handler
+    @mark_ranger_activity
+    def handle_opts_rename(self, req: gmcapsule.gemini.Request):
+        if not req.identity:
+            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+
+        if not req.path.endswith('/'):
+            return 30, req.path + '/'
+
+        ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+        if not ranger:
+            return 30, f'/{IpOptions.lang_by_ip(addr=req.remote_address[0])}/'
+        lang = Options.lang_by(fp_cert=req.identity.fp_cert)
+        if not req.query:
+            return ask_name(lang)
+        if not is_valid_name(req.query):
+            return invalid_name(lang)
+        with db.atomic():
+            if Ranger.exists_name(req.query):
+                return 20, meta(lang), (
+                    f'Ranger {req.query} already registered.'
+                    if lang == 'en' else
+                    f'Рейнджер {req.query} уже зарегистрирован.'
+                )
+            ranger.name = req.query
+            ranger.save()
+        return 30, self.cfg.opts_url

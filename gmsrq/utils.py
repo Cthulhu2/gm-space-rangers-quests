@@ -27,6 +27,7 @@ class Config:
     opts_pass_url: str
     opts_del_acc_url: str
     opts_del_cert_url: str
+    opts_rename_url: str
 
 
 def err_handler(func):
