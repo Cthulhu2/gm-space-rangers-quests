@@ -91,8 +91,11 @@ def ask_password(lang: str):
 def opts_en(cfg, ranger: Ranger, fp_cert):
     opts = ranger.get_opts()
     ansi = opts.ansi
-    certs_items = opts_en_certs(cfg, ranger.name, ranger.get_certs(), fp_cert,
+    certs = ranger.get_certs()
+    cert = next(filter(lambda c: c.fp == fp_cert, certs), None)
+    certs_items = opts_en_certs(cfg, ranger.name, certs, fp_cert,
                                 opts.get_pass_expires())
+    ranger_name = ranger.name or cert.subj
     return (
         f'# Options\n'
         f'=> {cfg.cgi_url} Back\n\n'
@@ -100,7 +103,8 @@ def opts_en(cfg, ranger: Ranger, fp_cert):
         f' {"☑" if ansi else "☐"} Use ANSI-colors\n'
         f'\n'
         f'{certs_items}\n'
-        f'=> {cfg.opts_del_acc_url} ✘ Delete account and all its data\n'
+        f'=> {cfg.opts_del_acc_url} ⚠ Delete ranger {ranger_name}\n'
+        f'All quests progress and registered certificates will be deleted'
     )
 
 
@@ -119,7 +123,8 @@ def opts_en_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
     for c in certs:
         title = cert_title(c)
         if fp_cert == c.fp:
-            certs_items += f'{title} (current)\n\n'
+            certs_items += f'{title}\n' \
+                           f'(current)\n\n'
         else:
             certs_items += f'{title}\n' \
                            f'=> {cfg.opts_del_cert_url}{c} ✘ Remove\n\n'
@@ -134,8 +139,11 @@ def cert_title(cert: Cert):
 def opts_ru(cfg, ranger: Ranger, fp_cert):
     opts = ranger.get_opts()
     ansi = opts.ansi
-    certs_items = opts_ru_certs(cfg, ranger.name, ranger.get_certs(), fp_cert,
+    certs = ranger.get_certs()
+    cert = next(filter(lambda c: c.fp == fp_cert, certs), None)
+    certs_items = opts_ru_certs(cfg, ranger.name, certs, fp_cert,
                                 opts.get_pass_expires())
+    ranger_name = ranger.name or cert.subj
     return (
         f'# Опции\n'
         f'=> {cfg.cgi_url} Назад\n\n'
@@ -143,7 +151,8 @@ def opts_ru(cfg, ranger: Ranger, fp_cert):
         f' {"☑" if ansi else "☐"} Использовать ANSI-цвета\n'
         f'\n'
         f'{certs_items}\n'
-        f'=> {cfg.opts_del_acc_url} ✘ Удалить аккаунт и все его данные\n'
+        f'=> {cfg.opts_del_acc_url} ⚠ Удалить рейнджера {ranger_name}\n'
+        f'Будет удалён весь прогресс и все связанные сертификаты'
     )
 
 
@@ -162,7 +171,8 @@ def opts_ru_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
     for c in certs:
         title = cert_title(c)
         if fp_cert == c.fp:
-            certs_items += f'{title} (текущий)\n\n'
+            certs_items += f'{title}\n' \
+                           f'(текущий)\n\n'
         else:
             certs_items += f'{title}\n' \
                            f'=> {cfg.opts_del_cert_url}{c} ✘ Удалить\n\n'
