@@ -269,11 +269,14 @@ class GmUsersHandler:
         with db.atomic():
             ranger = Ranger.by(fp_cert=req.identity.fp_cert)
             if not ranger:
+                lang = IpOptions.lang_by_ip(req.remote_address[0])
                 Ranger.create_anon(req.identity)
                 ranger = Ranger.by(fp_cert=req.identity.fp_cert)
-            lang = IpOptions.lang_by_ip(req.remote_address[0])
-            # re-save selected lang by cert
-            Options.save_lang(req.identity.fp_cert, lang)
+            if lang:
+                # re-save selected lang by cert
+                Options.save_lang(req.identity.fp_cert, lang)
+            else:
+                lang = Options.lang_by(fp_cert=req.identity.fp_cert)
 
         return page_index(ranger, lang, self.cfg,
                           self.cfg.root_dir.joinpath(req.hostname))
