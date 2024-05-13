@@ -126,7 +126,7 @@ QUEST_NAMES = [
     (116, 'en', 'Shashki_eng.qm',          'Plasmo-checkers',               'SR 2.1.2121 eng',                          ),  # noqa
     (117, 'ru', 'Sibolusovt.qmm',          'Ухоногий сиболусовт',           'КР 2 Доминаторы HD Революция Фанатские',   ),  # noqa
     (118, 'en', 'Sibolusovt_eng.qm',       'Sibolusovtus',                  'SR 2.1.2121 eng',                          ),  # noqa
-    (119, 'ru', 'Siege.qm',                'Осада',                         'КР 1',                                     ),  # noqa
+    (119, 'ru', 'Siege.qmm',               'Осада',                         'КР 1',                                     ),  # noqa
     (120, 'ru', 'Ski.qmm',                 'Лыжный курорт',                 'КР 2 Доминаторы',                          ),  # noqa
     (121, 'en', 'Ski_eng.qm',              'Ski Resort',                    'SR 2.1.2121 eng',                          ),  # noqa
     (122, 'ru', 'Sortirovka1.qmm',         'Сортировка',                    'КР 2 Доминаторы Перезагрузка',             ),  # noqa
