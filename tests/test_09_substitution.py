@@ -16,8 +16,7 @@ PLAYER = PlayerSubstitute(Ranger='MyName',
                           Day='Day',
                           Money='Money',
                           CurDate='CurDate',
-                          lang=Lang.ru,
-                          allowBackButton=None)
+                          lang=Lang.ru)
 
 TEST = {
     "": "",

@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 
 class Lang(Enum):
@@ -18,7 +17,6 @@ class Player:
     ToPlanet: str
     ToStar: str
     lang: Lang
-    allowBackButton: Optional[bool]
 
 
 # TODO: move from this file
@@ -27,8 +25,7 @@ DEFAULT_RUS_PLAYER = Player(Ranger='Греф', Player='Греф',
                             ToPlanet='Боннасис', ToStar='Процион',
                             Money='10000',
                             #
-                            lang=Lang.ru,
-                            allowBackButton=False)
+                            lang=Lang.ru)
 
 # TODO: move from this file
 DEFAULT_ENG_PLAYER = Player(Ranger='Ranger', Player='Ranger',
@@ -36,8 +33,7 @@ DEFAULT_ENG_PLAYER = Player(Ranger='Ranger', Player='Ranger',
                             ToPlanet='Bonnasis', ToStar='Procyon',
                             Money='10000',
                             #
-                            lang=Lang.en,
-                            allowBackButton=False)
+                            lang=Lang.en)
 
 
 @dataclass
@@ -54,5 +50,5 @@ class PlayerSubstitute(Player):
         return PlayerSubstitute(
             Ranger=p.Ranger, Player=p.Player, Money=p.Money,
             FromPlanet=p.FromPlanet, FromStar=p.FromStar, ToPlanet=p.ToPlanet,
-            ToStar=p.ToStar, lang=p.lang, allowBackButton=p.allowBackButton,
+            ToStar=p.ToStar, lang=p.lang,
             Date=date, Day=day, CurDate=cur_date)

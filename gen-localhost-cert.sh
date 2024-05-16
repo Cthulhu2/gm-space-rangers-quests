@@ -29,7 +29,7 @@ IP.1 = $IP
 openssl req -x509 -nodes \
   -days 2911970 \
   -newkey rsa:2048 \
-  -keyout ./cert/key.pem \
-  -out ./cert/cert.pem \
+  -keyout ./certs/key.pem \
+  -out ./certs/cert.pem \
   -config san.cnf
 rm san.cnf

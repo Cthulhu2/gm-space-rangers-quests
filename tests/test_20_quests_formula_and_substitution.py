@@ -46,11 +46,7 @@ def check_formula(param_values: ParamValues, str_: str, place: str = ''):
     ]
 
     try:
-        formulaResult = calculate(
-            str_,
-            pseudo_rnd(static_random_generated),
-            param_values,
-        )
+        calculate(str_, pseudo_rnd(static_random_generated), param_values)
     except Exception as err:
         raise Exception(f'String failed \'{str_}\' in {place}') from err
 
@@ -83,7 +79,6 @@ def test_checking_all_quests_for_formulas_and_params_substitution():
             Money='Money',
             CurDate='CurDate',
             lang=Lang.ru,
-            allowBackButton=False
         )
 
         log.info('Loads quest and substitute variables')
