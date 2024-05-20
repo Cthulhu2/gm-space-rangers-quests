@@ -1,6 +1,6 @@
 import logging
+import urllib.parse
 from datetime import datetime
-from os.path import join, islink, isdir
 from urllib.parse import parse_qs
 
 import gmcapsule
@@ -32,19 +32,6 @@ def hello_ranger(ranger: Ranger, lang):
         return f'Ба! Да это же знаменитый рейнджер, {ranger.name}!' \
                f' Вы уже зарегистрированы.\n' \
                f'=> /{lang}/ Назад\n'
-
-
-def is_already_registered(cert_dir):
-    return islink(cert_dir)
-
-
-def is_username_used(users_dir, username):
-    user_dir = join(users_dir, username)
-    return isdir(user_dir)
-
-
-def is_valid_name(name: str):
-    return name and len(name) < 128
 
 
 def ask_cert(lang: str = None):
@@ -88,9 +75,32 @@ def ask_password(lang: str):
                 'Пароль?')
 
 
+def is_valid_name(name: str):
+    return (name and len(name) < 128
+            and '```' not in name
+            and '\r' not in name
+            and '\n' not in name)
+
+
 def invalid_name(lang: str):
-    return 20, meta(lang), ('Invalid ranger name' if lang == 'en' else
-                            'Неподходяще имя для рейнджера')
+    rules = invalid_name_en() if lang == 'en' else invalid_name_ru()
+    return 20, meta(lang), (
+        f'Invalid ranger name. {rules}' if lang == 'en' else
+        f'Неподходяще имя для рейнджера. {rules}')
+
+
+def invalid_name_en():
+    return ('Not allowed:\n'
+            '* >=128 symbols -- database is not rubber;\n'
+            '* \\r, \\n -- what are these rangers with line breaks;\n'
+            '* ``` -- and we don’t need to break the formatting.')
+
+
+def invalid_name_ru():
+    return ('Нельзя использовать:\n'
+            '* >=128 символов -- база данных не резиновая;\n'
+            '* \\r, \\n -- это что за рейнджеры с переносами строк;\n'
+            '* ``` -- и форматирование нам ломать не надо.')
 
 
 def opts_en(cfg, ranger: Ranger, fp_cert):
@@ -291,15 +301,16 @@ class GmUsersHandler:
         if not ranger:
             return 30, self.cfg.cgi_url  #
         lang = ranger.get_opts().lang
+        username = urllib.parse.unquote_plus(req.query or '')
         if not ranger.is_anon:
             return 20, meta(lang), hello_ranger(ranger, lang)
-        elif not is_valid_name(req.query):
+        elif not is_valid_name(username):
             return ask_name(lang)
         with db.atomic():
-            if Ranger.exists_name(req.query):
+            if Ranger.exists_name(username):
                 return already_used(self.cfg.reg_url, self.cfg.reg_add_url,
-                                    req.query, lang)
-            ranger.name = req.query
+                                    username, lang)
+            ranger.name = username
             ranger.is_anon = False
             ranger.save()
         return 30, self.cfg.opts_url
@@ -317,7 +328,7 @@ class GmUsersHandler:
         path = req.path[len(self.cfg.reg_add_url):].split('/')
         if len(path) < 1:
             return ask_name_to_attach(lang)
-        username = path[0]
+        username = urllib.parse.unquote_plus(path[0])
         if not is_valid_name(username):
             return invalid_name(lang)
         if not req.query:
@@ -427,15 +438,16 @@ class GmUsersHandler:
         lang = Options.lang_by(fp_cert=req.identity.fp_cert)
         if not req.query:
             return ask_name(lang)
-        if not is_valid_name(req.query):
+        username = urllib.parse.unquote_plus(req.query)
+        if not is_valid_name(username):
             return invalid_name(lang)
         with db.atomic():
-            if Ranger.exists_name(req.query):
+            if Ranger.exists_name(username):
                 return 20, meta(lang), (
-                    f'Ranger {req.query} already registered.'
+                    f'Ranger {username} already registered.'
                     if lang == 'en' else
-                    f'Рейнджер {req.query} уже зарегистрирован.'
+                    f'Рейнджер {username} уже зарегистрирован.'
                 )
-            ranger.name = req.query
+            ranger.name = username
             ranger.save()
         return 30, self.cfg.opts_url
