@@ -160,7 +160,12 @@ class Options(BaseModel):
         Options.update(lang=lang).where(Options.ranger << ranger).execute()
 
     def get_pass_expires(self) -> Optional[datetime]:
-        return self.passWhen + timedelta(minutes=30) if self.passWhen else None
+        expires = self.passWhen + PASS_EXPIRE if self.passWhen else None
+        if expires and expires < datetime.utcnow():
+            (Options.update(passHash=None, passSalt=None, passWhen=None)
+             .where(Options.ranger == self.ranger)
+             .execute())
+        return expires
 
     @staticmethod
     def is_valid_pass(username, password) -> bool:
