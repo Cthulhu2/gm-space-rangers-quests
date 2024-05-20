@@ -47,7 +47,7 @@ class FormatToken:
 
 
 def find_format_tag(text: str) -> Optional[FormatToken]:
-    begin = re.search(r'<format=?(left|right|center)?,?(\d+)?>', text)
+    begin = re.search(r'<format=?(left|right|center)?,?(\s*\d+)?>', text)
     if not begin:
         return None
 
