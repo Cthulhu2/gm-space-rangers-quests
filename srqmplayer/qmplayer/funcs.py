@@ -988,13 +988,21 @@ class QMPlayer:
     state: GameState
     playerState: PlayerState
 
-    def __init__(self, quest, lang: Lang, ranger: str = None):
+    def __init__(self, quest, lang: Lang, ranger: str = None,
+                 from_star: str = None, from_planet: str = None,
+                 to_star: str = None, to_planet: str = None):
         self.quest = quest
-        self.player = DEFAULT_RUS_PLAYER if lang == Lang.ru \
+        defaults = DEFAULT_RUS_PLAYER if lang == Lang.ru \
             else DEFAULT_ENG_PLAYER
-        if ranger:
-            self.player = dataclasses.replace(self.player,
-                                              Ranger=ranger, Player=ranger)
+
+        self.player = Player(Ranger=ranger or defaults.Ranger,
+                             Player=ranger or defaults.Player,
+                             FromStar=from_star or defaults.FromStar,
+                             FromPlanet=from_planet or defaults.FromPlanet,
+                             ToStar=to_star or defaults.ToStar,
+                             ToPlanet=to_planet or defaults.ToPlanet,
+                             Money=defaults.Money,
+                             lang=defaults.lang)
         self.start()
 
     def start(self):

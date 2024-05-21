@@ -5,7 +5,6 @@ import gmcapsule
 from peewee_migrate import Router
 
 import gmsrq
-from gmsrq.migrations import MIGRATE_DIR
 from gmsrq.sqlstore import db
 
 CGI_URL = '/cgi/'
@@ -32,7 +31,8 @@ def init(capsule: gmcapsule.Context):
         opts_rename_url=f'{CGI_URL}opts/rename/')
 
     db.database = USERS_DIR + '/gmsrq.sqlite'
-    router = Router(db, migrate_dir=MIGRATE_DIR, logger=logging.getLogger())
+    router = Router(db, migrate_dir=gmsrq.MIGRATE_DIR,
+                    logger=logging.getLogger())
     router.run()
     gmsrq.GmQuestsHandler(srq_cfg).init(capsule)
     gmsrq.GmUsersHandler(srq_cfg).init(capsule)

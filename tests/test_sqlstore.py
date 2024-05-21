@@ -7,9 +7,9 @@ import pytest
 from OpenSSL.crypto import load_certificate, FILETYPE_PEM
 from peewee_migrate import Router
 
-from gmsrq.migrations import MIGRATE_DIR
+from gmsrq import MIGRATE_DIR
 from gmsrq.sqlstore import db, Ranger, Cert, IpOptions, Options, Quest, \
-    QuestState, QuestCompleted
+    QuestState, QuestCompleted, Planet, Star
 from srqmplayer.alea import AleaState
 from srqmplayer.formula import ParamValues
 from srqmplayer.qmplayer.funcs import GameState, State, PlayerState, \
@@ -108,6 +108,12 @@ def test_ranger_exists_case_insensitive(temp_db, temp_cert):
 def test_migrations(temp_db):
     router = Router(temp_db, migrate_dir=MIGRATE_DIR)
     assert Quest.select().count() == 138
+    assert Star.select().count() == 144
+    assert Planet.select().count() == 1326
+    router.rollback()  # 005
+    assert Star.select().count() == 0
+    assert Planet.select().count() == 0
+    router.rollback()  # 004
     router.rollback()  # 003
     router.rollback()  # 002
     assert Quest.select().count() == 0

@@ -102,8 +102,7 @@ def write_qmm(quest: QM, data: io.BytesIO):
 
     w.byte(quest.givingRace)
     w.byte(quest.whenDone)
-    # noinspection PyTypeChecker
-    w.byte(quest.planetRace.value)
+    w.byte(quest.planetRace)
     w.byte(quest.playerCareer)
     w.byte(quest.playerRace)
     w.int32(quest.reputationChange)

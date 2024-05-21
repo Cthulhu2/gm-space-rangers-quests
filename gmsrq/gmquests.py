@@ -2,16 +2,18 @@ import logging
 import re
 from dataclasses import dataclass
 from os.path import join
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, List
 from urllib.parse import parse_qs
 
 import gmcapsule
 
 from gmsrq.gmusers import ask_cert
 from gmsrq.page_index import meta
-from gmsrq.sqlstore import Ranger, db, QuestState, Quest, IpOptions
+from gmsrq.sqlstore import (
+    Ranger, db, QuestState, Quest, IpOptions, PlanetRace, Star, Planet
+)
 from gmsrq.utils import Config, err_handler, mark_ranger_activity
-from srqmplayer.qmmodels import QM
+from srqmplayer.qmmodels import QM, Race
 from srqmplayer.qmplayer.funcs import (
     PlayerState, GameStateEnum, QMPlayer, TEXTS_RUS, TEXTS_ENG, GameState
 )
@@ -189,6 +191,48 @@ def parse_query(query: str):
             int(params[CHOICE_ID][0]) if CHOICE_ID in params else None)
 
 
+def choice_planets(lang: str, qm: QM) -> Tuple[str, str, str, str]:
+    giving_race: List[str] = []
+    if qm.givingRace & Race.Fei:
+        giving_race.append(str(PlanetRace.Fey.value))
+    if qm.givingRace & Race.Gaal:
+        giving_race.append(str(PlanetRace.Gaal.value))
+    if qm.givingRace & Race.Maloc:
+        giving_race.append(str(PlanetRace.Maloc.value))
+    if qm.givingRace & Race.Peleng:
+        giving_race.append(str(PlanetRace.Peleng.value))
+    if qm.givingRace & Race.People:
+        giving_race.append(str(PlanetRace.People.value))
+    #
+    planet_race: List[str] = []
+    if qm.planetRace & Race.Fei:
+        planet_race.append(str(PlanetRace.Fey.value))
+    if qm.planetRace & Race.Gaal:
+        planet_race.append(str(PlanetRace.Gaal.value))
+    if qm.planetRace & Race.Maloc:
+        planet_race.append(str(PlanetRace.Maloc.value))
+    if qm.planetRace & Race.Peleng:
+        planet_race.append(str(PlanetRace.Peleng.value))
+    if qm.planetRace & Race.People:
+        planet_race.append(str(PlanetRace.People.value))
+    if qm.planetRace & 64:  # Незаселенная
+        planet_race.append(str(PlanetRace.No.value))
+
+    from_star = Star.choice_by(lang=lang,
+                               sol=bool(qm.givingRace & Race.People))
+    from_planet = Planet.choice_by(lang=lang, race=giving_race,
+                                   sol=from_star.id == 2)
+    #
+    to_star = Star.choice_by(lang=lang,
+                             sol=bool(qm.planetRace & Race.People),
+                             but=from_star.id)
+    to_planet = Planet.choice_by(lang=lang, race=planet_race,
+                                 sol=to_star.id == 2,
+                                 but=from_planet.id)
+
+    return from_star.name, from_planet.name, to_star.name, to_planet.name
+
+
 class GmQuestsHandler:
     cfg: Config
 
@@ -231,13 +275,29 @@ class GmQuestsHandler:
                 qm = parse(f)
             QUEST_CACHE[quest.id] = qm
         lang = Lang.en if quest.lang == 'en' else Lang.ru
-
-        qmplayer = QMPlayer(qm, lang, ranger=player)
-        if state := QuestState.by(fp_cert=fp_cert, qid=quest.id):
+        state = QuestState.by(fp_cert=fp_cert, qid=quest.id)
+        if state and state.sId == 0 and cid is None and sid is None:
+            state.delete_instance()
+            state = None
+        if state:
+            qmplayer = QMPlayer(
+                qm, lang, ranger=player,
+                from_star=state.fromStar, from_planet=state.fromPlanet,
+                to_star=state.toStar, to_planet=state.toPlanet)
             qmplayer.load_saving(GameState.from_json(state.state))
             prev_sid = state.sId
         else:
+            (from_star, from_planet, to_star, to_planet) = \
+                choice_planets(quest.lang, qm)
+
+            qmplayer = QMPlayer(
+                qm, lang, ranger=player,
+                from_star=from_star, from_planet=from_planet,
+                to_star=to_star, to_planet=to_planet)
             prev_sid = 0
+            QuestState.save_state(fp_cert, quest.id, prev_sid, qmplayer.state,
+                                  from_star=from_star, from_planet=from_planet,
+                                  to_star=to_star, to_planet=to_planet)
 
         if prev_sid != sid or not qmplayer.is_available_jump(cid):
             player_state = qmplayer.get_state()

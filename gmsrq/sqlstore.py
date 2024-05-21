@@ -3,6 +3,7 @@ import hmac
 import logging
 import os
 from datetime import datetime, timedelta
+from enum import Enum
 from typing import Optional, List, Iterator
 
 import gmcapsule
@@ -10,7 +11,7 @@ from OpenSSL.crypto import X509, load_certificate, FILETYPE_ASN1
 from peewee import (
     CharField, BooleanField, ForeignKeyField, Model, IntegerField,
     BlobField, TextField, SqliteDatabase, CompositeKey,
-    DateTimeField
+    DateTimeField, fn
 )
 
 from srqmplayer.qmplayer.funcs import GameState, PlayerState, GameStateEnum
@@ -200,6 +201,10 @@ class QuestState(BaseModel):
     quest = ForeignKeyField(Quest, column_name='qId')
     state = TextField(null=False)
     sId = IntegerField(null=False)
+    fromStar = TextField(null=True)
+    fromPlanet = TextField(null=True)
+    toStar = TextField(null=True)
+    toPlanet = TextField(null=True)
 
     class Meta:
         primary_key = CompositeKey('ranger', 'quest')
@@ -218,11 +223,13 @@ class QuestState(BaseModel):
     def in_progress(*, rid) -> List[int]:
         return list(QuestState.select(QuestState.quest.id)
                     .join(Quest)
-                    .where(QuestState.ranger == rid)
+                    .where((QuestState.ranger == rid) & (QuestState.sId != 0))
                     .scalars())
 
     @staticmethod
-    def save_state(fp_cert, qid, sid, state: GameState):
+    def save_state(fp_cert, qid, sid, state: GameState,
+                   from_star: str = None, from_planet: str = None,
+                   to_star: str = None, to_planet: str = None):
         if q_state := QuestState.by(fp_cert=fp_cert, qid=qid):
             q_state.state = state.to_json()
             q_state.sId = sid
@@ -230,7 +237,9 @@ class QuestState(BaseModel):
         else:
             ranger = Ranger.by(fp_cert=fp_cert)
             QuestState.create(ranger=ranger, quest=qid, sId=sid,
-                              state=state.to_json())
+                              state=state.to_json(),
+                              fromStar=from_star, fromPlanet=from_planet,
+                              toStar=to_star, toPlanet=to_planet)
         return sid, state
 
     @staticmethod
@@ -292,3 +301,69 @@ class IpOptions(BaseModel):
             opts.save()
         else:
             IpOptions.create(addr=addr, lang=lang)
+
+
+class Star(BaseModel):
+    id = IntegerField(null=False)
+    lang = CharField(max_length=5, null=False)
+    name = CharField(max_length=50, null=False)
+    size = CharField(max_length=50, null=True)
+
+    class Meta:
+        primary_key = CompositeKey('id', 'lang')
+        indexes = ((('id', 'lang'), False),
+                   (('lang',), False),
+                   (('name',), False),)
+
+    @staticmethod
+    def choice_by(*, lang, sol: bool = True, but: int = None) -> 'Star':
+        query = Star.select().where(Star.lang == lang)
+        if not sol:
+            query = query.where(Star.id != 2)
+        if but is not None:
+            query = query.where(Star.id != but)
+        return query.order_by(fn.Random()).first()
+
+
+class PlanetRace(Enum):
+    Maloc = 'Maloc'
+    Peleng = 'Peleng'
+    People = 'People'
+    Fey = 'Fey'
+    Gaal = 'Gaal'
+    No = 'No'
+    PirateClan = 'PirateClan'
+    Solar = 'Solar'
+
+
+class Planet(BaseModel):
+    id = IntegerField(null=False)
+    lang = CharField(max_length=5, null=False)
+    race = CharField(max_length=10, null=False)
+    name = CharField(max_length=50, null=False)
+
+    class Meta:
+        primary_key = CompositeKey('id', 'lang', 'race')
+        indexes = ((('id', 'lang', 'race'), False),
+                   (('lang', 'race'), False),
+                   (('name',), False),)
+
+    @staticmethod
+    def choice_by(*, lang,
+                  race: List[str] = None,
+                  sol: bool = True,
+                  but: int = None) -> 'Planet':
+        query = Planet.select().where(Planet.lang == lang)
+        if sol:
+            query = query.where(Planet.race == PlanetRace.Solar.value)
+            if PlanetRace.No.value in race:
+                # 0 Mercury, 4 Jupiter, 5 Saturn, 6 Neptune, 7 Uranus, 8 Pluto
+                query = query.where(Planet.id << [0, 4, 5, 6, 7, 8])
+            else:
+                # 1 Venus, 2 Earth, 3 Mars
+                query = query.where(Planet.id << [1, 2, 3])
+        elif race:
+            query = query.where(Planet.race << race)
+        if but is not None:
+            query = query.where(Planet.id != but)
+        return query.order_by(fn.Random()).first()

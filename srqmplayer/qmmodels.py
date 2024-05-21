@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from enum import IntEnum, Flag
+from enum import IntEnum, IntFlag
 from typing import Optional, List, Union
 
 HEADER_QM_2 = 0x423a35d2  # 24 parameters
@@ -13,17 +13,16 @@ HEADERS_QMM = [HEADER_QMM_6, HEADER_QMM_7, HEADER_QMM_7_WITH_OLD_TGE_BEHAVIOUR]
 LOCATION_TEXTS = 10
 
 
-# noinspection NonAsciiCharacters
-class PlayerRace(IntEnum):
-    Малоки = 1
-    Пеленги = 2
-    Люди = 4
-    Феяне = 8
-    Гаальцы = 16
+class Race(IntFlag):
+    Maloc = 1
+    Peleng = 2
+    People = 4
+    Fei = 8
+    Gaal = 16
 
 
 # noinspection NonAsciiCharacters
-class PlanetRace(Flag):
+class PlanetRace(IntFlag):
     Малоки = 1
     Пеленги = 2
     Люди = 4
@@ -46,11 +45,11 @@ class PlayerCareer(IntEnum):
 
 @dataclass
 class QMBase:
-    givingRace: int
+    givingRace: Race
     whenDone: WhenDone
     planetRace: PlanetRace
     playerCareer: int
-    playerRace: int
+    playerRace: Race
     defaultJumpCountLimit: any
     hardness: any
     paramsCount: any

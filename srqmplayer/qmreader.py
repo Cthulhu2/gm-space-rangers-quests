@@ -10,7 +10,7 @@ from srqmplayer.qmmodels import (
     ParamType, ParamCritType, QMParamShowInfoPart, Media, QMParam, QMBase3,
     QMBase2String, QMBase2,
     ParameterShowingType, ParameterChange, ParameterChangeType, LocationType,
-    JumpParameterCondition, Jump, Location, QM
+    JumpParameterCondition, Jump, Location, QM, Race
 )
 
 # This is a workaround to tell player to keep old TGE behavior if quest is
@@ -92,11 +92,11 @@ def parse_base(r: Reader, header: int) -> Optional[QMBase]:
         minor_ver = r.int32() if header in HEADERS_QMM_7 else None
         change_log = r.read_string(True) if header in HEADERS_QMM_7 else None
 
-        giving_race = r.byte()
+        giving_race = Race(r.byte())
         when_done = WhenDone(r.byte())
         planet_race = PlanetRace(r.byte())
         player_career = r.byte()
-        player_race = r.byte()
+        player_race = Race(r.byte())
         reputation_change = r.int32()
 
         screen_size_x = r.int32()  # In pixels
@@ -123,14 +123,14 @@ def parse_base(r: Reader, header: int) -> Optional[QMBase]:
         raise Exception(f'Unknown header ${header}')
 
     r.dword_flag()
-    giving_race = r.byte()
+    giving_race = Race(r.byte())
     when_done = WhenDone(r.byte())
     r.dword_flag()
     planet_race = PlanetRace(r.byte())
     r.dword_flag()
     player_career = r.byte()
     r.dword_flag()
-    player_race = r.byte()
+    player_race = Race(r.byte())
     reputation_change = r.int32()
 
     screen_size_x = r.int32()
