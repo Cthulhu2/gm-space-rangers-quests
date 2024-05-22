@@ -1,3 +1,4 @@
+import dataclasses
 import logging
 import re
 from dataclasses import dataclass
@@ -14,10 +15,11 @@ from gmsrq.sqlstore import (
 )
 from gmsrq.utils import Config, err_handler, mark_ranger_activity
 from srqmplayer.qmmodels import QM, Race
+from srqmplayer.qmplayer import DEFAULT_PLAYERS
 from srqmplayer.qmplayer.funcs import (
-    PlayerState, GameStateEnum, QMPlayer, TEXTS_RUS, TEXTS_ENG, GameState
+    PlayerState, GameStateEnum, QMPlayer, GameState
 )
-from srqmplayer.qmplayer.player import Lang
+from srqmplayer.qmplayer.player import Player
 from srqmplayer.qmreader import parse
 
 log = logging.getLogger()
@@ -26,6 +28,14 @@ QUEST_ID = 'qid'
 STEP_ID = 'sid'
 CHOICE_ID = 'cid'
 QUEST_CACHE: Dict[int, Optional[QM]] = {}
+SOL_ID = 2
+RACE_FLAG_TO_STR: Dict[int, str] = {
+    Race.Fei: str(PlanetRace.Fey.value),
+    Race.Gaal: str(PlanetRace.Gaal.value),
+    Race.Maloc: str(PlanetRace.Maloc.value),
+    Race.Peleng: str(PlanetRace.Peleng.value),
+    Race.People: str(PlanetRace.People.value),
+}
 
 
 def cut_colors(text):
@@ -130,9 +140,8 @@ def style(text: str, ansi: bool = True):
 
 
 def render_page(cfg: Config, quest: Quest, sid: int,
-                state: PlayerState, lang: Lang,
+                texts: Dict[str, str], state: PlayerState, lang: str,
                 ansi: bool = False) -> str:
-    texts = TEXTS_RUS if lang == Lang.ru else TEXTS_ENG
     img = ''
     if state.imageName:
         img = state.imageName.lower()
@@ -174,11 +183,11 @@ def render_page(cfg: Config, quest: Quest, sid: int,
         state.choices)))
 
     if not choices and state.gameState == GameStateEnum.fail:
-        choices += f'=> /{lang.value}/ {texts["goBackToShip"]} (fail)'
+        choices += f'=> /{lang}/ {texts["goBackToShip"]} (fail)'
     if not choices and state.gameState == GameStateEnum.win:
-        choices += f'=> /{lang.value}/ {texts["goBackToShip"]} (win)'
+        choices += f'=> /{lang}/ {texts["goBackToShip"]} (win)'
     if not choices and state.gameState == GameStateEnum.dead:
-        choices += f'=> /{lang.value}/ {texts["death"]} (death)'
+        choices += f'=> /{lang}/ {texts["death"]} (death)'
 
     return f'# {quest.name}\n' \
            f'{img}{track}{snd}{text}\n{inventory}{choices}'
@@ -193,41 +202,27 @@ def parse_query(query: str):
 
 def choice_planets(lang: str, qm: QM) -> Tuple[str, str, str, str]:
     giving_race: List[str] = []
-    if qm.givingRace & Race.Fei:
-        giving_race.append(str(PlanetRace.Fey.value))
-    if qm.givingRace & Race.Gaal:
-        giving_race.append(str(PlanetRace.Gaal.value))
-    if qm.givingRace & Race.Maloc:
-        giving_race.append(str(PlanetRace.Maloc.value))
-    if qm.givingRace & Race.Peleng:
-        giving_race.append(str(PlanetRace.Peleng.value))
-    if qm.givingRace & Race.People:
-        giving_race.append(str(PlanetRace.People.value))
+    for flag, val in RACE_FLAG_TO_STR.items():
+        if qm.givingRace & flag:
+            giving_race.append(val)
     #
     planet_race: List[str] = []
-    if qm.planetRace & Race.Fei:
-        planet_race.append(str(PlanetRace.Fey.value))
-    if qm.planetRace & Race.Gaal:
-        planet_race.append(str(PlanetRace.Gaal.value))
-    if qm.planetRace & Race.Maloc:
-        planet_race.append(str(PlanetRace.Maloc.value))
-    if qm.planetRace & Race.Peleng:
-        planet_race.append(str(PlanetRace.Peleng.value))
-    if qm.planetRace & Race.People:
-        planet_race.append(str(PlanetRace.People.value))
+    for flag, val in RACE_FLAG_TO_STR.items():
+        if qm.planetRace & flag:
+            planet_race.append(val)
     if qm.planetRace & 64:  # Незаселенная
         planet_race.append(str(PlanetRace.No.value))
 
     from_star = Star.choice_by(lang=lang,
-                               sol=bool(qm.givingRace & Race.People))
+                               include_sol=bool(qm.givingRace & Race.People))
     from_planet = Planet.choice_by(lang=lang, race=giving_race,
-                                   sol=from_star.id == 2)
+                                   in_sol=from_star.id == SOL_ID)
     #
     to_star = Star.choice_by(lang=lang,
-                             sol=bool(qm.planetRace & Race.People),
+                             include_sol=bool(qm.planetRace & Race.People),
                              but=from_star.id)
     to_planet = Planet.choice_by(lang=lang, race=planet_race,
-                                 sol=to_star.id == 2,
+                                 in_sol=to_star.id == SOL_ID,
                                  but=from_planet.id)
 
     return from_star.name, from_planet.name, to_star.name, to_planet.name
@@ -257,56 +252,56 @@ class GmQuestsHandler:
             ident: gmcapsule.Identity = req.identity
             Ranger.create_anon(ident)
         ranger = Ranger.by(fp_cert=ident.fp_cert)
-        player = ranger.name or ident.subject()['CN'] or 'Ranger'
+        name = ranger.name or ident.subject()['CN'] or 'Ranger'
 
-        sid, state, lang = self.process_quest_step(
-            player, ident.fp_cert, quest, sid, cid, ranger.id)
+        sid, player, state, lang = self.process_quest_step(
+            name, ident.fp_cert, quest, sid, cid, ranger.id)
 
-        return (20, meta(quest.lang),
-                render_page(self.cfg, quest, sid, state, lang,
-                            ranger.get_opts().ansi))
+        return (20, meta(quest.lang), render_page(
+            self.cfg, quest, sid, player.texts, state, lang,
+            ranger.get_opts().ansi))
 
-    def process_quest_step(self, player: str, fp_cert: str,
+    def process_quest_step(self, name: str, fp_cert: str,
                            quest: Quest, sid: int, cid: int,
-                           rid: int) -> Tuple[int, PlayerState, Lang]:
+                           rid: int) -> Tuple[int, Player, PlayerState, str]:
         qm = QUEST_CACHE[quest.id] if quest.id in QUEST_CACHE else None
         if not qm:
             with open(join(self.cfg.quests_dir, quest.file), 'rb') as f:
                 qm = parse(f)
             QUEST_CACHE[quest.id] = qm
-        lang = Lang.en if quest.lang == 'en' else Lang.ru
+        lang = quest.lang
+        player = dataclasses.replace(DEFAULT_PLAYERS[lang],
+                                     Ranger=name, Player=name)
         state = QuestState.by(fp_cert=fp_cert, qid=quest.id)
         if state and state.sId == 0 and cid is None and sid is None:
             state.delete_instance()
             state = None
         if state:
-            qmplayer = QMPlayer(
-                qm, lang, ranger=player,
-                from_star=state.fromStar, from_planet=state.fromPlanet,
-                to_star=state.toStar, to_planet=state.toPlanet)
+            player.set_planets(state.fromStar, state.fromPlanet,
+                               state.toStar, state.toPlanet)
+            #
+            qmplayer = QMPlayer(qm, player)
             qmplayer.load_saving(GameState.from_json(state.state))
             prev_sid = state.sId
         else:
             (from_star, from_planet, to_star, to_planet) = \
-                choice_planets(quest.lang, qm)
-
-            qmplayer = QMPlayer(
-                qm, lang, ranger=player,
-                from_star=from_star, from_planet=from_planet,
-                to_star=to_star, to_planet=to_planet)
+                choice_planets(lang, qm)
+            player.set_planets(from_star, from_planet, to_star, to_planet)
+            #
+            qmplayer = QMPlayer(qm, player)
             prev_sid = 0
             QuestState.save_state(fp_cert, quest.id, prev_sid, qmplayer.state,
-                                  from_star=from_star, from_planet=from_planet,
-                                  to_star=to_star, to_planet=to_planet)
+                                  player)
 
         if prev_sid != sid or not qmplayer.is_available_jump(cid):
             player_state = qmplayer.get_state()
-            return prev_sid, player_state, lang
+            return prev_sid, player, player_state, lang
 
         qmplayer.perform_jump(cid)
         next_sid = prev_sid + 1
-        QuestState.save_state(fp_cert, quest.id, next_sid, qmplayer.state)
+        QuestState.save_state(fp_cert, quest.id, next_sid, qmplayer.state,
+                              player)
 
         player_state = qmplayer.get_state()
         QuestState.del_state_at_the_end(player_state, fp_cert, quest.id, rid)
-        return next_sid, player_state, lang
+        return next_sid, player, player_state, lang

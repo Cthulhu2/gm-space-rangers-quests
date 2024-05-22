@@ -1,19 +1,18 @@
-import os
-from os.path import dirname, realpath
-from pathlib import Path
-
 import gmcapsule
 import pytest
 from OpenSSL.crypto import load_certificate, FILETYPE_PEM
 from peewee_migrate import Router
 
 from gmsrq import MIGRATE_DIR
-from gmsrq.sqlstore import db, Ranger, Cert, IpOptions, Options, Quest, \
-    QuestState, QuestCompleted, Planet, Star
+from gmsrq.sqlstore import Ranger, Cert, IpOptions, Options, Quest, \
+    QuestState, QuestCompleted, Planet, Star, SOL_INHABITED, SOL_UNINHABITED
 from srqmplayer.alea import AleaState
 from srqmplayer.formula import ParamValues
+from srqmplayer.qmplayer import DEFAULT_PLAYERS
 from srqmplayer.qmplayer.funcs import GameState, State, PlayerState, \
     GameStateEnum
+# noinspection PyUnresolvedReferences
+from . import temp_db
 
 GAME_STATE = GameState(
     state=State.starting, critParamId=-1, locationId=-2,
@@ -24,21 +23,6 @@ GAME_STATE = GameState(
 
 # noinspection SpellCheckingInspection
 FP_CERT = '54eeaeb3288d6a24676ccfbe60a175d8c161872f5f399eb683a83745e01d4448'
-TEMP = f'{dirname(realpath(__file__))}/../.tmp'
-
-
-@pytest.fixture
-def temp_db():
-    temp = Path(TEMP)
-    temp.mkdir(exist_ok=True)
-    [os.remove(x) for x in temp.glob('test.sqlite*')]
-    db.init(database=f'{TEMP}/test.sqlite')
-    router = Router(db, migrate_dir=MIGRATE_DIR)
-    router.run()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 @pytest.fixture
@@ -130,7 +114,8 @@ def test_cert_foreign_key_cascade(temp_db, temp_cert):
         Ranger.create_anon(ident)
         ranger = Ranger.by(fp_cert=FP_CERT)
         Options.save_lang(FP_CERT, 'ru')
-        QuestState.save_state(FP_CERT, 138, 99, GAME_STATE)
+        QuestState.save_state(FP_CERT, 138, 99, GAME_STATE,
+                              DEFAULT_PLAYERS['ru'])
 
     assert QuestState.select().count() == 1
     assert Options.select().count() == 1
@@ -147,7 +132,8 @@ def test_quest_state(temp_db, temp_cert):
         Ranger.create_anon(ident)
         rid = Ranger.by(fp_cert=FP_CERT).id
 
-    sid, st = QuestState.save_state(FP_CERT, 138, 99, GAME_STATE)
+    sid, st = QuestState.save_state(FP_CERT, 138, 99, GAME_STATE,
+                                    DEFAULT_PLAYERS['ru'])
     assert sid == 99
     assert st == GAME_STATE
     assert QuestState.by(fp_cert=FP_CERT, qid=137) is None
@@ -171,7 +157,8 @@ def test_quest_completed(temp_db, temp_cert):
         ident = gmcapsule.Identity(temp_cert)
         Ranger.create_anon(ident)
         rid = Ranger.by(fp_cert=FP_CERT).id
-        QuestState.save_state(FP_CERT, 138, 99, GAME_STATE)
+        QuestState.save_state(FP_CERT, 138, 99, GAME_STATE,
+                              DEFAULT_PLAYERS['ru'])
         QuestCompleted.save_by(rid=rid, qid=137)
         #
     in_progress = QuestState.in_progress(rid=rid)
@@ -179,3 +166,15 @@ def test_quest_completed(temp_db, temp_cert):
     assert QuestCompleted.by(rid=rid, qid=138) == []
     assert QuestCompleted.by(rid=rid) == [137]
     assert QuestCompleted.by(rid=rid, qid=137) == [137]
+
+
+def test_planet_sol(temp_db):
+    for _ in range(100):
+        planet = Planet.choice_by(lang='en', race=['No'], in_sol=True)
+        assert planet.id not in SOL_INHABITED
+        assert planet.id in SOL_UNINHABITED
+
+    for _ in range(100):
+        planet = Planet.choice_by(lang='en', race=['Ignored'], in_sol=True)
+        assert planet.id in SOL_INHABITED
+        assert planet.id not in SOL_UNINHABITED

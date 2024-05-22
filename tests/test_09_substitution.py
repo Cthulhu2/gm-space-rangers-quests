@@ -2,21 +2,17 @@ import logging
 
 from srqmplayer.formula import ParamValues
 from srqmplayer.qmmodels import QMParamShowInfo, QMParamShowInfoPart
-from srqmplayer.qmplayer.player import Lang, PlayerSubstitute
+from srqmplayer.qmplayer import MONTHS_RU, TEXTS_RU
+from srqmplayer.qmplayer.player import PlayerSubstitute
 from srqmplayer.substitution import substitute
 from tests import pseudo_rnd
 
-PLAYER = PlayerSubstitute(Ranger='MyName',
-                          Player='Player',
-                          FromPlanet='FromPlanet',
-                          FromStar='FromStar',
-                          ToPlanet='ToPlanet',
-                          ToStar='<ToStar>',
-                          Date='Date',
-                          Day='Day',
+PLAYER = PlayerSubstitute(Ranger='MyName', Player='Player',
+                          FromPlanet='FromPlanet', FromStar='FromStar',
+                          ToPlanet='ToPlanet', ToStar='<ToStar>',
+                          Date='Date', Day='Day', CurDate='CurDate',
                           Money='Money',
-                          CurDate='CurDate',
-                          lang=Lang.ru)
+                          months=MONTHS_RU, texts=TEXTS_RU)
 
 TEST = {
     "": "",

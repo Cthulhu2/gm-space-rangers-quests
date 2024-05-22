@@ -1,17 +1,38 @@
 import logging
 import math
+import os
 from os.path import dirname, realpath, join
+from pathlib import Path
 from random import random
 from typing import List, Optional, Union
 
+import pytest
+from peewee_migrate import Router
+
+from gmsrq import MIGRATE_DIR
+from gmsrq.sqlstore import db
 from srqmplayer.qmmodels import QM
-from srqmplayer.qmplayer import JUMP_I_AGREE
+from srqmplayer.qmplayer import JUMP_I_AGREE, DEFAULT_PLAYERS
 from srqmplayer.qmplayer.funcs import QMPlayer
-from srqmplayer.qmplayer.player import Lang
 from srqmplayer.qmreader import parse
 
 log = logging.getLogger()
 TEST_RESOURCE_DIR = f'{dirname(realpath(__file__))}/resources'
+TEMP = f'{dirname(realpath(__file__))}/../.tmp'
+
+
+@pytest.fixture
+def temp_db():
+    temp = Path(TEMP)
+    temp.mkdir(exist_ok=True)
+    [os.remove(x) for x in temp.glob('test.sqlite*')]
+    db.init(database=f'{TEMP}/test.sqlite')
+    router = Router(db, migrate_dir=MIGRATE_DIR)
+    router.run()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 def jump_to(player: QMPlayer, text: str = ''):
@@ -29,7 +50,7 @@ def create_player(quest_filename: str) -> QMPlayer:
     log.info('Reads and parses quest')
     with open(join(TEST_RESOURCE_DIR, quest_filename), 'rb') as f:
         qm: QM = parse(f)
-    player = QMPlayer(qm, Lang.ru)
+    player = QMPlayer(qm, DEFAULT_PLAYERS['ru'])
     player.start()
     return player
 

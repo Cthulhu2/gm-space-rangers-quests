@@ -1,10 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum
-
-
-class Lang(Enum):
-    ru = 'ru'
-    en = 'en'
+from typing import List, Dict
 
 
 @dataclass
@@ -16,24 +11,17 @@ class Player:
     FromStar: str
     ToPlanet: str
     ToStar: str
-    lang: Lang
+    #
+    months: List[str]
+    texts: Dict[str, str]
 
-
-# TODO: move from this file
-DEFAULT_RUS_PLAYER = Player(Ranger='Греф', Player='Греф',
-                            FromPlanet='Земля', FromStar='Солнце',
-                            ToPlanet='Боннасис', ToStar='Процион',
-                            Money='10000',
-                            #
-                            lang=Lang.ru)
-
-# TODO: move from this file
-DEFAULT_ENG_PLAYER = Player(Ranger='Ranger', Player='Ranger',
-                            FromPlanet='Earth', FromStar='Sun',
-                            ToPlanet='Bonnasis', ToStar='Procyon',
-                            Money='10000',
-                            #
-                            lang=Lang.en)
+    def set_planets(self,
+                    from_star: str = None, from_planet: str = None,
+                    to_star: str = None, to_planet: str = None):
+        self.FromStar = from_star or self.FromStar
+        self.FromPlanet = from_planet or self.FromPlanet
+        self.ToStar = to_star or self.ToStar
+        self.ToPlanet = to_planet or self.ToPlanet
 
 
 @dataclass
@@ -50,5 +38,5 @@ class PlayerSubstitute(Player):
         return PlayerSubstitute(
             Ranger=p.Ranger, Player=p.Player, Money=p.Money,
             FromPlanet=p.FromPlanet, FromStar=p.FromStar, ToPlanet=p.ToPlanet,
-            ToStar=p.ToStar, lang=p.lang,
+            ToStar=p.ToStar, months=p.months, texts=p.texts,
             Date=date, Day=day, CurDate=cur_date)

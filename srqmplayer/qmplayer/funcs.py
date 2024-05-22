@@ -21,28 +21,8 @@ from srqmplayer.qmplayer import (
     DEFAULT_DAYS_TO_PASS_QUEST, JUMP_I_AGREE, JUMP_NEXT, JUMP_GO_BACK_TO_SHIP,
     int2base
 )
-from srqmplayer.qmplayer.player import (
-    Lang, Player, DEFAULT_RUS_PLAYER, DEFAULT_ENG_PLAYER, PlayerSubstitute
-)
+from srqmplayer.qmplayer.player import Player, PlayerSubstitute
 from srqmplayer.substitution import substitute
-
-TEXTS_ENG = {'iAgree': 'I agree',
-             'next': 'Next',
-             'goBackToShip': 'Go back to ship',
-             'death': 'The great ranger\'s life was numbered',
-             'image': 'Image',
-             'track': 'Track',
-             'inv': 'Inventory',
-             'sound': 'Sound'}
-
-TEXTS_RUS = {'iAgree': 'Я берусь за это задание',
-             'next': 'Далее',
-             'goBackToShip': 'Вернуться на корабль',
-             'death': 'Жизнь великого рейнджера была сочтена',
-             'image': 'Изображение',
-             'track': 'Дорожка',
-             'inv': 'Инвентарь',
-             'sound': 'Звук'}
 
 log = logging.getLogger()
 
@@ -190,21 +170,13 @@ TRACK_NAME_RESET_DEFAULT_MUSIC = 'Quest'
 
 
 def sr_date_to_str(days_to_add: int,
-                   lang: Lang,
+                   months: List[str],
                    initial_date: datetime = None):  # TODO: use it
 
     if not initial_date:
         initial_date = datetime.now()
 
     d = initial_date + timedelta(days=days_to_add)
-    if lang == Lang.en:
-        months = ['January', 'February', 'March', 'April', 'May', 'June',
-                  'July', 'August', 'September', 'October', 'November',
-                  'December']
-    else:
-        months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
-                  'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября',
-                  'Декабря']
     return f'{d.day} {months[d.month]} {d.year + 1000}'
 
 
@@ -221,8 +193,8 @@ def replace(
         player=PlayerSubstitute.of(
             player,
             day=f'{DEFAULT_DAYS_TO_PASS_QUEST - state.daysPassed}',
-            date=sr_date_to_str(DEFAULT_DAYS_TO_PASS_QUEST, player.lang),
-            cur_date=sr_date_to_str(state.daysPassed, player.lang)),
+            date=sr_date_to_str(DEFAULT_DAYS_TO_PASS_QUEST, player.months),
+            cur_date=sr_date_to_str(state.daysPassed, player.months)),
         param_values=ParamValues(state.paramValues),
         param_show_infos=quest.params,
         rnd=rnd,
@@ -286,7 +258,7 @@ def get_ui_state(quest: Quest, state: GameState, player: Player,
     alea = Alea(AleaState(state.aleaState))
     rnd = alea.rnd
 
-    texts = TEXTS_RUS if player.lang == Lang.ru else TEXTS_ENG
+    texts = player.texts
 
     if state.state == State.starting:
         return PlayerState(
@@ -988,21 +960,9 @@ class QMPlayer:
     state: GameState
     playerState: PlayerState
 
-    def __init__(self, quest, lang: Lang, ranger: str = None,
-                 from_star: str = None, from_planet: str = None,
-                 to_star: str = None, to_planet: str = None):
+    def __init__(self, quest, player: Player):
         self.quest = quest
-        defaults = DEFAULT_RUS_PLAYER if lang == Lang.ru \
-            else DEFAULT_ENG_PLAYER
-
-        self.player = Player(Ranger=ranger or defaults.Ranger,
-                             Player=ranger or defaults.Player,
-                             FromStar=from_star or defaults.FromStar,
-                             FromPlanet=from_planet or defaults.FromPlanet,
-                             ToStar=to_star or defaults.ToStar,
-                             ToPlanet=to_planet or defaults.ToPlanet,
-                             Money=defaults.Money,
-                             lang=defaults.lang)
+        self.player = player
         self.start()
 
     def start(self):

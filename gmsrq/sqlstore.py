@@ -14,6 +14,7 @@ from peewee import (
     DateTimeField, fn
 )
 
+from srqmplayer.qmplayer import Player
 from srqmplayer.qmplayer.funcs import GameState, PlayerState, GameStateEnum
 
 db = SqliteDatabase(
@@ -26,6 +27,11 @@ db = SqliteDatabase(
 
 log = logging.getLogger()
 PASS_EXPIRE = timedelta(minutes=30)
+
+# 1 Venus, 2 Earth, 3 Mars
+SOL_INHABITED = [1, 2, 3]
+# 0 Mercury, 4 Jupiter, 5 Saturn, 6 Neptune, 7 Uranus, 8 Pluto
+SOL_UNINHABITED = [0, 4, 5, 6, 7, 8]
 
 
 class BaseModel(Model):
@@ -227,9 +233,7 @@ class QuestState(BaseModel):
                     .scalars())
 
     @staticmethod
-    def save_state(fp_cert, qid, sid, state: GameState,
-                   from_star: str = None, from_planet: str = None,
-                   to_star: str = None, to_planet: str = None):
+    def save_state(fp_cert, qid, sid, state: GameState, p: Player):
         if q_state := QuestState.by(fp_cert=fp_cert, qid=qid):
             q_state.state = state.to_json()
             q_state.sId = sid
@@ -238,8 +242,8 @@ class QuestState(BaseModel):
             ranger = Ranger.by(fp_cert=fp_cert)
             QuestState.create(ranger=ranger, quest=qid, sId=sid,
                               state=state.to_json(),
-                              fromStar=from_star, fromPlanet=from_planet,
-                              toStar=to_star, toPlanet=to_planet)
+                              fromStar=p.FromStar, fromPlanet=p.FromPlanet,
+                              toStar=p.ToStar, toPlanet=p.ToPlanet)
         return sid, state
 
     @staticmethod
@@ -316,9 +320,9 @@ class Star(BaseModel):
                    (('name',), False),)
 
     @staticmethod
-    def choice_by(*, lang, sol: bool = True, but: int = None) -> 'Star':
+    def choice_by(*, lang, include_sol: bool = True, but: int = None) -> 'Star':
         query = Star.select().where(Star.lang == lang)
-        if not sol:
+        if not include_sol:
             query = query.where(Star.id != 2)
         if but is not None:
             query = query.where(Star.id != but)
@@ -351,17 +355,15 @@ class Planet(BaseModel):
     @staticmethod
     def choice_by(*, lang,
                   race: List[str] = None,
-                  sol: bool = True,
+                  in_sol: bool = False,
                   but: int = None) -> 'Planet':
         query = Planet.select().where(Planet.lang == lang)
-        if sol:
+        if in_sol:
             query = query.where(Planet.race == PlanetRace.Solar.value)
             if PlanetRace.No.value in race:
-                # 0 Mercury, 4 Jupiter, 5 Saturn, 6 Neptune, 7 Uranus, 8 Pluto
-                query = query.where(Planet.id << [0, 4, 5, 6, 7, 8])
+                query = query.where(Planet.id << SOL_UNINHABITED)
             else:
-                # 1 Venus, 2 Earth, 3 Mars
-                query = query.where(Planet.id << [1, 2, 3])
+                query = query.where(Planet.id << SOL_INHABITED)
         elif race:
             query = query.where(Planet.race << race)
         if but is not None:

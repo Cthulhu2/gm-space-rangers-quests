@@ -4,9 +4,11 @@ from os.path import join
 
 from srqmplayer.formula import calculate, ParamValues
 from srqmplayer.qmmodels import QM, ParamType
-from srqmplayer.qmplayer import DEFAULT_DAYS_TO_PASS_QUEST
+from srqmplayer.qmplayer import (
+    DEFAULT_DAYS_TO_PASS_QUEST, MONTHS_EN, TEXTS_EN, DEFAULT_PLAYERS
+)
 from srqmplayer.qmplayer.funcs import sr_date_to_str, QMPlayer
-from srqmplayer.qmplayer.player import Lang, PlayerSubstitute
+from srqmplayer.qmplayer.player import PlayerSubstitute
 from srqmplayer.qmreader import parse
 from srqmplayer.substitution import substitute
 from tests import TEST_RESOURCE_DIR, math_rnd, pseudo_rnd
@@ -55,8 +57,8 @@ def get_game_task_text(task_text: str, player):
     p_subst = PlayerSubstitute.of(
         player,
         day=DEFAULT_DAYS_TO_PASS_QUEST,
-        date=sr_date_to_str(DEFAULT_DAYS_TO_PASS_QUEST, player.lang),
-        cur_date=sr_date_to_str(0, player.lang))
+        date=sr_date_to_str(DEFAULT_DAYS_TO_PASS_QUEST, player.months),
+        cur_date=sr_date_to_str(0, player.months))
 
     return substitute(task_text, p_subst, ParamValues([]), [], math_rnd, None)
 
@@ -68,40 +70,35 @@ def test_checking_all_quests_for_formulas_and_params_substitution():
         fullname = join(BORROWED_QUEST_DIR, f)
         log.info(f'Checking quest {fullname}')
         player = PlayerSubstitute(
-            Ranger='Ranger',
-            Player='Player',
-            FromPlanet='FromPlanet',
-            FromStar='FromStar',
-            ToPlanet='ToPlanet',
-            ToStar='ToStar',
-            Date='Date',
-            Day='Day',
+            Ranger='Ranger', Player='Player',
+            FromStar='FromStar', FromPlanet='FromPlanet',
+            ToStar='ToStar', ToPlanet='ToPlanet',
+            Date='Date', Day='Day', CurDate='CurDate',
             Money='Money',
-            CurDate='CurDate',
-            lang=Lang.ru,
+            months=MONTHS_EN, texts=TEXTS_EN
         )
 
         log.info('Loads quest and substitute variables')
         with open(fullname, 'rb') as data:
             quest = parse(data)
 
-        def map_param(i, p):
-            if p.active:
+        def map_param(i_, p_):
+            if p_.active:
                 # Just an example value
-                return i * i
+                return i_ * i_
             else:
                 # There are two quests which have formula
                 # with disabled parameters
                 # Let's return some random value
                 # instead of undefined just to make this test pass
-                return i * 3
+                return i_ * 3
 
         param_values = ParamValues(list(map(
             lambda tpl: map_param(tpl[0], tpl[1]),
             enumerate(quest.params))))
 
         log.info('Creates player and starts (to check init values)')
-        QMPlayer(quest, Lang.ru).start()
+        QMPlayer(quest, DEFAULT_PLAYERS['ru']).start()
 
         log.info('Starting/ending text')
         check(player, quest, param_values, quest.taskText, "start")
