@@ -1,9 +1,16 @@
+import logging
+from os import listdir
+from os.path import join
 from unittest.mock import MagicMock
 
 from gmsrq.gmquests import find_format_tag, FormatToken, choice_planets
 from srqmplayer.qmmodels import Race
+from srqmplayer.qmreader import parse
 # noinspection PyUnresolvedReferences
 from . import temp_db
+from .test_20_quests_formula_and_substitution import BORROWED_QUEST_DIR
+
+log = logging.getLogger()
 
 
 def test_find_format_tag():
@@ -32,3 +39,18 @@ def test_choice_planets(temp_db):
     assert f_planet
     assert to_star
     assert to_planet
+
+
+def test_choice_planets_quests(temp_db):
+    for f in listdir(BORROWED_QUEST_DIR):
+        if not f.endswith('.qm') and not f.endswith('.qmm'):
+            continue
+        with open(join(BORROWED_QUEST_DIR, f), 'rb') as data:
+            qm = parse(data)
+        log.info(f)
+        for lang in ('en', 'ru'):
+            f_star, f_planet, to_star, to_planet = choice_planets(lang, qm)
+            assert f_star, f'{lang} :: {f}'
+            assert f_planet, f'{lang} :: {f}'
+            assert to_star, f'{lang} :: {f}'
+            assert to_planet, f'{lang} :: {f}'

@@ -30,7 +30,7 @@ CHOICE_ID = 'cid'
 QUEST_CACHE: Dict[int, Optional[QM]] = {}
 SOL_ID = 2
 RACE_FLAG_TO_STR: Dict[int, str] = {
-    Race.Fei: str(PlanetRace.Fey.value),
+    Race.Fei: str(PlanetRace.Fei.value),
     Race.Gaal: str(PlanetRace.Gaal.value),
     Race.Maloc: str(PlanetRace.Maloc.value),
     Race.Peleng: str(PlanetRace.Peleng.value),

@@ -333,7 +333,7 @@ class PlanetRace(Enum):
     Maloc = 'Maloc'
     Peleng = 'Peleng'
     People = 'People'
-    Fey = 'Fey'
+    Fei = 'Fei'
     Gaal = 'Gaal'
     No = 'No'
     PirateClan = 'PirateClan'
