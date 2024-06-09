@@ -76,7 +76,7 @@ msgstr ""
 
 #: gmsrq/gmusers.py:76
 msgid "Rename ranger"
-msgstr "Переименовать рейнджер"
+msgstr "Переименовать рейнджера"
 
 #: gmsrq/gmusers.py:79 gmsrq/page_index.py:109 gmsrq/page_index.py:120
 msgid "Options"
