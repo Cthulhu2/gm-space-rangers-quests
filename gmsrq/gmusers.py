@@ -1,6 +1,7 @@
 import logging
 import urllib.parse
 from datetime import datetime
+from typing import Callable
 from urllib.parse import parse_qs
 
 import gmcapsule
@@ -23,177 +24,101 @@ def parse_opts_query(query: str):
             params['ansi'][0].lower() == 't' if 'ansi' in params else None)
 
 
-def hello_ranger(ranger: Ranger, lang):
-    if lang == 'en':
-        return f'Wow! This is the famous ranger, {ranger.name}!' \
-               f' You are already registered.\n' \
-               f'=> /{lang}/ Back\n'
-    else:
-        return f'Ба! Да это же знаменитый рейнджер, {ranger.name}!' \
-               f' Вы уже зарегистрированы.\n' \
-               f'=> /{lang}/ Назад\n'
+def hello_ranger(_, ranger: Ranger, lang):
+    return 20, meta(lang), (
+            _('Wow! This is the famous ranger {name}!').format(name=ranger.name)
+            + ' ' + _('You are already registered.') + '\n'
+            + f'=> /{lang}/ ' + _('Back') + '\n')
 
 
-def ask_name(lang: str):
-    return 10, ('What is your name?' if lang == 'en' else
-                'Как вас называть?')
+def ask_name(_):
+    return 10, _('What is your name?')
 
 
-def ask_name_to_attach(lang: str):
-    return 10, (
-        'Enter ranger\'s name to attach certificate to'
-        if lang == 'en' else
-        'Введите имя рейнджера для добавления сертификата'
-    )
+def ask_name_to_attach(_):
+    return 10, _('Enter ranger\'s name to attach certificate to.')
 
 
-def ask_del_cert(lang: str, cert: str):
-    return 10, (
-        f'Delete certificate {cert[0:10].upper()}. Are you sure? Type "yes"'
-        if lang == 'en' else
-        f'Удалить сертификат {cert[0:10].upper()}. Вы уверены? Введите "yes"'
-    )
+def ask_del_cert(_, cert: str):
+    return 10, _('Delete certificate {cert}.'
+                 ' Are you sure? Type "yes".').format(cert=cert[0:10].upper())
 
 
-def ask_del_acc(lang: str, ranger: Ranger):
-    return 10, (
-        f'Delete ranger {ranger.name} account and all its data.'
-        f' Are you sure? Type "yes"'
-        if lang == 'en' else
-        f'Удалить аккаунт рейнджера {ranger.name} и все его данные.'
-        f' Вы уверены? Введите "yes"'
-    )
+def ask_del_acc(_, ranger: Ranger):
+    return 10, _('Delete ranger {name} account and all its data.'
+                 ' Are you sure? Type "yes".').format(name=ranger.name)
 
 
-def ask_password(lang: str):
-    return 11, ('Password?' if lang == 'en' else 'Пароль?')
+def ask_password(_):
+    return 11, _('Password?')
 
 
 def is_valid_name(name: str):
     return (name and len(name) < 128
-            and '```' not in name
-            and '\r' not in name
-            and '\n' not in name)
+            and not any((x in name for x in ('```', '\r', '\n'))))
 
 
-def invalid_name(lang: str):
-    rules = invalid_name_en() if lang == 'en' else invalid_name_ru()
-    return 20, meta(lang), (
-        f'Invalid ranger name. {rules}' if lang == 'en' else
-        f'Неподходяще имя для рейнджера. {rules}')
+def invalid_name(_, lang: str):
+    return 20, meta(lang), _(
+        'Invalid ranger name. Not allowed:\n'
+        '* >=128 symbols -- database is not rubber;\n'
+        '* \\r, \\n -- what are these rangers with line breaks;\n'
+        '* ``` -- and we don’t need to break the formatting.')
 
 
-def invalid_name_en():
-    return ('Not allowed:\n'
-            '* >=128 symbols -- database is not rubber;\n'
-            '* \\r, \\n -- what are these rangers with line breaks;\n'
-            '* ``` -- and we don’t need to break the formatting.')
-
-
-def invalid_name_ru():
-    return ('Нельзя использовать:\n'
-            '* >=128 символов -- база данных не резиновая;\n'
-            '* \\r, \\n -- это что за рейнджеры с переносами строк;\n'
-            '* ``` -- и форматирование нам ломать не надо.')
-
-
-def opts_en(cfg, ranger: Ranger, fp_cert):
+def options(_, cfg, ranger: Ranger, fp_cert):
     opts = ranger.get_opts()
     ansi = opts.ansi
     certs = ranger.get_certs()
-    cert = next(filter(lambda c: c.fp == fp_cert, certs), None)
-    certs_items = opts_en_certs(cfg, ranger.name, certs, fp_cert,
+    name = ranger.name or next(filter(lambda c: c.fp == fp_cert, certs)).subj
+    certs_items = options_certs(_, cfg, ranger.name, certs, fp_cert,
                                 opts.get_pass_expires())
-    ranger_name = ranger.name or cert.subj
-    rename_ranger = (f'=> {cfg.opts_rename_url} Rename ranger\n\n'
+    rename_ranger = (f'=> {cfg.opts_rename_url} ' + _('Rename ranger') + '\n\n'
                      if not ranger.is_anon else '')
     return (
-        f'# Options\n'
-        f'=> {cfg.cgi_url} Back\n\n'
-        f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
-        f' {"☑" if ansi else "☐"} Use ANSI-colors\n'
-        f'\n'
-        f'{certs_items}\n'
-        f'## Account\n'
-        f'{rename_ranger}'
-        f'=> {cfg.opts_del_acc_url} ⚠ Delete ranger {ranger_name}\n'
-        f'All quests progress and registered certificates will be deleted\n'
+            f'# ' + _('Options') + '\n' +
+            f'=> {cfg.cgi_url} ' + _('Back') + '\n\n' +
+            f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
+            f' {"☑" if ansi else "☐"} ' + _('Use ANSI-colors') + '\n\n' +
+            f'{certs_items}\n'
+            f'## ' + _('Account') + '\n' +
+            f'{rename_ranger}'
+            f'=> {cfg.opts_del_acc_url} ⚠ ' + _('Delete ranger {name}')
+            .format(name=name) + '\n' +
+            _('All quests progress and registered certificates'
+              ' will be deleted') + '\n'
     )
 
 
-def opts_en_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
+def options_certs(_, cfg: Config, username, certs, fp_cert, pass_expires_ts):
     if not username:
         return ''  # no certificates management for unregistered users
     minutes = pass_expires_minutes(pass_expires_ts)
-    expires = f'valid {minutes} min' if minutes else 'not set'
+    expires = _('valid {minutes} min').format(minutes=minutes) if minutes \
+        else _('not set')
     certs_items = (
-        f'## Certificates\n'
-        f'=> {cfg.opts_pass_url} 🔑 Certificate password ({expires})\n'
-        'For adding other certificates you need set password.'
-        ' Then just try register for this username.\n\n'
-        f'### Registered to {username}\n'
+            f'## ' + _('Certificates') + '\n' +
+            f'=> {cfg.opts_pass_url} 🔑 ' + _('Certificate password ({expires})')
+            .format(expires=expires) + '\n' +
+            _('For adding other certificates you need set password.'
+              ' Then just try register for this username.') + '\n\n' +
+            f'### ' + _('Registered to {name}').format(name=username) + '\n'
     )
     for c in certs:
         title = cert_title(c)
         if fp_cert == c.fp:
-            certs_items += f'{title}\n' \
-                           f'(current)\n\n'
+            certs_items += (f'{title}\n' +
+                            _('(current)') + '\n\n')
         else:
-            certs_items += f'{title}\n' \
-                           f'=> {cfg.opts_del_cert_url}{c} ✘ Remove\n\n'
+            certs_items += (
+                    f'{title}\n' +
+                    f'=> {cfg.opts_del_cert_url}{c} ✘ ' + _('Remove') + '\n\n')
     return certs_items
 
 
 def cert_title(cert: Cert):
     expire = datetime.strftime(cert.expire, "%Y-%m-%d") if cert.expire else '-'
     return f'{cert.fp[0:10].upper()} · Expires {expire} · Subject: {cert.subj}'
-
-
-def opts_ru(cfg, ranger: Ranger, fp_cert):
-    opts = ranger.get_opts()
-    ansi = opts.ansi
-    certs = ranger.get_certs()
-    cert = next(filter(lambda c: c.fp == fp_cert, certs), None)
-    certs_items = opts_ru_certs(cfg, ranger.name, certs, fp_cert,
-                                opts.get_pass_expires())
-    ranger_name = ranger.name or cert.subj
-    rename_ranger = (f'=> {cfg.opts_rename_url} Переименовать рейнджера\n\n'
-                     if not ranger.is_anon else '')
-    return (
-        f'# Опции\n'
-        f'=> {cfg.cgi_url} Назад\n\n'
-        f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
-        f' {"☑" if ansi else "☐"} Использовать ANSI-цвета\n'
-        f'\n'
-        f'{certs_items}\n'
-        f'## Аккаунт\n'
-        f'{rename_ranger}'
-        f'=> {cfg.opts_del_acc_url} ⚠ Удалить рейнджера {ranger_name}\n'
-        f'Будет удалён весь прогресс и все связанные сертификаты\n'
-    )
-
-
-def opts_ru_certs(cfg: Config, username, certs, fp_cert, pass_expires_ts):
-    if not username:
-        return ''  # no certificates management for unregistered users
-    minutes = pass_expires_minutes(pass_expires_ts)
-    expires = f'на {minutes} мин' if minutes else 'не установлен'
-    certs_items = (
-        f'## Сертификаты\n'
-        f'=> {cfg.opts_pass_url} 🔑 Пароль на сертификаты ({expires})\n'
-        f'Для добавления других сертификатов нужно установить пароль.'
-        f' Потом просто просто попытаться зарегистрировать на этот логин.\n\n'
-        f'### Зарегистрировано на {username}\n'
-    )
-    for c in certs:
-        title = cert_title(c)
-        if fp_cert == c.fp:
-            certs_items += f'{title}\n' \
-                           f'(текущий)\n\n'
-        else:
-            certs_items += f'{title}\n' \
-                           f'=> {cfg.opts_del_cert_url}{c} ✘ Удалить\n\n'
-    return certs_items
 
 
 def pass_expires_minutes(pass_expires_ts):
@@ -203,16 +128,12 @@ def pass_expires_minutes(pass_expires_ts):
     return int(pass_expires_sec / 60) if pass_expires_sec > 0 else None
 
 
-def already_used(reg_url: str, reg_url_add_ident: str, player: str, lang):
+def already_used(_, reg_url: str, reg_url_add: str, player: str, lang):
     return 20, meta(lang), (
-        (f'Ranger {player} already registered.\n'
-         f'=> {reg_url} Choose different name\n'
-         f'=> {reg_url_add_ident}/{player} Yes, it is me\n')
-        if lang == 'en' else
-        (f'Рейнджер {player} уже зарегистрирован.\n'
-         f'=> {reg_url} Выберу другое имя\n'
-         f'=> {reg_url_add_ident}/{player} Да, это я\n')
-    )
+            _('Ranger {name} already registered.').format(name=player) + '\n'
+            + f'=> {reg_url} ' + _('Choose different name') + '\n'
+            + f'=> {reg_url_add}/{urllib.parse.quote(player)} '
+            + _('Yes, it is me') + '\n')
 
 
 class GmUsersHandler:
@@ -236,9 +157,12 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc)
         capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename)
 
+    def gettext_(self, lang: str) -> Callable[[str], str]:
+        return self.cfg.l10n[lang].gettext if lang in self.cfg.l10n \
+            else self.cfg.l10n['en']
+
     def ask_cert(self, remote_addr):
-        lang = IpOptions.lang_by_ip(remote_addr)
-        _ = self.cfg.l10n[lang].gettext
+        _ = self.gettext_(IpOptions.lang_by_ip(remote_addr))
         return 60, _('Ranger certificate required')
 
     @err_handler
@@ -300,14 +224,15 @@ class GmUsersHandler:
         if not ranger:
             return 30, self.cfg.cgi_url  #
         lang = ranger.get_opts().lang
+        _ = self.gettext_(lang)
         username = urllib.parse.unquote_plus(req.query or '')
         if not ranger.is_anon:
-            return 20, meta(lang), hello_ranger(ranger, lang)
+            return hello_ranger(_, ranger, lang)
         elif not is_valid_name(username):
-            return ask_name(lang)
+            return ask_name(_)
         with db.atomic():
             if Ranger.exists_name(username):
-                return already_used(self.cfg.reg_url, self.cfg.reg_add_url,
+                return already_used(_, self.cfg.reg_url, self.cfg.reg_add_url,
                                     username, lang)
             ranger.name = username
             ranger.is_anon = False
@@ -324,14 +249,15 @@ class GmUsersHandler:
             return 30, req.path + '/'
 
         lang = Options.lang_by(fp_cert=req.identity.fp_cert)
+        _ = self.gettext_(lang)
         path = req.path[len(self.cfg.reg_add_url):].split('/')
         if len(path) < 1:
-            return ask_name_to_attach(lang)
+            return ask_name_to_attach(_)
         username = urllib.parse.unquote_plus(path[0])
         if not is_valid_name(username):
-            return invalid_name(lang)
+            return invalid_name(_, lang)
         if not req.query:
-            return ask_password(lang)
+            return ask_password(_)
         if Options.is_valid_pass(username, req.query):
             with db.atomic():
                 ranger: Ranger = Ranger.by(name=username)
@@ -342,8 +268,7 @@ class GmUsersHandler:
                 anon.delete_instance()
             return 30, self.cfg.opts_url
         else:
-            return 20, meta(lang), ('Password incorrect' if lang == 'en' else
-                                    'Неправильный пароль')
+            return 20, meta(lang), _('Password incorrect')
 
     @err_handler
     @mark_ranger_activity
@@ -362,10 +287,8 @@ class GmUsersHandler:
                 opts.save()
         fp_cert = req.identity.fp_cert
         ranger = Ranger.by(fp_cert=fp_cert)
-        if opts.lang == 'en':
-            return 20, meta(opts.lang), opts_en(self.cfg, ranger, fp_cert)
-        else:
-            return 20, meta(opts.lang), opts_ru(self.cfg, ranger, fp_cert)
+        _ = self.gettext_(opts.lang)
+        return 20, meta(opts.lang), options(_, self.cfg, ranger, fp_cert)
 
     @err_handler
     @mark_ranger_activity
@@ -375,7 +298,8 @@ class GmUsersHandler:
 
         fp_cert = req.identity.fp_cert
         if req.query is None:
-            return ask_password(Options.lang_by(fp_cert=fp_cert))
+            _ = self.gettext_(Options.lang_by(fp_cert=fp_cert))
+            return ask_password(_)
         Options.save_pass(fp_cert, req.query)
         return 30, self.cfg.opts_url
 
@@ -391,8 +315,8 @@ class GmUsersHandler:
         path = req.path[len(self.cfg.opts_del_cert_url):].split('/')
         del_cert = path[0]
         if not req.query:
-            lang = Options.lang_by(fp_cert=req.identity.fp_cert)
-            return ask_del_cert(lang, del_cert)
+            _ = self.gettext_(Options.lang_by(fp_cert=req.identity.fp_cert))
+            return ask_del_cert(_, del_cert)
         if 'yes' == req.query:
             with db.atomic():
                 ranger: Ranger = Ranger.by(fp_cert=req.identity.fp_cert)
@@ -416,7 +340,8 @@ class GmUsersHandler:
             return 30, f'/{IpOptions.lang_by_ip(addr=req.remote_address[0])}/'
         lang = Options.lang_by(fp_cert=req.identity.fp_cert)
         if not req.query:
-            return ask_del_acc(lang, ranger)
+            _ = self.gettext_(lang)
+            return ask_del_acc(_, ranger)
         if 'yes' == req.query:
             with db.atomic():
                 ranger.delete_instance()
@@ -435,18 +360,17 @@ class GmUsersHandler:
         if not ranger:
             return 30, f'/{IpOptions.lang_by_ip(addr=req.remote_address[0])}/'
         lang = Options.lang_by(fp_cert=req.identity.fp_cert)
+        _ = self.gettext_(lang)
         if not req.query:
-            return ask_name(lang)
+            return ask_name(_)
         username = urllib.parse.unquote_plus(req.query)
         if not is_valid_name(username):
-            return invalid_name(lang)
+            return invalid_name(_, lang)
+        #
         with db.atomic():
             if Ranger.exists_name(username):
-                return 20, meta(lang), (
-                    f'Ranger {username} already registered.'
-                    if lang == 'en' else
-                    f'Рейнджер {username} уже зарегистрирован.'
-                )
+                return 20, meta(lang), _('Ranger {name} already registered.') \
+                    .format(name=username)
             ranger.name = username
             ranger.save()
         return 30, self.cfg.opts_url

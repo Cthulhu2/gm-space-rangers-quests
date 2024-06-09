@@ -16,7 +16,7 @@ USERS_DIR = f'{dirname(realpath(__file__))}/users'
 
 def init(capsule: gmcapsule.Context):
     """Extension module initialization."""
-    en = gettext.translation('gmsrq', localedir=LOCALE_DIR, languages=['en'])
+    en = gettext.NullTranslations()
     ru = gettext.translation('gmsrq', localedir=LOCALE_DIR, languages=['ru'])
     en.install()
     srq_cfg = gmsrq.Config(

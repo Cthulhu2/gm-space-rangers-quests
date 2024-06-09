@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-09 19:35+0200\n"
+"POT-Creation-Date: 2024-06-09 22:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,125 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
 
-#: gmsrq/gmquests.py:245 gmsrq/gmusers.py:242
+#: gmsrq/gmquests.py:245 gmsrq/gmusers.py:166
 msgid "Ranger certificate required"
 msgstr ""
 
 #: gmsrq/gmquests.py:252
 msgid "Unknown quest id={qid}"
+msgstr ""
+
+#: gmsrq/gmusers.py:29
+msgid "Wow! This is the famous ranger {name}!"
+msgstr ""
+
+#: gmsrq/gmusers.py:30
+msgid "You are already registered."
+msgstr ""
+
+#: gmsrq/gmusers.py:31 gmsrq/gmusers.py:80
+msgid "Back"
+msgstr ""
+
+#: gmsrq/gmusers.py:35
+msgid "What is your name?"
+msgstr ""
+
+#: gmsrq/gmusers.py:39
+msgid "Enter ranger's name to attach certificate to."
+msgstr ""
+
+#: gmsrq/gmusers.py:43
+msgid "Delete certificate {cert}. Are you sure? Type \"yes\"."
+msgstr ""
+
+#: gmsrq/gmusers.py:48
+msgid "Delete ranger {name} account and all its data. Are you sure? Type \"yes\"."
+msgstr ""
+
+#: gmsrq/gmusers.py:53
+msgid "Password?"
+msgstr ""
+
+#: gmsrq/gmusers.py:62
+msgid ""
+"Invalid ranger name. Not allowed:\n"
+"* >=128 symbols -- database is not rubber;\n"
+"* \\r, \\n -- what are these rangers with line breaks;\n"
+"* ``` -- and we don’t need to break the formatting."
+msgstr ""
+
+#: gmsrq/gmusers.py:76
+msgid "Rename ranger"
+msgstr ""
+
+#: gmsrq/gmusers.py:79
+msgid "Options"
+msgstr ""
+
+#: gmsrq/gmusers.py:82
+msgid "Use ANSI-colors"
+msgstr ""
+
+#: gmsrq/gmusers.py:84
+msgid "Account"
+msgstr ""
+
+#: gmsrq/gmusers.py:86
+msgid "Delete ranger {name}"
+msgstr ""
+
+#: gmsrq/gmusers.py:88
+msgid "All quests progress and registered certificates will be deleted"
+msgstr ""
+
+#: gmsrq/gmusers.py:97
+msgid "valid {minutes} min"
+msgstr ""
+
+#: gmsrq/gmusers.py:98
+msgid "not set"
+msgstr ""
+
+#: gmsrq/gmusers.py:100
+msgid "Certificates"
+msgstr ""
+
+#: gmsrq/gmusers.py:101
+msgid "Certificate password ({expires})"
+msgstr ""
+
+#: gmsrq/gmusers.py:103
+msgid ""
+"For adding other certificates you need set password. Then just try "
+"register for this username."
+msgstr ""
+
+#: gmsrq/gmusers.py:105
+msgid "Registered to {name}"
+msgstr ""
+
+#: gmsrq/gmusers.py:111
+msgid "(current)"
+msgstr ""
+
+#: gmsrq/gmusers.py:115
+msgid "Remove"
+msgstr ""
+
+#: gmsrq/gmusers.py:133 gmsrq/gmusers.py:372
+msgid "Ranger {name} already registered."
+msgstr ""
+
+#: gmsrq/gmusers.py:134
+msgid "Choose different name"
+msgstr ""
+
+#: gmsrq/gmusers.py:136
+msgid "Yes, it is me"
+msgstr ""
+
+#: gmsrq/gmusers.py:271
+msgid "Password incorrect"
 msgstr ""
 
