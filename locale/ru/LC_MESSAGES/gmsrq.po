@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-09 22:08+0200\n"
+"POT-Creation-Date: 2024-06-09 22:35+0200\n"
 "PO-Revision-Date: 2024-06-09 19:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -27,7 +27,7 @@ msgstr "Требуется сертификат рейнджера"
 msgid "Unknown quest id={qid}"
 msgstr "Неизвестный квест id={qid}"
 
-#: gmsrq/gmusers.py:29
+#: gmsrq/gmusers.py:29 gmsrq/page_index.py:118
 msgid "Wow! This is the famous ranger {name}!"
 msgstr "Ба! Да это же знаменитый рейнджер {name}!"
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Rename ranger"
 msgstr "Переименовать рейнджер"
 
-#: gmsrq/gmusers.py:79
+#: gmsrq/gmusers.py:79 gmsrq/page_index.py:109 gmsrq/page_index.py:120
 msgid "Options"
 msgstr "Настройки"
 
@@ -134,7 +134,7 @@ msgstr "(текущий)"
 msgid "Remove"
 msgstr "Удалить"
 
-#: gmsrq/gmusers.py:133 gmsrq/gmusers.py:372
+#: gmsrq/gmusers.py:133 gmsrq/gmusers.py:373
 msgid "Ranger {name} already registered."
 msgstr "Рейнджер {name} уже зарегистрирован."
 
@@ -146,7 +146,31 @@ msgstr "Выберу другое имя"
 msgid "Yes, it is me"
 msgstr "Да, это я"
 
-#: gmsrq/gmusers.py:271
+#: gmsrq/gmusers.py:272
 msgid "Password incorrect"
 msgstr "Неправильный пароль"
+
+#: gmsrq/page_index.py:106 gmsrq/page_index.py:117
+msgid "Ranger Center \"Union\""
+msgstr "Центр рейнджеров \"Союз\""
+
+#: gmsrq/page_index.py:107
+msgid "Come in, ranger, your certificate is valid."
+msgstr "Входи, рейнджер, твой сертификат прошёл проверку."
+
+#: gmsrq/page_index.py:108
+msgid "Registration"
+msgstr "Регистрация"
+
+#: gmsrq/page_index.py:127
+msgid "Gemlog"
+msgstr "Гемлог"
+
+#: gmsrq/page_index.py:129
+msgid "Discuss on the BBS"
+msgstr "Обсудить на BBS"
+
+#: gmsrq/page_index.py:131
+msgid "Source code and Issues"
+msgstr "Исходники и ишьюсы"
 

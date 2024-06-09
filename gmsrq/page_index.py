@@ -4,43 +4,18 @@ from typing import Optional
 from gmsrq import Config
 from gmsrq.sqlstore import Ranger, Quest, QuestState, QuestCompleted
 
-TITLE_EN = '# Ranger Center "Union"\n'
-TITLE_RU = '# Центр рейнджеров "Союз"\n'
-
-FOOTER_EN = (
-    '### Info\n'
-    '=> /en/gemlog/ Gemlog\n'
-    '=> gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS\n'
-    '=> https://github.com/Cthulhu2/gm-space-rangers-quests'
-    ' Source code and Issues\n')
-
-FOOTER_RU = (
-    '### Info\n'
-    '=> /ru/gemlog/ Гемлог\n'
-    '=> gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS\n'
-    '=> https://github.com/Cthulhu2/gm-space-rangers-quests'
-    ' Исходники и ишьюсы\n')
-
 
 def meta(lang):
     return f'text/gemini; charset=utf-8; lang={lang}'
 
 
-def page_index(ranger: Optional[Ranger], lang: str, cfg: Config, root: Path):
-    if lang == 'ru':
-        if not ranger:
-            page = root.joinpath(lang, 'index.gmi')
-        elif ranger.is_anon:
-            page = index_anon_ru(cfg, ranger)
-        else:
-            page = index_ranger_ru(cfg, ranger)
+def page_index(_, ranger: Optional[Ranger], lang: str, cfg: Config, root: Path):
+    if not ranger:
+        page = root.joinpath(lang, 'index.gmi')
+    elif ranger.is_anon:
+        page = index_anon(_, cfg, ranger, lang)
     else:
-        if not ranger:
-            page = root.joinpath(lang, 'index.gmi')
-        elif ranger.is_anon:
-            page = index_anon_en(cfg, ranger)
-        else:
-            page = index_ranger_en(cfg, ranger)
+        page = index_ranger(_, cfg, ranger, lang)
     return 20, meta(lang), page
 
 
@@ -124,44 +99,34 @@ def build_quest_urls_en(cfg, ranger):
     return quest_urls
 
 
-def index_anon_ru(cfg: Config, ranger: Ranger):
-    quest_urls = build_quest_urls_ru(cfg, ranger)
+def index_anon(_, cfg: Config, ranger: Ranger, lang):
+    quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
+        else build_quest_urls_en(cfg, ranger)
 
-    return (
-        f'{TITLE_RU}'
-        f'Входи, рейнджер, твой сертификат прошёл проверку.\n'
-        f'=> {cfg.reg_url} Регистрация\n'
-        f'=> {cfg.opts_url} ⚙ Настройки\n'
-        f'{quest_urls}'
-        f'{FOOTER_RU}')
-
-
-def index_anon_en(cfg: Config, ranger: Ranger):
-    quest_urls = build_quest_urls_en(cfg, ranger)
-    return (
-        f'{TITLE_EN}'
-        f'Come in, ranger, your certificate is valid.\n'
-        f'=> {cfg.reg_url} Registration\n'
-        f'=> {cfg.opts_url} ⚙ Options\n'
-        f'{quest_urls}\n'
-        f'{FOOTER_EN}')
+    return (f'# ' + _('Ranger Center "Union"') + '\n' +
+            _('Come in, ranger, your certificate is valid.') + '\n' +
+            f'=> {cfg.reg_url} ' + _('Registration') + '\n' +
+            f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
+            f'{quest_urls}\n' +
+            footer(_))
 
 
-def index_ranger_ru(cfg: Config, ranger: Ranger):
-    quest_urls = build_quest_urls_ru(cfg, ranger)
-    return (
-        f'{TITLE_RU}'
-        f'Ба! Да это же знаменитый рейнджер {ranger.name}!\n'
-        f'=> {cfg.opts_url} ⚙ Настройки\n'
-        f'{quest_urls}'
-        f'{FOOTER_RU}')
+def index_ranger(_, cfg: Config, ranger: Ranger, lang):
+    quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
+        else build_quest_urls_en(cfg, ranger)
+
+    return (f'# ' + _('Ranger Center "Union"') + '\n' +
+            _('Wow! This is the famous ranger {name}!')
+            .format(name=ranger.name) + '\n' +
+            f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
+            f'{quest_urls}\n' +
+            footer(_))
 
 
-def index_ranger_en(cfg: Config, ranger: Ranger):
-    quest_urls = build_quest_urls_en(cfg, ranger)
-    return (
-        f'{TITLE_EN}'
-        f'Wow! This is the famous ranger {ranger.name}!\n'
-        f'=> {cfg.opts_url} ⚙ Options\n'
-        f'{quest_urls}\n'
-        f'{FOOTER_EN}')
+def footer(_):
+    return (f'### Info\n' +
+            f'=> /en/gemlog/ ' + _('Gemlog') + '\n' +
+            f'=> gemini://bbs.geminispace.org/s/SpaceRangers ' +
+            _('Discuss on the BBS') + '\n' +
+            f'=> https://github.com/Cthulhu2/gm-space-rangers-quests ' +
+            _('Source code and Issues') + '\n')

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-09 22:08+0200\n"
+"POT-Creation-Date: 2024-06-09 22:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Unknown quest id={qid}"
 msgstr ""
 
-#: gmsrq/gmusers.py:29
+#: gmsrq/gmusers.py:29 gmsrq/page_index.py:118
 msgid "Wow! This is the famous ranger {name}!"
 msgstr ""
 
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Rename ranger"
 msgstr ""
 
-#: gmsrq/gmusers.py:79
+#: gmsrq/gmusers.py:79 gmsrq/page_index.py:109 gmsrq/page_index.py:120
 msgid "Options"
 msgstr ""
 
@@ -123,7 +123,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: gmsrq/gmusers.py:133 gmsrq/gmusers.py:372
+#: gmsrq/gmusers.py:133 gmsrq/gmusers.py:373
 msgid "Ranger {name} already registered."
 msgstr ""
 
@@ -135,7 +135,31 @@ msgstr ""
 msgid "Yes, it is me"
 msgstr ""
 
-#: gmsrq/gmusers.py:271
+#: gmsrq/gmusers.py:272
 msgid "Password incorrect"
+msgstr ""
+
+#: gmsrq/page_index.py:106 gmsrq/page_index.py:117
+msgid "Ranger Center \"Union\""
+msgstr ""
+
+#: gmsrq/page_index.py:107
+msgid "Come in, ranger, your certificate is valid."
+msgstr ""
+
+#: gmsrq/page_index.py:108
+msgid "Registration"
+msgstr ""
+
+#: gmsrq/page_index.py:127
+msgid "Gemlog"
+msgstr ""
+
+#: gmsrq/page_index.py:129
+msgid "Discuss on the BBS"
+msgstr ""
+
+#: gmsrq/page_index.py:131
+msgid "Source code and Issues"
 msgstr ""
 

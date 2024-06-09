@@ -169,20 +169,21 @@ class GmUsersHandler:
     @mark_ranger_activity
     def index(self, req: gmcapsule.gemini.Request):
         lang = req.path.split('/')[1]
+        _ = self.gettext_(lang)
         if not req.identity:
             IpOptions.save_lang(req.remote_address[0], lang)
-            return page_index(None, lang, self.cfg,
+            return page_index(_, None, lang, self.cfg,
                               self.cfg.root_dir.joinpath(req.hostname))
 
         with db.atomic():
             ranger = Ranger.by(fp_cert=req.identity.fp_cert)
             if not ranger:
                 IpOptions.save_lang(req.remote_address[0], lang)
-                return page_index(None, lang, self.cfg,
+                return page_index(_, None, lang, self.cfg,
                                   self.cfg.root_dir.joinpath(req.hostname))
             # re-save selected lang by cert
             Options.save_lang(req.identity.fp_cert, lang)
-        return page_index(ranger, lang, self.cfg,
+        return page_index(_, ranger, lang, self.cfg,
                           self.cfg.root_dir.joinpath(req.hostname))
 
     @err_handler
@@ -210,8 +211,8 @@ class GmUsersHandler:
                 Options.save_lang(req.identity.fp_cert, lang)
             else:
                 lang = Options.lang_by(fp_cert=req.identity.fp_cert)
-
-        return page_index(ranger, lang, self.cfg,
+        _ = self.gettext_(lang)
+        return page_index(_, ranger, lang, self.cfg,
                           self.cfg.root_dir.joinpath(req.hostname))
 
     @err_handler
