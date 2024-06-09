@@ -8,10 +8,9 @@ from urllib.parse import parse_qs
 
 import gmcapsule
 
-from gmsrq.gmusers import ask_cert
 from gmsrq.page_index import meta
 from gmsrq.sqlstore import (
-    Ranger, db, QuestState, Quest, IpOptions, PlanetRace, Star, Planet
+    Ranger, db, QuestState, Quest, IpOptions, PlanetRace, Star, Planet, Options
 )
 from gmsrq.utils import Config, err_handler, mark_ranger_activity
 from srqmplayer.qmmodels import QM, Race
@@ -241,12 +240,16 @@ class GmQuestsHandler:
     @mark_ranger_activity
     def handle(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            lang = IpOptions.lang_by_ip(req.remote_address[0])
+            _ = self.cfg.l10n[lang].gettext
+            return 60, _('Ranger certificate required')
 
+        lang = Options.lang_by(fp_cert=req.identity.fp_cert)
+        _ = self.cfg.l10n[lang].gettext
         qid, sid, cid = parse_query(req.query)
         quest = Quest.by(qid=qid)
         if not quest:
-            return 50, f'Unknown quest id={qid}'
+            return 50, _('Unknown quest id={qid}').format(qid=qid)
 
         with db.atomic():
             ident: gmcapsule.Identity = req.identity

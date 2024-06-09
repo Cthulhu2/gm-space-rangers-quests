@@ -1,3 +1,4 @@
+import gettext
 import logging
 from os.path import dirname, realpath
 
@@ -8,14 +9,19 @@ import gmsrq
 from gmsrq.sqlstore import db
 
 CGI_URL = '/cgi/'
+LOCALE_DIR = f'{dirname(realpath(__file__))}/locale'
 QUEST_DIR = f'{dirname(realpath(__file__))}/borrowed/qm'
 USERS_DIR = f'{dirname(realpath(__file__))}/users'
 
 
 def init(capsule: gmcapsule.Context):
     """Extension module initialization."""
+    en = gettext.translation('gmsrq', localedir=LOCALE_DIR, languages=['en'])
+    ru = gettext.translation('gmsrq', localedir=LOCALE_DIR, languages=['ru'])
+    en.install()
     srq_cfg = gmsrq.Config(
-        users_dir=USERS_DIR, quests_dir=QUEST_DIR,
+        l10n={'en': en, 'ru': ru},
+        quests_dir=QUEST_DIR, users_dir=USERS_DIR,
         root_dir=capsule.cfg.root_dir(),
         act_url=f'{CGI_URL}act',
         img_url='/quests/img/',

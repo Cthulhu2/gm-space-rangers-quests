@@ -34,11 +34,6 @@ def hello_ranger(ranger: Ranger, lang):
                f'=> /{lang}/ Назад\n'
 
 
-def ask_cert(lang: str = None):
-    return 60, ('Требуется сертификат рейнджера' if lang == 'ru' else
-                'Ranger certificate required')
-
-
 def ask_name(lang: str):
     return 10, ('What is your name?' if lang == 'en' else
                 'Как вас называть?')
@@ -71,8 +66,7 @@ def ask_del_acc(lang: str, ranger: Ranger):
 
 
 def ask_password(lang: str):
-    return 11, ('Password?' if lang == 'en' else
-                'Пароль?')
+    return 11, ('Password?' if lang == 'en' else 'Пароль?')
 
 
 def is_valid_name(name: str):
@@ -242,6 +236,11 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc)
         capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename)
 
+    def ask_cert(self, remote_addr):
+        lang = IpOptions.lang_by_ip(remote_addr)
+        _ = self.cfg.l10n[lang].gettext
+        return 60, _('Ranger certificate required')
+
     @err_handler
     @mark_ranger_activity
     def index(self, req: gmcapsule.gemini.Request):
@@ -268,7 +267,7 @@ class GmUsersHandler:
         # handle base /cgi/ to ask cert once, with saving selected language
         lang = parse_query(req.query)
         if not lang and not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         if lang and not req.identity:
             # save selected lang by IP
@@ -295,7 +294,7 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_reg(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         ranger = Ranger.by(fp_cert=req.identity.fp_cert)
         if not ranger:
@@ -319,7 +318,7 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_reg_add(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         if not req.path.endswith('/'):
             return 30, req.path + '/'
@@ -350,7 +349,7 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_opts(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         save, ansi = parse_opts_query(req.query)
         ranger = Ranger.by(fp_cert=req.identity.fp_cert)
@@ -372,7 +371,7 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_opts_pass(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         fp_cert = req.identity.fp_cert
         if req.query is None:
@@ -384,7 +383,7 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_opts_del_cert(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         if not req.path.endswith('/'):
             return 30, req.path + '/'
@@ -407,7 +406,7 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_opts_del_acc(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         if not req.path.endswith('/'):
             return 30, req.path + '/'
@@ -427,7 +426,7 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_opts_rename(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return ask_cert(IpOptions.lang_by_ip(req.remote_address[0]))
+            return self.ask_cert(req.remote_address[0])
 
         if not req.path.endswith('/'):
             return 30, req.path + '/'

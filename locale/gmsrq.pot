@@ -1,0 +1,27 @@
+# Translations template for gmsrq.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the gmsrq project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: gmsrq 0.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-06-09 19:35+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: gmsrq/gmquests.py:245 gmsrq/gmusers.py:242
+msgid "Ranger certificate required"
+msgstr ""
+
+#: gmsrq/gmquests.py:252
+msgid "Unknown quest id={qid}"
+msgstr ""
+

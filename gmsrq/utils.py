@@ -1,6 +1,8 @@
 import logging
 from dataclasses import dataclass
+from gettext import GNUTranslations
 from pathlib import Path
+from typing import Dict
 
 from gmcapsule.gemini import Request
 
@@ -11,6 +13,7 @@ log = logging.getLogger()
 
 @dataclass
 class Config:
+    l10n: Dict[str, GNUTranslations]
     users_dir: str
     quests_dir: str
     root_dir: Path
@@ -37,6 +40,7 @@ def err_handler(func):
         except Exception as ex:
             log.warning(f'{ex}', exc_info=ex)
             return 50, f'{ex}'
+
     return decorator
 
 
@@ -47,4 +51,5 @@ def mark_ranger_activity(func):
         if req and req.identity:
             Ranger.update_activity(req.identity.fp_cert)
         return func(*args, **kwargs)
+
     return decorator

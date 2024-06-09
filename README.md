@@ -23,3 +23,11 @@ $ pw_migrate migrate \
   --database "sqlite:/./users/gmsrq.sqlite" \ 
   --directory ./gmsrq/migrations
 ```
+
+Localization:
+```shell
+$ pybabel extract --project=gmsrq --version=0.1 -o locale/gmsrq.pot \
+  srqmplayer/*.py gmsrq/*.py
+$ pybabel init -D gmsrq -i locale/gmsrq.pot -d locale/ -l ru
+$ pybabel compile -D gmsrq -d locale/
+```
