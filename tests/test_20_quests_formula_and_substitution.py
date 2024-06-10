@@ -5,7 +5,8 @@ from os.path import join
 from srqmplayer.formula import calculate, ParamValues
 from srqmplayer.qmmodels import QM, ParamType
 from srqmplayer.qmplayer import (
-    DEFAULT_DAYS_TO_PASS_QUEST, MONTHS_EN, TEXTS_EN, DEFAULT_PLAYERS
+    DEFAULT_DAYS_TO_PASS_QUEST, MONTHS_EN, TEXTS_EN, DEFAULT_PLAYERS,
+    DEFAULT_BALANCE
 )
 from srqmplayer.qmplayer.funcs import sr_date_to_str, QMPlayer
 from srqmplayer.qmplayer.player import PlayerSubstitute
@@ -75,7 +76,8 @@ def test_checking_all_quests_for_formulas_and_params_substitution():
             ToStar='ToStar', ToPlanet='ToPlanet',
             Date='Date', Day='Day', CurDate='CurDate',
             Money='Money',
-            months=MONTHS_EN, texts=TEXTS_EN
+            months=MONTHS_EN, texts=TEXTS_EN,
+            balance=DEFAULT_BALANCE
         )
 
         log.info('Loads quest and substitute variables')

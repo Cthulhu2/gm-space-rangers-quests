@@ -31,19 +31,20 @@ MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
 MONTHS_RU = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля',
              'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
 
+DEFAULT_BALANCE = 2000
 DEFAULT_DAYS_TO_PASS_QUEST = 35
 DEFAULT_PLAYERS: Dict[str, Player] = {
     'ru': Player(Ranger='Греф', Player='Греф',
                  FromPlanet='Земля', FromStar='Солнце',
                  ToPlanet='Боннасис', ToStar='Процион',
-                 Money='10000',
-                 months=MONTHS_RU, texts=TEXTS_RU),
+                 Money='2000',
+                 months=MONTHS_RU, texts=TEXTS_RU, balance=DEFAULT_BALANCE),
 
     'en': Player(Ranger='Ranger', Player='Ranger',
                  FromPlanet='Earth', FromStar='Sun',
                  ToPlanet='Bonnasis', ToStar='Procyon',
-                 Money='10000',
-                 months=MONTHS_EN, texts=TEXTS_EN)
+                 Money='2000',
+                 months=MONTHS_EN, texts=TEXTS_EN, balance=DEFAULT_BALANCE)
 }
 
 digs = string.digits + string.ascii_letters

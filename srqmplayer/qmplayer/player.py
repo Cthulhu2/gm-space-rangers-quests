@@ -14,6 +14,7 @@ class Player:
     #
     months: List[str]
     texts: Dict[str, str]
+    balance: int
 
     def set_planets(self,
                     from_star: str = None, from_planet: str = None,
@@ -39,4 +40,4 @@ class PlayerSubstitute(Player):
             Ranger=p.Ranger, Player=p.Player, Money=p.Money,
             FromPlanet=p.FromPlanet, FromStar=p.FromStar, ToPlanet=p.ToPlanet,
             ToStar=p.ToStar, months=p.months, texts=p.texts,
-            Date=date, Day=day, CurDate=cur_date)
+            Date=date, Day=day, CurDate=cur_date, balance=p.balance)

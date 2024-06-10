@@ -114,10 +114,26 @@ def index_anon(_, cfg: Config, ranger: Ranger, lang):
 def index_ranger(_, cfg: Config, ranger: Ranger, lang):
     quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
         else build_quest_urls_en(cfg, ranger)
+    quest_completed = len(QuestCompleted.by(rid=ranger.id, lang=lang))
+    quest_total = Quest.count_by(lang=lang)
+    if ranger.get_opts().ansi:
+        progress = f'\033[38;5;11m{quest_completed} / {quest_total}\033[0m'
+        if lang == 'ru':
+            balance = f'\033[38;5;11m{ranger.credits_ru}\033[0m'
+        else:
+            balance = f'\033[38;5;11m{ranger.credits_en}\033[0m'
+    else:
+        progress = f'{quest_completed} / {quest_total}'
+        if lang == 'ru':
+            balance = f'{ranger.credits_ru}'
+        else:
+            balance = f'{ranger.credits_en}'
 
     return (f'# ' + _('Ranger Center "Union"') + '\n' +
             _('Wow! This is the famous ranger {name}!')
-            .format(name=ranger.name) + '\n' +
+            .format(name=ranger.name) + '\n\n' +
+            _('Progress: ') + progress + '\n' +
+            _('Balance: ') + balance + 'cr \n\n' +
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
             f'{quest_urls}\n' +
             footer(_))

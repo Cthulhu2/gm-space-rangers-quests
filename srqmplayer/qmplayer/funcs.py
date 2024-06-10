@@ -19,7 +19,7 @@ from srqmplayer.qmmodels import (
 )
 from srqmplayer.qmplayer import (
     DEFAULT_DAYS_TO_PASS_QUEST, JUMP_I_AGREE, JUMP_NEXT, JUMP_GO_BACK_TO_SHIP,
-    int2base
+    int2base, DEFAULT_BALANCE
 )
 from srqmplayer.qmplayer.player import Player, PlayerSubstitute
 from srqmplayer.substitution import substitute
@@ -123,7 +123,8 @@ class PlayerState:
     soundName: Optional[str] = None
 
 
-def init_game(quest: Quest, seed: str) -> GameState:
+def init_game(quest: Quest, seed: str,
+              balance: int = DEFAULT_BALANCE) -> GameState:
     alea = Alea(seed)
 
     start_loc = next(filter(lambda x: x.isStarting, quest.locations))
@@ -135,9 +136,7 @@ def init_game(quest: Quest, seed: str) -> GameState:
             return 0
 
         if p.isMoney:
-            give_money = 2000
-            money = give_money if p.max > give_money else p.max
-            starting = f'[{money}]'
+            starting = DEFAULT_BALANCE if balance is None else f'[{balance}]'
             return calculate(starting, alea.rnd, ParamValues([]))
 
         return calculate(p.starting.replace("h", ".."), alea.rnd,
@@ -967,7 +966,8 @@ class QMPlayer:
 
     def start(self):
         self.state = init_game(cast(Quest, self.quest),
-                               int2base(random() * 10_000_000_000, 36))
+                               int2base(random() * 10_000_000_000, 36),
+                               self.player.balance)
         self.playerState = get_ui_state(
             cast(Quest, self.quest), self.state, self.player)
 

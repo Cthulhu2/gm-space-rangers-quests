@@ -112,7 +112,7 @@ QUEST_NAMES = [
     (102, 'en', 'Player_eng.qm',           'Player',                        'SR 2.1.2121 eng',                          ),  # noqa
     (103, 'ru', 'Poroda.qm',               'Порода',                        'КР 1',                                     ),  # noqa
     (104, 'ru', 'Prison.qmm',              'Тюрьма',                        'КР 2 Доминаторы',                          ),  # noqa
-    (105, 'ru', 'Prison1.qm',              'Тюрьма (КР1)',                  'КР 1',                                     ),  # noqa
+    (105, 'ru', 'Prison1.qmm',             'Тюрьма (КР1)',                  'КР 1',                                     ),  # noqa
     (106, 'en', 'Prison_eng.qm',           'Prison',                        'SR 2.1.2121 eng',                          ),  # noqa
     (107, 'ru', 'Proprolog.qmm',           'Пропролог',                     'КР 2 Доминаторы Перезагрузка',             ),  # noqa
     (108, 'ru', 'Provoda.qmm',             'Провода',                       'КР 2 Доминаторы HD Революция Оригинальные',),  # noqa

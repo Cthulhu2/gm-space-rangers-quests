@@ -10,7 +10,8 @@ import gmcapsule
 
 from gmsrq.page_index import meta
 from gmsrq.sqlstore import (
-    Ranger, db, QuestState, Quest, IpOptions, PlanetRace, Star, Planet, Options
+    Ranger, db, QuestState, Quest, IpOptions, PlanetRace, Star, Planet, Options,
+    QuestCompleted
 )
 from gmsrq.utils import Config, err_handler, mark_ranger_activity
 from srqmplayer.qmmodels import QM, Race
@@ -227,6 +228,10 @@ def choice_planets(lang: str, qm: QM) -> Tuple[str, str, str, str]:
     return from_star.name, from_planet.name, to_star.name, to_planet.name
 
 
+def is_career_mode(already_completed, ranger):
+    return not ranger.is_anon and not already_completed
+
+
 class GmQuestsHandler:
     cfg: Config
 
@@ -254,11 +259,11 @@ class GmQuestsHandler:
         with db.atomic():
             ident: gmcapsule.Identity = req.identity
             Ranger.create_anon(ident)
-        ranger = Ranger.by(fp_cert=ident.fp_cert)
-        name = ranger.name or ident.subject()['CN'] or 'Ranger'
+            ranger = Ranger.by(fp_cert=ident.fp_cert)
+            name = ranger.name or ident.subject()['CN'] or 'Ranger'
 
-        sid, player, state, lang = self.process_quest_step(
-            name, ident.fp_cert, quest, sid, cid, ranger.id)
+            sid, player, state, lang = self.process_quest_step(
+                name, ident.fp_cert, quest, sid, cid, ranger)
 
         return (20, meta(quest.lang), render_page(
             self.cfg, quest, sid, player.texts, state, lang,
@@ -266,7 +271,8 @@ class GmQuestsHandler:
 
     def process_quest_step(self, name: str, fp_cert: str,
                            quest: Quest, sid: int, cid: int,
-                           rid: int) -> Tuple[int, Player, PlayerState, str]:
+                           ranger: Ranger
+                           ) -> Tuple[int, Player, PlayerState, str]:
         qm = QUEST_CACHE[quest.id] if quest.id in QUEST_CACHE else None
         if not qm:
             with open(join(self.cfg.quests_dir, quest.file), 'rb') as f:
@@ -279,12 +285,21 @@ class GmQuestsHandler:
         if state and state.sId == 0 and cid is None and sid is None:
             state.delete_instance()
             state = None
+        already_completed = QuestCompleted.by(rid=ranger.id, qid=quest.id)
+        if is_career_mode(already_completed, ranger):
+            player.balance = ranger.get_credits(lang)
         if state:
             player.set_planets(state.fromStar, state.fromPlanet,
                                state.toStar, state.toPlanet)
             #
             qmplayer = QMPlayer(qm, player)
-            qmplayer.load_saving(GameState.from_json(state.state))
+            g_state: GameState = GameState.from_json(state.state)
+            if is_career_mode(already_completed, ranger):
+                for i, p in enumerate(qmplayer.quest.params):
+                    if p.isMoney:
+                        g_state.paramValues[i] = int(ranger.get_credits(lang))
+            #
+            qmplayer.load_saving(g_state)
             prev_sid = state.sId
         else:
             (from_star, from_planet, to_star, to_planet) = \
@@ -306,5 +321,13 @@ class GmQuestsHandler:
                               player)
 
         player_state = qmplayer.get_state()
-        QuestState.del_state_at_the_end(player_state, fp_cert, quest.id, rid)
+        QuestState.del_state_at_the_end(player_state, fp_cert, quest.id,
+                                        ranger)
+        if is_career_mode(already_completed, ranger):
+            for i, p in enumerate(qmplayer.quest.params):
+                if p.isMoney:
+                    ranger.set_credits(lang, int(qmplayer.state.paramValues[i]))
+            if player_state.gameState == GameStateEnum.win:
+                ranger.inc_credits(lang, int(qmplayer.player.Money))
+            ranger.save()
         return next_sid, player, player_state, lang

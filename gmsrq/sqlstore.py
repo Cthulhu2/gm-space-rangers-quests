@@ -66,6 +66,13 @@ class Quest(BaseModel):
             query = query.where(Quest.gameVer << game)
         return query.order_by(Quest.name).execute()
 
+    @staticmethod
+    def count_by(*, lang=None) -> Iterator['Quest']:
+        query = Quest.select()
+        if lang:
+            query = query.where(Quest.lang == lang)
+        return query.count()
+
 
 class Ranger(BaseModel):
     id = IntegerField(primary_key=True)
@@ -73,6 +80,26 @@ class Ranger(BaseModel):
     is_anon = BooleanField(null=False, default=True)
     created = DateTimeField(null=False, default=datetime.now)
     activity = DateTimeField(null=False, default=datetime.now)
+    credits_ru = IntegerField(default=2000)
+    credits_en = IntegerField(default=2000)
+
+    def get_credits(self, lang):
+        if lang == 'ru':
+            return self.credits_ru
+        else:
+            return self.credits_en
+
+    def set_credits(self, lang, credits):
+        if lang == 'ru':
+            self.credits_ru = credits
+        else:
+            self.credits_en = credits
+
+    def inc_credits(self, lang, credits):
+        if lang == 'ru':
+            self.credits_ru += credits
+        else:
+            self.credits_en += credits
 
     def get_opts(self) -> 'Options':
         return self._opts.first()
@@ -276,10 +303,12 @@ class QuestCompleted(BaseModel):
             QuestCompleted.create(ranger=rid, quest=qid)
 
     @staticmethod
-    def by(*, rid, qid=None) -> List[int]:
+    def by(*, rid, qid=None, lang=None) -> List[int]:
         query = (QuestCompleted.select(QuestCompleted.quest.id)
                  .join(Quest)
                  .where(QuestCompleted.ranger == rid))
+        if lang:
+            query = query.where(Quest.lang == lang)
         if qid:
             return list(query.where(QuestCompleted.quest == qid).scalars())
         return list(query.scalars())

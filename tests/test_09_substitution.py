@@ -12,7 +12,7 @@ PLAYER = PlayerSubstitute(Ranger='MyName', Player='Player',
                           ToPlanet='ToPlanet', ToStar='<ToStar>',
                           Date='Date', Day='Day', CurDate='CurDate',
                           Money='Money',
-                          months=MONTHS_RU, texts=TEXTS_RU)
+                          months=MONTHS_RU, texts=TEXTS_RU, balance=2000)
 
 TEST = {
     "": "",
