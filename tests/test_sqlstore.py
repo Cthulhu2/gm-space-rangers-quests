@@ -12,7 +12,7 @@ from srqmplayer.qmplayer import DEFAULT_PLAYERS
 from srqmplayer.qmplayer.funcs import GameState, State, PlayerState, \
     GameStateEnum
 # noinspection PyUnresolvedReferences
-from . import temp_db
+from . import temp_db, TEST_RESOURCE_DIR
 
 GAME_STATE = GameState(
     state=State.starting, critParamId=-1, locationId=-2,
@@ -23,11 +23,20 @@ GAME_STATE = GameState(
 
 # noinspection SpellCheckingInspection
 FP_CERT = '54eeaeb3288d6a24676ccfbe60a175d8c161872f5f399eb683a83745e01d4448'
+FP_CERT_Z = '8e0db68f3802e9448e96044fdcecb341ccfd3e2b987e2155cfb93fdd75689645'
 
 
 @pytest.fixture
 def temp_cert():
-    with open('test.crt', 'rb') as cert:
+    with open(f'{TEST_RESOURCE_DIR}/test-qqqq.crt', 'rb') as cert:
+        cert = load_certificate(FILETYPE_PEM, cert.read())
+    yield cert
+    del cert
+
+
+@pytest.fixture
+def temp_cert_z():
+    with open(f'{TEST_RESOURCE_DIR}/test-zzzz.crt', 'rb') as cert:
         cert = load_certificate(FILETYPE_PEM, cert.read())
     yield cert
     del cert
@@ -179,3 +188,44 @@ def test_planet_sol(temp_db):
         planet = Planet.choice_by(lang='en', race=['Ignored'], in_sol=True)
         assert planet.id in SOL_INHABITED
         assert planet.id not in SOL_UNINHABITED
+
+
+def test_leaders(temp_db, temp_cert, temp_cert_z):
+    with temp_db.atomic():
+        ident = gmcapsule.Identity(temp_cert)
+        Ranger.create_anon(ident)
+        ranger = Ranger.by(fp_cert=FP_CERT)
+        ranger.is_anon = False
+        ranger.name = 'qqqq'
+        ranger.credits_ru = 2002
+        ranger.credits_en = 5000
+        ranger.save()
+        QuestCompleted.save_by(rid=ranger, qid=137)  # ru
+        QuestCompleted.save_by(rid=ranger, qid=6)  # en
+        QuestCompleted.save_by(rid=ranger, qid=11)  # en
+        QuestCompleted.save_by(rid=ranger, qid=3)  # en
+        #
+        ident = gmcapsule.Identity(temp_cert_z)
+        Ranger.create_anon(ident)
+        ranger = Ranger.by(fp_cert=FP_CERT_Z)
+        ranger.is_anon = False
+        ranger.name = 'zzzz'
+        ranger.credits_ru = 2001
+        ranger.credits_en = 4000
+        ranger.save()
+        #
+        QuestCompleted.save_by(rid=ranger, qid=136)  # ru
+        QuestCompleted.save_by(rid=ranger, qid=135)  # ru
+        QuestCompleted.save_by(rid=ranger, qid=3)  # en
+
+    rows = [r for r in Ranger.leaders(lang='ru')]
+    assert 2 == len(rows)
+    assert rows[0][0] == 'zzzz'
+    assert rows[0][1] == 2  # completed quests
+    assert rows[0][2] == 2001
+
+    rows = [r for r in Ranger.leaders(lang='en')]
+    assert 2 == len(rows)
+    assert rows[0][0] == 'qqqq'
+    assert rows[0][1] == 3  # completed quests
+    assert rows[0][2] == 5000

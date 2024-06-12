@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-11 16:07+0200\n"
+"POT-Creation-Date: 2024-06-13 01:32+0200\n"
 "PO-Revision-Date: 2024-06-09 19:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
 
-#: gmsrq/gmquests.py:250 gmsrq/gmusers.py:166
+#: gmsrq/gmquests.py:250 gmsrq/gmusers.py:169
 msgid "Ranger certificate required"
 msgstr "Требуется сертификат рейнджера"
 
@@ -27,7 +27,7 @@ msgstr "Требуется сертификат рейнджера"
 msgid "Unknown quest id={qid}"
 msgstr "Неизвестный квест id={qid}"
 
-#: gmsrq/gmusers.py:29 gmsrq/page_index.py:127
+#: gmsrq/gmusers.py:29 gmsrq/page_index.py:131
 msgid "Wow! This is the famous ranger {name}!"
 msgstr "Ба! Да это же знаменитый рейнджер {name}!"
 
@@ -36,7 +36,7 @@ msgstr "Ба! Да это же знаменитый рейнджер {name}!"
 msgid "You are already registered."
 msgstr "Вы уже зарегистрированы."
 
-#: gmsrq/gmusers.py:31 gmsrq/gmusers.py:80
+#: gmsrq/gmusers.py:31 gmsrq/gmusers.py:80 gmsrq/gmusers.py:404
 msgid "Back"
 msgstr "Назад"
 
@@ -78,13 +78,13 @@ msgstr ""
 msgid "Rename ranger"
 msgstr "Переименовать рейнджера"
 
-#: gmsrq/gmusers.py:79 gmsrq/page_index.py:109 gmsrq/page_index.py:131
+#: gmsrq/gmusers.py:79 gmsrq/page_index.py:106 gmsrq/page_index.py:135
 msgid "Options"
 msgstr "Настройки"
 
 #: gmsrq/gmusers.py:82
 msgid "Use ANSI-colors"
-msgstr "Использовать ANSI-цвет"
+msgstr "Использовать ANSI-цвета"
 
 #: gmsrq/gmusers.py:84
 msgid "Account"
@@ -134,7 +134,7 @@ msgstr "(текущий)"
 msgid "Remove"
 msgstr "Удалить"
 
-#: gmsrq/gmusers.py:133 gmsrq/gmusers.py:373
+#: gmsrq/gmusers.py:133 gmsrq/gmusers.py:376
 msgid "Ranger {name} already registered."
 msgstr "Рейнджер {name} уже зарегистрирован."
 
@@ -146,39 +146,52 @@ msgstr "Выберу другое имя"
 msgid "Yes, it is me"
 msgstr "Да, это я"
 
-#: gmsrq/gmusers.py:272
+#: gmsrq/gmusers.py:275
 msgid "Password incorrect"
 msgstr "Неправильный пароль"
 
-#: gmsrq/page_index.py:106 gmsrq/page_index.py:126
-msgid "Ranger Center \"Union\""
-msgstr "Центр рейнджеров \"Союз\""
+#: gmsrq/gmusers.py:393
+msgid "  # : Ranger                    : Quests : Credits"
+msgstr "  № : Рейнджер                  : Квесты : Кредиты"
 
-#: gmsrq/page_index.py:107
+#: gmsrq/gmusers.py:403 gmsrq/gmusers.py:406 gmsrq/page_index.py:107
+#: gmsrq/page_index.py:136
+msgid "Leader board"
+msgstr "Таблица рекордов"
+
+#: gmsrq/gmusers.py:405
+msgid "Only registered rangers are displayed."
+msgstr "Отображены только зарегистрированные рейнджеры."
+
+#: gmsrq/page_index.py:104
 msgid "Come in, ranger, your certificate is valid."
 msgstr "Входи, рейнджер, твой сертификат прошёл проверку."
 
-#: gmsrq/page_index.py:108
+#: gmsrq/page_index.py:105
 msgid "Registration"
 msgstr "Регистрация"
 
-#: gmsrq/page_index.py:129
+#: gmsrq/page_index.py:133
 msgid "Progress: "
 msgstr "Прогресс: "
 
-#: gmsrq/page_index.py:130
-msgid "Balance: "
-msgstr "Баланс: "
+#: gmsrq/page_index.py:134
+msgid "Credits: "
+msgstr "Кредиты: "
 
-#: gmsrq/page_index.py:138
+#: gmsrq/page_index.py:143
 msgid "Gemlog"
 msgstr "Гемлог"
 
-#: gmsrq/page_index.py:140
+#: gmsrq/page_index.py:145
 msgid "Discuss on the BBS"
 msgstr "Обсудить на BBS"
 
-#: gmsrq/page_index.py:142
+#: gmsrq/page_index.py:147
 msgid "Source code and Issues"
 msgstr "Исходники и ишьюсы"
+
+#: gmsrq/utils.py:63
+msgid "Ranger Center \"Union\""
+msgstr "Центр рейнджеров \"Союз\""
 

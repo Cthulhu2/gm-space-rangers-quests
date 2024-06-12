@@ -4,14 +4,14 @@ import logging
 import os
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Optional, List, Iterator
+from typing import Optional, List, Iterator, Tuple, Iterable
 
 import gmcapsule
 from OpenSSL.crypto import X509, load_certificate, FILETYPE_ASN1
 from peewee import (
     CharField, BooleanField, ForeignKeyField, Model, IntegerField,
     BlobField, TextField, SqliteDatabase, CompositeKey,
-    DateTimeField, fn
+    DateTimeField, fn, SQL
 )
 
 from srqmplayer.qmplayer import Player
@@ -149,6 +149,24 @@ class Ranger(BaseModel):
         (Ranger.update(activity=datetime.now()).from_(Cert)
          .where((Cert.fp == fp_cert) & (Ranger.id == Cert.ranger))
          .execute())
+
+    @staticmethod
+    def leaders(lang) -> Iterable[Tuple[int, str, int, int]]:
+        credits_col = Ranger.credits_ru if lang == 'ru' else Ranger.credits_en
+        query = (
+            Ranger.select(Ranger.id, Ranger.name,
+                          fn.count(QuestCompleted.quest).alias('qcc'),
+                          credits_col)
+            .left_outer_join(Quest, on=(Quest.lang == lang))
+            .left_outer_join(QuestCompleted, on=(
+                    (QuestCompleted.ranger == Ranger.id)
+                    & (QuestCompleted.quest == Quest.id)))
+            .where(Ranger.is_anon == False)  # noqa
+            .group_by(Ranger.name)
+            .order_by(SQL('qcc').desc(), +credits_col, +Ranger.name)
+            .limit(10)
+        )
+        return query.tuples()
 
 
 class Cert(BaseModel):

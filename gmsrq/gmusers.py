@@ -28,7 +28,7 @@ def hello_ranger(_, ranger: Ranger, lang):
     return 20, meta(lang), (
             _('Wow! This is the famous ranger {name}!').format(name=ranger.name)
             + ' ' + _('You are already registered.') + '\n'
-            + f'=> /{lang}/ ' + _('Back') + '\n')
+            + f'=> /{lang}/ 🔙 ' + _('Back') + '\n')
 
 
 def ask_name(_):
@@ -77,7 +77,7 @@ def options(_, cfg, ranger: Ranger, fp_cert):
                      if not ranger.is_anon else '')
     return (
             f'# ' + _('Options') + '\n' +
-            f'=> {cfg.cgi_url} ' + _('Back') + '\n\n' +
+            f'=> {cfg.cgi_url} 🔙 ' + _('Back') + '\n\n' +
             f'=> {cfg.opts_url}?save=t&ansi={"f" if ansi else "t"}'
             f' {"☑" if ansi else "☐"} ' + _('Use ANSI-colors') + '\n\n' +
             f'{certs_items}\n'
@@ -156,10 +156,13 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_del_cert_url + '*', self.handle_opts_del_cert)
         capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc)
         capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename)
+        # leaders
+        capsule.add('/en/leaders', self.handle_leaders)
+        capsule.add('/ru/leaders', self.handle_leaders)
 
     def gettext_(self, lang: str) -> Callable[[str], str]:
         return self.cfg.l10n[lang].gettext if lang in self.cfg.l10n \
-            else self.cfg.l10n['en']
+            else self.cfg.l10n['en'].gettext
 
     def ask_cert(self, remote_addr):
         _ = self.gettext_(IpOptions.lang_by_ip(remote_addr))
@@ -375,3 +378,35 @@ class GmUsersHandler:
             ranger.name = username
             ranger.save()
         return 30, self.cfg.opts_url
+
+    @err_handler
+    @mark_ranger_activity
+    def handle_leaders(self, req: gmcapsule.gemini.Request):
+        lang = req.path.split('/')[1]
+        _ = self.gettext_(lang)
+
+        rid = None
+        if req.identity:
+            ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+            rid = ranger.id if ranger else None
+
+        th = _('  # : Ranger                    : Quests : Credits')
+        tl = f'----:---------------------------:--------:---------'
+        rows = []
+        for pos, row in enumerate(Ranger.leaders(lang=lang), 1):
+            if row[0] == rid and pos > 1:
+                rows.append(tl)
+            rows.append(f'{pos:>3} : {row[1]:<25} : {row[2]:^6} : {row[3]}')
+            if row[0] == rid and pos < 10:
+                rows.append(tl)
+
+        page = (f'# ' + _('Leader board') + '\n' +
+                f'=> /{lang}/ 🔙 ' + _('Back') + '\n\n' +
+                _('Only registered rangers are displayed.') + '\n' +
+                f'```' + _('Leader board') + '\n' +
+                th + '\n' +
+                tl + '\n' +
+                '\n'.join(rows) + '\n' +
+                f'```\n')
+
+        return 20, meta(lang), page

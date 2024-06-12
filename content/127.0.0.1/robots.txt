@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: /cgi/
+Disallow: /cgi/*
+Disallow: /ru/leaders
+Disallow: /en/leaders

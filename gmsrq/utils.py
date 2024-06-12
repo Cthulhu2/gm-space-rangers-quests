@@ -53,3 +53,11 @@ def mark_ranger_activity(func):
         return func(*args, **kwargs)
 
     return decorator
+
+
+def meta(lang):
+    return f'text/gemini; charset=utf-8; lang={lang}'
+
+
+def site_title(_):
+    return _('Ranger Center "Union"')

@@ -3,10 +3,7 @@ from typing import Optional
 
 from gmsrq import Config
 from gmsrq.sqlstore import Ranger, Quest, QuestState, QuestCompleted
-
-
-def meta(lang):
-    return f'text/gemini; charset=utf-8; lang={lang}'
+from gmsrq.utils import site_title, meta
 
 
 def page_index(_, ranger: Optional[Ranger], lang: str, cfg: Config, root: Path):
@@ -103,10 +100,11 @@ def index_anon(_, cfg: Config, ranger: Ranger, lang):
     quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
         else build_quest_urls_en(cfg, ranger)
 
-    return (f'# ' + _('Ranger Center "Union"') + '\n' +
-            _('Come in, ranger, your certificate is valid.') + '\n' +
+    return (f'# {site_title(_)}\n' +
+            _('Come in, ranger, your certificate is valid.') + '\n\n' +
             f'=> {cfg.reg_url} ' + _('Registration') + '\n' +
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
+            f'=> /{lang}/leaders 💯 ' + _('Leader board') + '\n' +
             f'{quest_urls}\n' +
             footer(_))
 
@@ -119,22 +117,23 @@ def index_ranger(_, cfg: Config, ranger: Ranger, lang):
     if ranger.get_opts().ansi:
         progress = f'\033[38;5;11m{quest_completed} / {quest_total}\033[0m'
         if lang == 'ru':
-            balance = f'\033[38;5;11m{ranger.credits_ru}\033[0m'
+            credits = f'\033[38;5;11m{ranger.credits_ru}\033[0m'
         else:
-            balance = f'\033[38;5;11m{ranger.credits_en}\033[0m'
+            credits = f'\033[38;5;11m{ranger.credits_en}\033[0m'
     else:
         progress = f'{quest_completed} / {quest_total}'
         if lang == 'ru':
-            balance = f'{ranger.credits_ru}'
+            credits = f'{ranger.credits_ru}'
         else:
-            balance = f'{ranger.credits_en}'
+            credits = f'{ranger.credits_en}'
 
-    return (f'# ' + _('Ranger Center "Union"') + '\n' +
+    return (f'# {site_title(_)}\n' +
             _('Wow! This is the famous ranger {name}!')
             .format(name=ranger.name) + '\n\n' +
             _('Progress: ') + progress + '\n' +
-            _('Balance: ') + balance + 'cr \n\n' +
+            _('Credits: ') + credits + '\n\n' +
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
+            f'=> /{lang}/leaders 💯 ' + _('Leader board') + '\n' +
             f'{quest_urls}\n' +
             footer(_))
 
