@@ -1,0 +1,15 @@
+# Leaderboard available!
+Good news, everyone!
+
+The Rangers now have an account in galactic credits! And a table of records is available, where you can compare completed quests and the amount in your account. There are rumors that some quests have a cap on the maximum amount of credits, and millions can turn into a couple of thousand, but not sure.
+
+Added names of systems and planets from the game. Selected randomly, but according to race. And even the Sun and the Earth should be possible to meet.
+
+The renaming of rangers has also been fixed, now query-parameters are decoded and ranger can be named with spaces.
+
+Refactoring, text localization has been transferred to the gettext library. Less if-else.
+
+=> /en/ Home
+```
+Created: 2024-06-13
+```

@@ -106,7 +106,7 @@ def index_anon(_, cfg: Config, ranger: Ranger, lang):
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
             f'=> /{lang}/leaders 💯 ' + _('Leader board') + '\n' +
             f'{quest_urls}\n' +
-            footer(_))
+            footer(_, lang))
 
 
 def index_ranger(_, cfg: Config, ranger: Ranger, lang):
@@ -135,13 +135,14 @@ def index_ranger(_, cfg: Config, ranger: Ranger, lang):
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
             f'=> /{lang}/leaders 💯 ' + _('Leader board') + '\n' +
             f'{quest_urls}\n' +
-            footer(_))
+            footer(_, lang))
 
 
-def footer(_):
+def footer(_, lang):
     return (f'### Info\n' +
-            f'=> /en/gemlog/ ' + _('Gemlog') + '\n' +
+            f'=> /{lang}/gemlog/ ' + _('Gemlog') + '\n' +
             f'=> gemini://bbs.geminispace.org/s/SpaceRangers ' +
             _('Discuss on the BBS') + '\n' +
             f'=> https://github.com/Cthulhu2/gm-space-rangers-quests ' +
-            _('Source code and Issues') + '\n')
+            _('Source code and Issues') + '\n' +
+            f'📧 (g-mail): cthulhu28@hashnix.club')

@@ -43,3 +43,4 @@ To perform government assignments, you will need a ranger certificate. Don't wor
 => /en/gemlog/ Gemlog
 => gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS
 => https://github.com/Cthulhu2/gm-space-rangers-quests Source code and Issues
+📧 (g-mail): cthulhu28@hashnix.club
