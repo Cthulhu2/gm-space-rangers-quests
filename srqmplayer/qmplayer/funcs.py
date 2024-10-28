@@ -176,7 +176,7 @@ def sr_date_to_str(days_to_add: int,
         initial_date = datetime.now()
 
     d = initial_date + timedelta(days=days_to_add)
-    return f'{d.day} {months[d.month]} {d.year + 1000}'
+    return f'{d.day} {months[d.month - 1]} {d.year + 1000}'
 
 
 # This function is almost the same as substitute, but it takes quest and state
