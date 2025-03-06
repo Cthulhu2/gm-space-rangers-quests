@@ -194,38 +194,45 @@ def test_leaders(temp_db, temp_cert, temp_cert_z):
     with temp_db.atomic():
         ident = gmcapsule.Identity(temp_cert)
         Ranger.create_anon(ident)
-        ranger = Ranger.by(fp_cert=FP_CERT)
-        ranger.is_anon = False
-        ranger.name = 'qqqq'
-        ranger.credits_ru = 2002
-        ranger.credits_en = 5000
-        ranger.save()
-        QuestCompleted.save_by(rid=ranger, qid=137)  # ru
-        QuestCompleted.save_by(rid=ranger, qid=6)  # en
-        QuestCompleted.save_by(rid=ranger, qid=11)  # en
-        QuestCompleted.save_by(rid=ranger, qid=3)  # en
+        qqq = Ranger.by(fp_cert=FP_CERT)
+        qqq.is_anon = False
+        qqq.name = 'qqqq'
+        qqq.credits_ru = 2002
+        qqq.credits_en = 5000
+        qqq.save()
+        #
+        QuestCompleted.save_by(rid=qqq, qid=137)  # ru
+        QuestCompleted.save_by(rid=qqq, qid=6)  # en
+        QuestCompleted.save_by(rid=qqq, qid=11)  # en
+        QuestCompleted.save_by(rid=qqq, qid=3)  # en
         #
         ident = gmcapsule.Identity(temp_cert_z)
         Ranger.create_anon(ident)
-        ranger = Ranger.by(fp_cert=FP_CERT_Z)
-        ranger.is_anon = False
-        ranger.name = 'zzzz'
-        ranger.credits_ru = 2001
-        ranger.credits_en = 4000
-        ranger.save()
+        zzz = Ranger.by(fp_cert=FP_CERT_Z)
+        zzz.is_anon = False
+        zzz.name = 'zzzz'
+        zzz.credits_ru = 2001
+        zzz.credits_en = 4000
+        zzz.save()
         #
-        QuestCompleted.save_by(rid=ranger, qid=136)  # ru
-        QuestCompleted.save_by(rid=ranger, qid=135)  # ru
-        QuestCompleted.save_by(rid=ranger, qid=3)  # en
+        QuestCompleted.save_by(rid=zzz, qid=136)  # ru
+        QuestCompleted.save_by(rid=zzz, qid=135)  # ru
+        QuestCompleted.save_by(rid=zzz, qid=3)  # en
 
-    rows = [r for r in Ranger.leaders(lang='ru')]
-    assert 2 == len(rows)
-    assert rows[0][0] == 'zzzz'
-    assert rows[0][1] == 2  # completed quests
-    assert rows[0][2] == 2001
+        rows = [r for r in Ranger.leaders(lang='ru')]
+        assert 2 == len(rows)
+        assert rows[0] == (zzz.id, 'zzzz', 2, 2001)
+        assert rows[1] == (qqq.id, 'qqqq', 1, 2002)
 
-    rows = [r for r in Ranger.leaders(lang='en')]
-    assert 2 == len(rows)
-    assert rows[0][0] == 'qqqq'
-    assert rows[0][1] == 3  # completed quests
-    assert rows[0][2] == 5000
+        rows = [r for r in Ranger.leaders(lang='en')]
+        assert 2 == len(rows)
+        assert rows[0] == (qqq.id, 'qqqq', 3, 5000)
+        assert rows[1] == (zzz.id, 'zzzz', 1, 4000)
+        #
+        QuestCompleted.save_by(rid=qqq, qid=135)  # ru
+        qqq.save()
+        rows = [r for r in Ranger.leaders(lang='ru')]
+        assert 2 == len(rows)
+        assert rows[0] == (qqq.id, 'qqqq', 2, 2002)  # more credits
+        assert rows[1] == (zzz.id, 'zzzz', 2, 2001)
+
