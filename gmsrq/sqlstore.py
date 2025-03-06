@@ -163,7 +163,7 @@ class Ranger(BaseModel):
                     & (QuestCompleted.quest == Quest.id)))
             .where(Ranger.is_anon == False)  # noqa
             .group_by(Ranger.name)
-            .order_by(SQL('qcc').desc(), +credits_col, +Ranger.name)
+            .order_by(SQL('qcc').desc(), -credits_col, +Ranger.name)
             .limit(10)
         )
         return query.tuples()
