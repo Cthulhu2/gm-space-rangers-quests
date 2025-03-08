@@ -91,7 +91,7 @@ def build_quest_urls_en(cfg, ranger):
     completed = QuestCompleted.by(rid=ranger.id)
     #
     quests = [q for q in Quest.all_by(lang='en', game='SR 2.1.2121 eng')]
-    quest_urls = build_quest_urls(ansi, cfg, f'Quests :: SR 2',
+    quest_urls = build_quest_urls(ansi, cfg, f'Quests :: SR 2 HD: A War Apart',
                                   completed, in_progress, quests)
     return quest_urls
 
@@ -145,4 +145,4 @@ def footer(_, lang):
             _('Discuss on the BBS') + '\n' +
             f'=> https://github.com/Cthulhu2/gm-space-rangers-quests ' +
             _('Source code and Issues') + '\n' +
-            f'📧 (g-mail): cthulhu28@hashnix.club')
+            f'=> misfin:cthulhu28@hashnix.club ' + _('Contact email (misfin)'))

@@ -122,4 +122,4 @@
 => /ru/gemlog/ Гемлог
 => gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS
 => https://github.com/Cthulhu2/gm-space-rangers-quests Исходники и ишьюсы
-📧 (g-mail): cthulhu28@hashnix.club
+=> misfin:cthulhu28@hashnix.club Почта для связи (misfin)
