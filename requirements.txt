@@ -1,6 +1,6 @@
-Babel==2.15.0
-dataclasses-json==0.6.4
-gmcapsule==0.7.0
-peewee==3.17.3
-peewee-migrate==1.12.2
-pytest==8.1.1
+Babel==2.17.0
+dataclasses-json==0.6.7
+gmcapsule==0.9.7
+peewee==3.17.9
+peewee-migrate==1.13.0
+pytest==8.3.5

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-08 14:09+0200\n"
+"POT-Creation-Date: 2025-03-08 14:25+0200\n"
 "PO-Revision-Date: 2024-06-09 19:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -17,17 +17,19 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: gmsrq/gmquests.py:250 gmsrq/gmusers.py:169
 msgid "Ranger certificate required"
 msgstr "Требуется сертификат рейнджера"
 
 #: gmsrq/gmquests.py:257
+#, python-brace-format
 msgid "Unknown quest id={qid}"
 msgstr "Неизвестный квест id={qid}"
 
 #: gmsrq/gmusers.py:29 gmsrq/page_index.py:131
+#, python-brace-format
 msgid "Wow! This is the famous ranger {name}!"
 msgstr "Ба! Да это же знаменитый рейнджер {name}!"
 
@@ -49,10 +51,12 @@ msgid "Enter ranger's name to attach certificate to."
 msgstr "Введите имя рейнджера для добавления сертификата"
 
 #: gmsrq/gmusers.py:43
+#, python-brace-format
 msgid "Delete certificate {cert}. Are you sure? Type \"yes\"."
 msgstr "Удалить сертификат {cert}. Вы уверены? Введите \"yes\"."
 
 #: gmsrq/gmusers.py:48
+#, python-brace-format
 msgid "Delete ranger {name} account and all its data. Are you sure? Type \"yes\"."
 msgstr ""
 "Удалить аккаунт рейнджера {name} и все его данные. Вы уверены? Введите "
@@ -62,7 +66,7 @@ msgstr ""
 msgid "Password?"
 msgstr "Пароль?"
 
-#: gmsrq/gmusers.py:62
+#: gmsrq/gmusers.py:63
 msgid ""
 "Invalid ranger name. Not allowed:\n"
 "* >=128 symbols -- database is not rubber;\n"
@@ -91,6 +95,7 @@ msgid "Account"
 msgstr "Аккаунт"
 
 #: gmsrq/gmusers.py:86
+#, python-brace-format
 msgid "Delete ranger {name}"
 msgstr "Удалить рейнджера {name}"
 
@@ -99,6 +104,7 @@ msgid "All quests progress and registered certificates will be deleted"
 msgstr "Будет удалён весь прогресс и все связанные сертификаты"
 
 #: gmsrq/gmusers.py:97
+#, python-brace-format
 msgid "valid {minutes} min"
 msgstr "на {minutes} мин"
 
@@ -111,6 +117,7 @@ msgid "Certificates"
 msgstr "Сертификаты"
 
 #: gmsrq/gmusers.py:101
+#, python-brace-format
 msgid "Certificate password ({expires})"
 msgstr "Пароль на сертификаты ({expires})"
 
@@ -123,6 +130,7 @@ msgstr ""
 "просто попытаться зарегистрировать на этот логин."
 
 #: gmsrq/gmusers.py:105
+#, python-brace-format
 msgid "Registered to {name}"
 msgstr "Зарегистрировано на {name}"
 
@@ -135,6 +143,7 @@ msgid "Remove"
 msgstr "Удалить"
 
 #: gmsrq/gmusers.py:133 gmsrq/gmusers.py:376
+#, python-brace-format
 msgid "Ranger {name} already registered."
 msgstr "Рейнджер {name} уже зарегистрирован."
 
