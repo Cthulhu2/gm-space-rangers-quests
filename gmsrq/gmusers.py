@@ -143,9 +143,9 @@ class GmUsersHandler:
         self.cfg = cfg
 
     def init(self, capsule: gmcapsule.Context):
-        # index
-        capsule.add('/en/', self.index)
-        capsule.add('/ru/', self.index)
+        for lang in self.cfg.l10n.keys():
+            capsule.add(f'/{lang}/', self.index)
+            capsule.add(f'/{lang}/leaders', self.handle_leaders)
         # registration
         capsule.add(self.cfg.cgi_url, self.handle_cgi)
         capsule.add(self.cfg.reg_add_url + '*', self.handle_reg_add)
@@ -156,9 +156,6 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_del_cert_url + '*', self.handle_opts_del_cert)
         capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc)
         capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename)
-        # leaders
-        capsule.add('/en/leaders', self.handle_leaders)
-        capsule.add('/ru/leaders', self.handle_leaders)
 
     def gettext_(self, lang: str) -> Callable[[str], str]:
         return self.cfg.l10n[lang].gettext if lang in self.cfg.l10n \

@@ -96,13 +96,37 @@ def build_quest_urls_en(cfg, ranger):
     return quest_urls
 
 
+def build_quest_urls_de(cfg, ranger):
+    ansi = ranger.get_opts().ansi
+    in_progress = QuestState.in_progress(rid=ranger.id)
+    completed = QuestCompleted.by(rid=ranger.id)
+    #
+    quests = [q for q in Quest.all_by(lang='de', game='SR 2.1.2468 ger')]
+    quest_urls = build_quest_urls(ansi, cfg, f'Quests :: SR 2 HD: A War Apart',
+                                  completed, in_progress, quests)
+    return quest_urls
+
+
+def build_quest_urls_es(cfg, ranger):
+    ansi = ranger.get_opts().ansi
+    in_progress = QuestState.in_progress(rid=ranger.id)
+    completed = QuestCompleted.by(rid=ranger.id)
+    #
+    quests = [q for q in Quest.all_by(lang='es', game='SR 2.1.2468 spa')]
+    quest_urls = build_quest_urls(ansi, cfg, f'Quests :: SR 2 HD: A War Apart',
+                                  completed, in_progress, quests)
+    return quest_urls
+
+
 def index_anon(_, cfg: Config, ranger: Ranger, lang):
     quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
+        else build_quest_urls_es(cfg, ranger) if lang == 'es' \
+        else build_quest_urls_de(cfg, ranger) if lang == 'de' \
         else build_quest_urls_en(cfg, ranger)
 
     return (f'# {site_title(_)}\n' +
             _('Come in, ranger, your certificate is valid.') + '\n\n' +
-            f'=> {cfg.reg_url} ' + _('Registration') + '\n' +
+            f'=> {cfg.reg_url} 🪪' + _('Registration') + '\n' +
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
             f'=> /{lang}/leaders 💯 ' + _('Leader board') + '\n' +
             f'{quest_urls}\n' +
@@ -111,6 +135,8 @@ def index_anon(_, cfg: Config, ranger: Ranger, lang):
 
 def index_ranger(_, cfg: Config, ranger: Ranger, lang):
     quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
+        else build_quest_urls_es(cfg, ranger) if lang == 'es' \
+        else build_quest_urls_de(cfg, ranger) if lang == 'de' \
         else build_quest_urls_en(cfg, ranger)
     quest_completed = len(QuestCompleted.by(rid=ranger.id, lang=lang))
     quest_total = Quest.count_by(lang=lang)
@@ -139,7 +165,7 @@ def index_ranger(_, cfg: Config, ranger: Ranger, lang):
 
 
 def footer(_, lang):
-    return (f'### Info\n' +
+    return (f'### ' + _('Info') + '\n' +
             f'=> /{lang}/gemlog/ ' + _('Gemlog') + '\n' +
             f'=> gemini://bbs.geminispace.org/s/SpaceRangers ' +
             _('Discuss on the BBS') + '\n' +

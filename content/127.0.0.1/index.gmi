@@ -16,7 +16,13 @@
 ```
 # Ranger Center "Union"
 => /en/ Welcome!
-Online-player of text-quests from the game "Space Rangers".
+Online player of text quests from the game "Space Rangers".
+
+=> /de/ Willkommen!
+Online-Player für Textquests aus dem Spiel "Space Rangers".
+
+=> /es/ ¡Bienvenido!
+Reproductor en línea de misiones de texto del juego "Space Rangers".
 
 => /ru/ Добро пожаловать!
 Онлайн-проигрыватель текстовых квестов из игры "Космические Рейнджеры".

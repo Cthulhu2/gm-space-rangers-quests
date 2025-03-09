@@ -48,7 +48,7 @@ def test_choice_planets_quests(temp_db):
         with open(join(BORROWED_QUEST_DIR, f), 'rb') as data:
             qm = parse(data)
         log.info(f)
-        for lang in ('en', 'ru'):
+        for lang in ('en', 'ru', 'es', 'de'):
             f_star, f_planet, to_star, to_planet = choice_planets(lang, qm)
             assert f_star, f'{lang} :: {f}'
             assert f_planet, f'{lang} :: {f}'

@@ -1,43 +1,43 @@
-# Ranger Center "Union"
-To perform government assignments, you will need a ranger certificate. Don't worry, it's exactly the same as yours. Do you have a certificate, right? Are you a ranger? So you have the right certificate.
+# Ranger-Zentrum "Union"
+Zur Wahrnehmung behördlicher Aufträge benötigen Sie ein Ranger-Zertifikat. Keine Sorge, es ist genau dasselbe wie bei Ihnen. Du hast doch ein Zertifikat, oder? Du bist doch ein Ranger, oder? Hier haben Sie das passende Zertifikat.
 
-=> /cgi/?lang=en Show Ranger's certificate
+=> /cgi/?lang=de Ranger-Zertifikat anzeigen
 
 ### Quests :: SR 2 HD: A War Apart
-=> /cgi/act?qid=123 Assortment
-=> /cgi/act?qid=118 Auropedal Sibolusovtus
 => /cgi/act?qid=6   Banquet
 => /cgi/act?qid=11  Borzukhan
-=> /cgi/act?qid=116 Checkers
 => /cgi/act?qid=125 Cosmic Lines
 => /cgi/act?qid=23  Depth
 => /cgi/act?qid=27  Disk
 => /cgi/act?qid=32  Driver
 => /cgi/act?qid=36  Edelweiss
-=> /cgi/act?qid=38  Elections
-=> /cgi/act?qid=40  Eloose
+=> /cgi/act?qid=38  Election
+=> /cgi/act?qid=40  Elus
 => /cgi/act?qid=51  Fishing Championship
 => /cgi/act?qid=53  Foncers
-=> /cgi/act?qid=43  Frame
+=> /cgi/act?qid=43  Frames
 => /cgi/act?qid=64  Jumper
 => /cgi/act?qid=68  Leonardo da Vinci
 => /cgi/act?qid=70  Logic
-=> /cgi/act?qid=112 Minirobot Battles
 => /cgi/act?qid=80  Ministry
 => /cgi/act?qid=84  Music Festival
-=> /cgi/act?qid=87  Olympics
-=> /cgi/act?qid=89  Pachvaraus
+=> /cgi/act?qid=87  Olympics (Clerks without End)
+=> /cgi/act?qid=89  Pachvarash
 => /cgi/act?qid=95  Pilot
 => /cgi/act?qid=100 Pizza
+=> /cgi/act?qid=116 Plasmo-checkers
+=> /cgi/act?qid=102 Player
 => /cgi/act?qid=106 Prison
 => /cgi/act?qid=97  Prison (pirate)
-=> /cgi/act?qid=110 Rally
 => /cgi/act?qid=3   Ranger's Bad Day
-=> /cgi/act?qid=102 Record Player
+=> /cgi/act?qid=110 Rally
+=> /cgi/act?qid=112 Robots
+=> /cgi/act?qid=16  Safecracking
+=> /cgi/act?qid=118 Sibolusovtus
 => /cgi/act?qid=121 Ski Resort
-=> /cgi/act?qid=128 Stealth
+=> /cgi/act?qid=123 Sorting
+=> /cgi/act?qid=128 Stealth Ship
 => /cgi/act?qid=130 Swarokok
-=> /cgi/act?qid=16  Tag
 => /cgi/act?qid=138 Xenopark
 
 ### Info

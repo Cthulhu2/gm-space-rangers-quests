@@ -1,0 +1,47 @@
+# Centro de ranger "Unión"
+Para realizar misiones gubernamentales, necesitarás un certificado de ranger. No te preocupes, es exactamente igual que el tuyo. ¿Tienes un certificado, verdad? ¿Eres ranger? Entonces tienes el certificado correcto.
+
+=> /cgi/?lang=es Mostrar certificado de ranger
+
+### Quests :: SR 2 HD: A War Apart
+=> /cgi/act?qid=142 Banquete
+=> /cgi/act?qid=192 Batallas de Minirobots
+=> /cgi/act?qid=144 Borzukhan
+=> /cgi/act?qid=162 Campeonato de Pesca
+=> /cgi/act?qid=152 Conductor
+=> /cgi/act?qid=160 Cuadro
+=> /cgi/act?qid=194 Dames
+=> /cgi/act?qid=150 Disco
+=> /cgi/act?qid=154 Edelweiss
+=> /cgi/act?qid=156 Elección
+=> /cgi/act?qid=158 Eloose
+=> /cgi/act?qid=198 Estación de Esquí
+=> /cgi/act?qid=146 Etiqueta
+=> /cgi/act?qid=174 Festival de Música
+=> /cgi/act?qid=164 Fonsers
+=> /cgi/act?qid=176 Juegos Olímpicos
+=> /cgi/act?qid=168 Leonardo da Vinci
+=> /cgi/act?qid=202 Líneas Cósmicas
+=> /cgi/act?qid=170 Lógica
+=> /cgi/act?qid=140 Mal Día de Ranger
+=> /cgi/act?qid=172 Ministerio
+=> /cgi/act?qid=178 Pachvaraus
+=> /cgi/act?qid=180 Piloto
+=> /cgi/act?qid=184 Pizza
+=> /cgi/act?qid=188 Prisión
+=> /cgi/act?qid=182 Prisión (pirata)
+=> /cgi/act?qid=148 Profundidad
+=> /cgi/act?qid=190 Rally
+=> /cgi/act?qid=166 Saltador
+=> /cgi/act?qid=196 Sibolusovtus Auropedal
+=> /cgi/act?qid=204 Sigilo
+=> /cgi/act?qid=200 Surtido
+=> /cgi/act?qid=206 Swarokok
+=> /cgi/act?qid=186 Tocadiscos
+=> /cgi/act?qid=208 Xenoparque
+
+### Información
+=> /es/gemlog/ Gemlog
+=> gemini://bbs.geminispace.org/s/SpaceRangers Discutir en el BBS
+=> https://github.com/Cthulhu2/gm-space-rangers-quests Código fuente y problemas
+=> misfin:cthulhu28@hashnix.club Correo electrónico de contacto (misfin)

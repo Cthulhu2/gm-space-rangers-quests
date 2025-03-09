@@ -23,6 +23,13 @@ $ pw_migrate migrate \
   --database "sqlite:/./users/gmsrq.sqlite" \ 
   --directory ./gmsrq/migrations
 ```
+Rollback:
+```shell
+$ pw_migrate rollback \
+  --database "sqlite:/users/gmsrq.sqlite" \
+  --directory ./gmsrq/migrations/ \
+  --count 1
+```
 
 Localization:
 ```shell

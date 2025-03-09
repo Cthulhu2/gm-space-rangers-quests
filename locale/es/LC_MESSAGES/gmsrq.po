@@ -1,19 +1,18 @@
-# Russian translations for gmsrq.
-# Copyright (C) 2024 ORGANIZATION
+# Spanish translations for gmsrq.
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the gmsrq project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gmsrq VERSION\n"
+"Project-Id-Version: gmsrq 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-03-08 15:58+0200\n"
-"PO-Revision-Date: 2024-06-09 19:31+0200\n"
+"PO-Revision-Date: 2025-03-08 15:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ru\n"
-"Language-Team: ru <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,50 +20,49 @@ msgstr ""
 
 #: gmsrq/gmquests.py:250 gmsrq/gmusers.py:169
 msgid "Ranger certificate required"
-msgstr "Требуется сертификат рейнджера"
+msgstr "Se requiere certificado de ranger"
 
 #: gmsrq/gmquests.py:257
 #, python-brace-format
 msgid "Unknown quest id={qid}"
-msgstr "Неизвестный квест id={qid}"
+msgstr "Identificador desconocido id={qid}"
 
 #: gmsrq/gmusers.py:29 gmsrq/page_index.py:131
 #, python-brace-format
 msgid "Wow! This is the famous ranger {name}!"
-msgstr "Ба! Да это же знаменитый рейнджер {name}!"
+msgstr "¡Guau! ¡Éste es el famoso ranger {name}!"
 
 #: gmsrq/gmusers.py:30
-#, fuzzy
 msgid "You are already registered."
-msgstr "Вы уже зарегистрированы."
+msgstr "Ya estás registrado."
 
 #: gmsrq/gmusers.py:31 gmsrq/gmusers.py:80 gmsrq/gmusers.py:404
 msgid "Back"
-msgstr "Назад"
+msgstr "Atrás"
 
 #: gmsrq/gmusers.py:35
 msgid "What is your name?"
-msgstr "Как вас называть?"
+msgstr "¿Cómo te llamas?"
 
 #: gmsrq/gmusers.py:39
 msgid "Enter ranger's name to attach certificate to."
-msgstr "Введите имя рейнджера для добавления сертификата"
+msgstr "Ingrese el nombre del ranger al que se adjuntará el certificado."
 
 #: gmsrq/gmusers.py:43
 #, python-brace-format
 msgid "Delete certificate {cert}. Are you sure? Type \"yes\"."
-msgstr "Удалить сертификат {cert}. Вы уверены? Введите \"yes\"."
+msgstr "Eliminar certificado {cert}. ¿Está seguro? Escriba \"yes\"."
 
 #: gmsrq/gmusers.py:48
 #, python-brace-format
 msgid "Delete ranger {name} account and all its data. Are you sure? Type \"yes\"."
 msgstr ""
-"Удалить аккаунт рейнджера {name} и все его данные. Вы уверены? Введите "
-"\"yes\"."
+"Borrar la cuenta de ranger {name} y todos sus datos. ¿Estás seguro? "
+"Escribe \"yes\"."
 
 #: gmsrq/gmusers.py:53
 msgid "Password?"
-msgstr "Пароль?"
+msgstr "¿Contraseña?"
 
 #: gmsrq/gmusers.py:63
 msgid ""
@@ -73,142 +71,144 @@ msgid ""
 "* \\r, \\n -- what are these rangers with line breaks;\n"
 "* ``` -- and we don’t need to break the formatting."
 msgstr ""
-"Неподходящее имя для рейнджера. Нельзя использовать:\n"
-"* >=128 символов -- база данных не резиновая;\n"
-"* \\r, \\n -- это что за рейнджеры с переносами строк;\n"
-"* ``` -- и форматирование нам ломать не надо."
+"Nombre de ranger no válido. No permitido:\n"
+"* >=128 símbolos: la base de datos no es de código abierto;\n"
+"* \\r, \\n: ¿qué son estos rangers con saltos de línea?\n"
+"* ```: y no necesitamos romper el formato."
 
 #: gmsrq/gmusers.py:76
 msgid "Rename ranger"
-msgstr "Переименовать рейнджера"
+msgstr "Cambiar el nombre del ranger"
 
 #: gmsrq/gmusers.py:79 gmsrq/page_index.py:106 gmsrq/page_index.py:135
 msgid "Options"
-msgstr "Настройки"
+msgstr "Opciones"
 
 #: gmsrq/gmusers.py:82
 msgid "Use ANSI-colors"
-msgstr "Использовать ANSI-цвета"
+msgstr "Utilice ANSI-colores"
 
 #: gmsrq/gmusers.py:84
 msgid "Account"
-msgstr "Аккаунт"
+msgstr "Cuenta"
 
 #: gmsrq/gmusers.py:86
 #, python-brace-format
 msgid "Delete ranger {name}"
-msgstr "Удалить рейнджера {name}"
+msgstr "Eliminar ranger {name}"
 
 #: gmsrq/gmusers.py:88
 msgid "All quests progress and registered certificates will be deleted"
-msgstr "Будет удалён весь прогресс и все связанные сертификаты"
+msgstr ""
+"Se eliminarán todos los avances de las misiones y los certificados "
+"registrados."
 
 #: gmsrq/gmusers.py:97
 #, python-brace-format
 msgid "valid {minutes} min"
-msgstr "на {minutes} мин"
+msgstr "válido {minutes} min"
 
 #: gmsrq/gmusers.py:98
 msgid "not set"
-msgstr "не установлен"
+msgstr "no establecido"
 
 #: gmsrq/gmusers.py:100
 msgid "Certificates"
-msgstr "Сертификаты"
+msgstr "Certificados"
 
 #: gmsrq/gmusers.py:101
 #, python-brace-format
 msgid "Certificate password ({expires})"
-msgstr "Пароль на сертификаты ({expires})"
+msgstr "Contraseña del certificado ({expires})"
 
 #: gmsrq/gmusers.py:103
 msgid ""
 "For adding other certificates you need set password. Then just try "
 "register for this username."
 msgstr ""
-"Для добавления других сертификатов нужно установить пароль. Потом просто "
-"просто попытаться зарегистрировать на этот логин."
+"Para agregar otros certificados, debe establecer una contraseña. Luego, "
+"intente registrarse con este nombre de usuario."
 
 #: gmsrq/gmusers.py:105
 #, python-brace-format
 msgid "Registered to {name}"
-msgstr "Зарегистрировано на {name}"
+msgstr "Registrado en {name}"
 
 #: gmsrq/gmusers.py:111
 msgid "(current)"
-msgstr "(текущий)"
+msgstr "(actual)"
 
 #: gmsrq/gmusers.py:115
 msgid "Remove"
-msgstr "Удалить"
+msgstr "Eliminar"
 
 #: gmsrq/gmusers.py:133 gmsrq/gmusers.py:376
 #, python-brace-format
 msgid "Ranger {name} already registered."
-msgstr "Рейнджер {name} уже зарегистрирован."
+msgstr "Ranger {name} ya registrado."
 
 #: gmsrq/gmusers.py:134
 msgid "Choose different name"
-msgstr "Выберу другое имя"
+msgstr "Elige un nombre diferente"
 
 #: gmsrq/gmusers.py:136
 msgid "Yes, it is me"
-msgstr "Да, это я"
+msgstr "Sí, soy yo"
 
 #: gmsrq/gmusers.py:275
 msgid "Password incorrect"
-msgstr "Неправильный пароль"
+msgstr "Contraseña incorrecta"
 
 #: gmsrq/gmusers.py:393
 msgid "  # : Ranger                    : Quests : Credits"
-msgstr "  № : Рейнджер                  : Квесты : Кредиты"
+msgstr "  # : Ranger                    : Quests : Credits"
 
 #: gmsrq/gmusers.py:403 gmsrq/gmusers.py:406 gmsrq/page_index.py:107
 #: gmsrq/page_index.py:136
 msgid "Leader board"
-msgstr "Таблица рекордов"
+msgstr "Tabla de clasificación"
 
 #: gmsrq/gmusers.py:405
 msgid "Only registered rangers are displayed."
-msgstr "Отображены только зарегистрированные рейнджеры."
+msgstr "Sólo se muestran los rangers registrados."
 
 #: gmsrq/page_index.py:104
 msgid "Come in, ranger, your certificate is valid."
-msgstr "Входи, рейнджер, твой сертификат прошёл проверку."
+msgstr "Adelante, ranger, su certificado es válido."
 
 #: gmsrq/page_index.py:105
 msgid "Registration"
-msgstr "Регистрация"
+msgstr "Registro"
 
 #: gmsrq/page_index.py:133
 msgid "Progress: "
-msgstr "Прогресс: "
+msgstr "Progreso: "
 
 #: gmsrq/page_index.py:134
 msgid "Credits: "
-msgstr "Кредиты: "
+msgstr "Créditos: "
 
 #: gmsrq/page_index.py:142
 msgid "Info"
-msgstr "Информация"
+msgstr "Información"
 
 #: gmsrq/page_index.py:143
 msgid "Gemlog"
-msgstr "Гемлог"
+msgstr "Gemlog"
 
 #: gmsrq/page_index.py:145
 msgid "Discuss on the BBS"
-msgstr "Обсудить на BBS"
+msgstr "Discutir en el BBS"
 
 #: gmsrq/page_index.py:147
 msgid "Source code and Issues"
-msgstr "Исходники и ишьюсы"
+msgstr "Código fuente y problemas"
 
 #: gmsrq/page_index.py:148
 msgid "Contact email (misfin)"
-msgstr "Почта для связи (misfin)"
+msgstr "Correo electrónico de contacto (misfin)"
 
 #: gmsrq/utils.py:63
 msgid "Ranger Center \"Union\""
-msgstr "Центр рейнджеров \"Союз\""
+msgstr "Centro de ranger \"Unión\""
 

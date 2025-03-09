@@ -23,7 +23,7 @@ QUEST_NAMES = [
     ( 13, 'ru', 'Casino.qm',               'Казино',                        'КР 1',                                     ),  # noqa
     ( 14, 'ru', 'Citadels.qmm',            'Цитадели',                      'КР 2 Доминаторы',                          ),  # noqa
     ( 15, 'ru', 'Codebox.qmm',             'Пятнашка',                      'КР 2 Доминаторы Перезагрузка',             ),  # noqa
-    ( 16, 'en', 'Codebox_eng.qm',          'Safecracking',                  'SR 2.1.2121 eng',                          ),  # noqa
+    ( 16, 'en', 'Codebox_eng.qm',          'Tag',                           'SR 2.1.2121 eng',                          ),  # noqa
     ( 17, 'ru', 'Colonization.qmm',        'Колонизация',                   'КР 2 Доминаторы Перезагрузка',             ),  # noqa
     ( 18, 'ru', 'Commando.qm',             'Коммандо',                      'КР 1',                                     ),  # noqa
     ( 19, 'ru', 'Complex.qmm',             'Комплекс',                      'КР 2 Доминаторы HD Революция Фанатские',   ),  # noqa
@@ -45,12 +45,12 @@ QUEST_NAMES = [
     ( 35, 'ru', 'Edelweiss.qmm',           'Эдельвейс',                     'КР 2 Доминаторы Перезагрузка',             ),  # noqa
     ( 36, 'en', 'Edelweiss_eng.qm',        'Edelweiss',                     'SR 2.1.2121 eng',                          ),  # noqa
     ( 37, 'ru', 'Election.qmm',            'Выборы',                        'КР 2 Доминаторы',                          ),  # noqa
-    ( 38, 'en', 'Election_eng.qm',         'Election',                      'SR 2.1.2121 eng',                          ),  # noqa
+    ( 38, 'en', 'Election_eng.qm',         'Elections',                     'SR 2.1.2121 eng',                          ),  # noqa
     ( 39, 'ru', 'Elus.qmm',                'Элус',                          'КР 2 Доминаторы',                          ),  # noqa
-    ( 40, 'en', 'Elus_eng.qmm',            'Elus',                          'SR 2.1.2121 eng',                          ),  # noqa
+    ( 40, 'en', 'Elus_eng.qmm',            'Eloose',                        'SR 2.1.2121 eng',                          ),  # noqa
     ( 41, 'ru', 'Energy.qm',               'Энергия',                       'КР 1',                                     ),  # noqa
     ( 42, 'ru', 'Evidence.qmm',            'Подстава',                      'КР 2 Доминаторы HD Революция Оригинальные',),  # noqa
-    ( 43, 'en', 'Evidence_eng.qm',         'Frames',                        'SR 2.1.2121 eng',                          ),  # noqa
+    ( 43, 'en', 'Evidence_eng.qm',         'Frame',                         'SR 2.1.2121 eng',                          ),  # noqa
     ( 44, 'ru', 'Evilgenius.qmm',          'Злой гений',                    'КР 2 Доминаторы Перезагрузка',             ),  # noqa
     ( 45, 'ru', 'Examen.qm',               'Экзамен',                       'КР 1',                                     ),  # noqa
     ( 46, 'ru', 'Faruk.qmm',               'Фарюки',                        'КР 2 Доминаторы',                          ),  # noqa
@@ -62,7 +62,7 @@ QUEST_NAMES = [
     ( 52, 'ru', 'Foncers.qmm',             'Фонсеры',                       'КР 2 Доминаторы',                          ),  # noqa
     ( 53, 'en', 'Foncers_eng.qm',          'Foncers',                       'SR 2.1.2121 eng',                          ),  # noqa
     ( 54, 'ru', 'Forum.qmm',               'Форум',                         'КР 2 Доминаторы HD Революция Оригинальные',),  # noqa
-    ( 55, 'ru', 'Gaidnet.qmm',             'Гайд-нет',                      'КР 2 Доминаторы',                          ),  # noqa
+    ( 55, 'ru', 'Gaidnet.qmm',             'Гайднет',                       'КР 2 Доминаторы',                          ),  # noqa
     ( 56, 'ru', 'Galaxy.qm',               'Галактика',                     'КР 1',                                     ),  # noqa
     ( 57, 'ru', 'Gladiator.qm',            'Гладиатор',                     'КР 1',                                     ),  # noqa
     ( 58, 'ru', 'GLAVRED.qmm',             'Главный редактор',              'КР 2 Доминаторы Перезагрузка',             ),  # noqa
@@ -90,13 +90,13 @@ QUEST_NAMES = [
     ( 80, 'en', 'Ministry_eng.qm',         'Ministry',                      'SR 2.1.2121 eng',                          ),  # noqa
     ( 81, 'ru', 'Moi.qmm',                 'Мастер Иике-Бааны',             'КР 2 Доминаторы',                          ),  # noqa
     ( 82, 'ru', 'Murder.qm',               'Убийство',                      'КР 1',                                     ),  # noqa
-    ( 83, 'ru', 'Muzon.qmm',               'Музон',                         'КР 2 Доминаторы',                          ),  # noqa
+    ( 83, 'ru', 'Muzon.qmm',               'Музыкальный фестиваль',         'КР 2 Доминаторы',                          ),  # noqa
     ( 84, 'en', 'Muzon_eng.qm',            'Music Festival',                'SR 2.1.2121 eng',                          ),  # noqa
     ( 85, 'ru', 'Newflora.qm',             'Неофлора',                      'КР 1',                                     ),  # noqa
-    ( 86, 'ru', 'Olympiada.qmm',           'Олимпиада (Клерки без границ)', 'КР 2 Доминаторы',                          ),  # noqa
-    ( 87, 'en', 'Olympiada_eng.qm',        'Olympics (Clerks without End)', 'SR 2.1.2121 eng',                          ),  # noqa
+    ( 86, 'ru', 'Olympiada.qmm',           'Олимпиада',                     'КР 2 Доминаторы',                          ),  # noqa
+    ( 87, 'en', 'Olympiada_eng.qm',        'Olympics',                      'SR 2.1.2121 eng',                          ),  # noqa
     ( 88, 'ru', 'Pachvarash.qmm',          'Пачвараш',                      'КР 2 Доминаторы',                          ),  # noqa
-    ( 89, 'en', 'Pachvarash_eng.qm',       'Pachvarash',                    'SR 2.1.2121 eng',                          ),  # noqa
+    ( 89, 'en', 'Pachvarash_eng.qm',       'Pachvaraus',                    'SR 2.1.2121 eng',                          ),  # noqa
     ( 90, 'ru', 'Park.qmm',                'Парк аттракционов',             'КР 2 Доминаторы',                          ),  # noqa
     ( 91, 'ru', 'Penetrator.qm',           'Пенетратор',                    'КР 1',                                     ),  # noqa
     ( 92, 'ru', 'Pharaon.qmm',             'Фараон',                        'КР 2 Доминаторы',                          ),  # noqa
@@ -109,7 +109,7 @@ QUEST_NAMES = [
     ( 99, 'ru', 'Pizza.qmm',               'Пицца',                         'КР 2 Доминаторы',                          ),  # noqa
     (100, 'en', 'Pizza_eng.qm',            'Pizza',                         'SR 2.1.2121 eng',                          ),  # noqa
     (101, 'ru', 'Player.qmm',              'Проигрыватель',                 'КР 2 Доминаторы',                          ),  # noqa
-    (102, 'en', 'Player_eng.qm',           'Player',                        'SR 2.1.2121 eng',                          ),  # noqa
+    (102, 'en', 'Player_eng.qm',           'Record Player',                 'SR 2.1.2121 eng',                          ),  # noqa
     (103, 'ru', 'Poroda.qm',               'Порода',                        'КР 1',                                     ),  # noqa
     (104, 'ru', 'Prison.qmm',              'Тюрьма',                        'КР 2 Доминаторы',                          ),  # noqa
     (105, 'ru', 'Prison1.qmm',             'Тюрьма (КР1)',                  'КР 1',                                     ),  # noqa
@@ -118,24 +118,24 @@ QUEST_NAMES = [
     (108, 'ru', 'Provoda.qmm',             'Провода',                       'КР 2 Доминаторы HD Революция Оригинальные',),  # noqa
     (109, 'ru', 'Rally.qmm',               'Ралли',                         'КР 2 Доминаторы HD Революция Фанатские',   ),  # noqa
     (110, 'en', 'Rally_eng.qm',            'Rally',                         'SR 2.1.2121 eng',                          ),  # noqa
-    (111, 'ru', 'Robots.qmm',              'Роботы',                        'КР 2 Доминаторы',                          ),  # noqa
-    (112, 'en', 'Robots_eng.qm',           'Robots',                        'SR 2.1.2121 eng',                          ),  # noqa
+    (111, 'ru', 'Robots.qmm',              'Бои минироботов',               'КР 2 Доминаторы',                          ),  # noqa
+    (112, 'en', 'Robots_eng.qm',           'Minirobot Battles',             'SR 2.1.2121 eng',                          ),  # noqa
     (113, 'ru', 'Rush.qm',                 'Гонка',                         'КР 1',                                     ),  # noqa
     (114, 'ru', 'Rvk.qmm',                 'Военкомат',                     'КР 2 Доминаторы',                          ),  # noqa
-    (115, 'ru', 'Shashki.qmm',             'Плазмошашки',                   'КР 2 Доминаторы',                          ),  # noqa
-    (116, 'en', 'Shashki_eng.qm',          'Plasmo-checkers',               'SR 2.1.2121 eng',                          ),  # noqa
-    (117, 'ru', 'Sibolusovt.qmm',          'Ухоногий сиболусовт',           'КР 2 Доминаторы HD Революция Фанатские',   ),  # noqa
-    (118, 'en', 'Sibolusovt_eng.qm',       'Sibolusovtus',                  'SR 2.1.2121 eng',                          ),  # noqa
+    (115, 'ru', 'Shashki.qmm',             'Шашки',                         'КР 2 Доминаторы',                          ),  # noqa
+    (116, 'en', 'Shashki_eng.qm',          'Checkers',                      'SR 2.1.2121 eng',                          ),  # noqa
+    (117, 'ru', 'Sibolusovt.qmm',          'Ухоногий Сиболусовт',           'КР 2 Доминаторы HD Революция Фанатские',   ),  # noqa
+    (118, 'en', 'Sibolusovt_eng.qm',       'Auropedal Sibolusovtus',        'SR 2.1.2121 eng',                          ),  # noqa
     (119, 'ru', 'Siege.qmm',               'Осада',                         'КР 1',                                     ),  # noqa
     (120, 'ru', 'Ski.qmm',                 'Лыжный курорт',                 'КР 2 Доминаторы',                          ),  # noqa
     (121, 'en', 'Ski_eng.qm',              'Ski Resort',                    'SR 2.1.2121 eng',                          ),  # noqa
     (122, 'ru', 'Sortirovka1.qmm',         'Сортировка',                    'КР 2 Доминаторы Перезагрузка',             ),  # noqa
-    (123, 'en', 'Sortirovka1_eng.qm',      'Sorting',                       'SR 2.1.2121 eng',                          ),  # noqa
+    (123, 'en', 'Sortirovka1_eng.qm',      'Assortment',                    'SR 2.1.2121 eng',                          ),  # noqa
     (124, 'ru', 'SpaceLines.qmm',          'Космолинии',                    'КР 2 Доминаторы HD Революция Фанатские',   ),  # noqa
     (125, 'en', 'SpaceLines_eng.qm',       'Cosmic Lines',                  'SR 2.1.2121 eng',                          ),  # noqa
     (126, 'ru', 'Spy.qm',                  'Шпион',                         'КР 1',                                     ),  # noqa
     (127, 'ru', 'Stealth.qmm',             'Стелс',                         'КР 2 Доминаторы Перезагрузка',             ),  # noqa
-    (128, 'en', 'Stealth_eng.qm',          'Stealth Ship',                  'SR 2.1.2121 eng',                          ),  # noqa
+    (128, 'en', 'Stealth_eng.qm',          'Stealth',                       'SR 2.1.2121 eng',                          ),  # noqa
     (129, 'ru', 'Svarokok.qmm',            'Сварокок',                      'КР 2 Доминаторы',                          ),  # noqa
     (130, 'en', 'Svarokok_eng.qm',         'Swarokok',                      'SR 2.1.2121 eng',                          ),  # noqa
     (131, 'ru', 'Taxist.qmm',              'Таксист',                       'КР 2 Доминаторы HD Революция Фанатские',   ),  # noqa

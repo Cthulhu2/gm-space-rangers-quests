@@ -18,9 +18,11 @@ def init(capsule: gmcapsule.Context):
     """Extension module initialization."""
     en = gettext.NullTranslations()
     ru = gettext.translation('gmsrq', localedir=LOCALE_DIR, languages=['ru'])
+    es = gettext.translation('gmsrq', localedir=LOCALE_DIR, languages=['es'])
+    de = gettext.translation('gmsrq', localedir=LOCALE_DIR, languages=['de'])
     en.install()
     srq_cfg = gmsrq.Config(
-        l10n={'en': en, 'ru': ru},
+        l10n={'en': en, 'ru': ru, 'es': es, 'de': de},
         quests_dir=QUEST_DIR, users_dir=USERS_DIR,
         root_dir=capsule.cfg.root_dir(),
         act_url=f'{CGI_URL}act',
