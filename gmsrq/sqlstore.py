@@ -3,7 +3,7 @@ import hmac
 import logging
 import os
 from datetime import datetime, timedelta
-from enum import Enum
+from enum import Enum, IntEnum, auto
 from typing import Optional, List, Iterator, Tuple, Iterable
 
 import gmcapsule
@@ -11,7 +11,7 @@ from OpenSSL.crypto import X509, load_certificate, FILETYPE_ASN1
 from peewee import (
     CharField, BooleanField, ForeignKeyField, Model, IntegerField,
     BlobField, TextField, SqliteDatabase, CompositeKey,
-    DateTimeField, fn, SQL
+    DateTimeField, fn, SQL, SmallIntegerField
 )
 
 from srqmplayer.qmplayer import Player
@@ -34,6 +34,104 @@ SOL_INHABITED = [1, 2, 3]
 SOL_UNINHABITED = [0, 4, 5, 6, 7, 8]
 
 
+class SortType(IntEnum):
+    DIFFICULT = 1
+    DURATION = 2
+    GENRE = 3
+
+
+class SortDirection(IntEnum):
+    ASCEND = 1
+    DESCEND = 2
+
+
+# noinspection DuplicatedCode
+class Genre(IntEnum):
+    # @formatter:off
+    # Adventures
+    ADVENTURE = auto()                               # бродилка
+    ADVENTURE_SHOOTER = auto()                       # бродилка-стрелялка
+    ADVENTURE_SHOOTER_SAFE_CRACK_SIM = auto()        # Бродилка-стрелялка; Симулятор взлома сейфа (КР1)
+    ADVENTURE_W_ADVENTURES = auto()                  # бродилка с приключениями
+    ADVENTURE_W_ARCADE_ELEMENTS = auto()             # бродилка с элементами аркады
+    ADVENTURE_W_BLACK_HUMOR_ELEMENTS = auto()        # бродилка с элементами черного юмора
+    ADVENTURE_W_FIGHTING_ELEMENTS = auto()           # бродилка с элементами файтинга
+    ADVENTURE_W_FIGHTING_N_PUZZLE_ELEMENTS = auto()  # бродилка с элементами файтинга и головоломками
+    ADVENTURE_W_MANAGEMENT_ELEMENTS = auto()         # бродилка с элементами менеджмента
+    ADVENTURE_W_HORROR_ELEMENTS = auto()             # бродилка с элементами ужасов
+    ADVENTURE_W_AWFUL_HORROR_ELEMENTS = auto()       # бродилка с элементами тихих ужасов
+    ADVENTURE_W_LOGIC_ELEMENTS = auto()              # бродилка с логическими элементами
+    ADVENTURE_W_LOGIC_PUZZLES = auto()               # бродилка с логическими головоломками
+    # Logic
+    TRIVIA_GAME = auto()                       # викторина
+    TEXT_AND_LOGIC_PUZZLE = auto()             # текстово-логическая головоломка
+    PUZZLE = auto()                            # Головоломка (КР1)
+    LOGIC_PUZZLE = auto()                      # логическая головоломка
+    ARCADE_LOGIC_GAME = auto()                 # аркадно-логическая игра
+    LOGIC_GAME = auto()                        # логическая игра
+    LOGIC_GAME_W_MANAGEMENT_ELEMENTS = auto()  # логическая игра с элементами менеджмента
+    LOGIC_EDUCATIONAL_GAME = auto()            # логико-познавательная игра
+    LOGIC_MATH_GAME = auto()                   # логико-математическая игра
+    LOGIC_EASEL_SIMULATOR = auto()             # логический симулятор мольберта
+    MATH_LOGIC_PUZZLE = auto()                 # логико-математическая головоломка
+    MATH_PUZZLE = auto()                       # математическая головоломка
+    LOGIC_PUZZLES_AND_MATH_PROBLEMS = auto()   # логические головоломки и математические задачи
+    LOGIC_TACTICAL_GAME = auto()               # логико-тактическая игра
+    # Simulators
+    SIMULATOR = auto()                         # Симулятор (FANS)
+    PRISON_SIM = auto()                        # симулятор тюрьмы
+    SPACE_RANGERS_SIM = auto()                 # симулятор "космических рейнджеров"
+    ANIMAL_LIFE_SIM = auto()                   # симулятор жизни животного
+    LAB_RAT_SIM = auto()                       # Симулятор «подопытной крысы» (КР1)
+    COMPOSITE_SKETCH_SIM = auto()              # симулятор составления фоторобота
+    ECONOMY_SIM = auto()                       # экономический симулятор
+    ELECTION_CAMPAIGN_SIM = auto()             # симулятор предвыборной кампании
+    HAULER_SIM = auto()                        # симулятор дальнобойщика
+    TAXI_SIM = auto()                          # симулятор таксиста
+    FISHING_SIM = auto()                       # симулятор рыбалки
+    ANCIENT_CARS_RACING_SIM = auto()           # Гонки на древних машинах (КР1)
+    RACING_SIM = auto()                        # гоночный симулятор
+    RACING_SIM_W_MANAGEMENT_ELEMENTS = auto()  # гоночный симулятор с элементами менеджмента
+    PENCHEKRACK_BREEDING_SIM = auto()          # Симулятор выведения пенчекряка (КР1)
+    WILD_GOBZAUR_TAMING_SIM = auto()           # Симулятор укрощения дикого гобзавра (КР1)
+    PASSING_ENTRANCE_EXAMS = auto()            # Сдача вступительных экзаменов (КР1)
+    # Strategies
+    TACTICAL_FIGHTING = auto()             # тактический файтинг
+    TACTICAL_GAME = auto()                 # тактическая игра
+    TACTICAL_STRATEGY = auto()             # тактическая стратегия
+    ECONOMIC_STRATEGY = auto()             # экономическая стратегия
+    STRATEGY_W_FIGHTING_ELEMENTS = auto()  # стратегия с элементами файтинга
+    RECRUITMENT_CENTER_MANAGER = auto()    # менеджер военкомата
+    MANAGEMENT = auto()                    # Менеджмент (КР1)
+    BUILD_MANAGEMENT = auto()              # Менеджмент; Управление стройкой (КР1)
+    SPORT_MANAGEMENT = auto()              # Спорт-менеджер (КР1)
+    # Others
+    GAMBLING = auto()                          # Азартная игра (КР1)
+    TRADING = auto()                           # Торговля (КР1)
+    WEAPONS_TESTING = auto()                   # Испытание оружия (КР1)
+    ESPIONAGE = auto()                         # Шпионаж (КР1)
+    ESPIONAGE_GAMBLING = auto()                # Шпионаж; Азартные игры (КР1)
+    ESPIONAGE_BUGGING = auto()                 # Шпионаж; Установка жучков (КР1)
+    ASSAULT = auto()                           # Штурм (КР1)
+    FANTASY_ROLE_PLAYING_GAME = auto()         # фэнтезийная ролевая игра
+    DETECTIVE = auto()                         # детектив
+    HUMOROUS_DETECTIVE = auto()                # юмористический детектив
+    CARGO_DELIVERY_W_QUEST_ELEMENTS = auto()   # доставка груза с элементами квеста
+    FORTRESS_DEFEND = auto()                   # Защита крепости (КР1)
+    ACTION_HORROR = auto()                     # Экшн с хоррором (FANS)
+    # @formatter:on
+
+
+class Duration(IntEnum):
+    # @formatter:off
+    LOW = 1            # низкая
+    BELOW_AVERAGE = 2  # ниже средней
+    AVERAGE = 3        # средняя
+    ABOVE_AVERAGE = 4  # выше средней
+    LONG = 5           # высокая
+    # @formatter:on
+
+
 class BaseModel(Model):
     class Meta:
         database = db
@@ -45,6 +143,9 @@ class Quest(BaseModel):
     file = CharField(max_length=128, null=False)
     lang = CharField(max_length=5, null=False)
     gameVer = CharField(max_length=128, null=False)
+    genre = SmallIntegerField(null=True)
+    difficult = SmallIntegerField(null=True)
+    duration = SmallIntegerField(null=True)
 
     @staticmethod
     def by(*, qid=None, file=None) -> 'Quest':
@@ -56,7 +157,9 @@ class Quest(BaseModel):
         return query.first()
 
     @staticmethod
-    def all_by(*, lang=None, game=None) -> Iterator['Quest']:
+    def all_by(*, lang=None, game=None,
+               sort_type: SortType = None,
+               sort_dir: SortDirection = None) -> Iterator['Quest']:
         query = Quest.select()
         if lang:
             query = query.where(Quest.lang == lang)
@@ -64,7 +167,28 @@ class Quest(BaseModel):
             query = query.where(Quest.gameVer == game)
         if game and isinstance(game, list):
             query = query.where(Quest.gameVer << game)
-        return query.order_by(Quest.name).execute()
+        query = query.order_by(Quest.name)
+        if sort_dir == SortDirection.ASCEND:
+            if sort_type == SortType.DIFFICULT:
+                query = query.order_by(Quest.difficult, Quest.duration,
+                                       Quest.genre, Quest.name)
+            elif sort_type == SortType.DURATION:
+                query = query.order_by(Quest.duration, Quest.genre,
+                                       Quest.difficult, Quest.name)
+            elif sort_type == SortType.GENRE:
+                query = query.order_by(Quest.genre, Quest.difficult,
+                                       Quest.duration, Quest.name)
+        elif sort_dir == SortDirection.DESCEND:
+            if sort_type == SortType.DIFFICULT:
+                query = query.order_by(-Quest.difficult, -Quest.duration,
+                                       -Quest.genre, Quest.name)
+            elif sort_type == SortType.DURATION:
+                query = query.order_by(-Quest.duration, -Quest.genre,
+                                       -Quest.difficult, Quest.name)
+            elif sort_type == SortType.GENRE:
+                query = query.order_by(-Quest.genre, -Quest.difficult,
+                                       -Quest.duration, Quest.name)
+        return query.execute()
 
     @staticmethod
     def count_by(*, lang=None) -> Iterator['Quest']:
@@ -194,6 +318,9 @@ class Options(BaseModel):
     ansi = BooleanField(null=False, default=False)
     lang = CharField(max_length=5, null=False, default='en')
 
+    sort_type = SmallIntegerField(null=False, default=SortType.DIFFICULT)
+    sort_dir = SmallIntegerField(null=False, default=SortDirection.ASCEND)
+
     passHash = BlobField(null=True)
     passSalt = BlobField(null=True)
     passWhen = DateTimeField(null=True, default=None)
@@ -245,6 +372,26 @@ class Options(BaseModel):
             (Options.update(passHash=None, passSalt=None, passWhen=None)
              .where(Options.ranger << ranger)
              .execute())
+
+    @staticmethod
+    def save_toggle_sort_type(ranger):
+        opts = ranger.get_opts()
+        sort_type = (opts.sort_type or 1) + 1
+        if sort_type > len(SortType):
+            sort_type = 1
+        (Options.update(sort_type=sort_type)
+         .where(Options.ranger == ranger)
+         .execute())
+
+    @staticmethod
+    def save_toggle_sort_dir(ranger):
+        opts = ranger.get_opts()
+        sort_dir = (opts.sort_dir or 1) + 1
+        if sort_dir > len(SortDirection):
+            sort_dir = 1
+        (Options.update(sort_dir=sort_dir)
+         .where(Options.ranger == ranger)
+         .execute())
 
 
 class QuestState(BaseModel):

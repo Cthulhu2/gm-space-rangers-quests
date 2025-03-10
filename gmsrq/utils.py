@@ -24,6 +24,7 @@ class Config:
     track_url: str
     #
     cgi_url: str
+    sort_url: str
     reg_url: str
     reg_add_url: str
     opts_url: str

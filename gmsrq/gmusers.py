@@ -156,6 +156,8 @@ class GmUsersHandler:
         capsule.add(self.cfg.opts_del_cert_url + '*', self.handle_opts_del_cert)
         capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc)
         capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename)
+        # quest sort
+        capsule.add(self.cfg.sort_url + '*', self.handle_sort)
 
     def gettext_(self, lang: str) -> Callable[[str], str]:
         return self.cfg.l10n[lang].gettext if lang in self.cfg.l10n \
@@ -407,3 +409,25 @@ class GmUsersHandler:
                 f'```\n')
 
         return 20, meta(lang), page
+
+    @err_handler
+    @mark_ranger_activity
+    def handle_sort(self, req: gmcapsule.gemini.Request):
+        if not req.identity:
+            return self.ask_cert(req.remote_address[0])
+
+        if req.query not in ('type', 'dir'):
+            return 40, 'Unknown param'
+
+        with db.atomic():
+            ranger = Ranger.by(fp_cert=req.identity.fp_cert)
+            if not ranger or not ranger.get_opts():
+                return 30, self.cfg.cgi_url
+            if 'type' == req.query:
+                Options.save_toggle_sort_type(ranger)
+            if 'dir' == req.query:
+                Options.save_toggle_sort_dir(ranger)
+            lang = ranger.get_opts().lang
+            _ = self.gettext_(lang)
+        return page_index(_, ranger, lang, self.cfg,
+                          self.cfg.root_dir.joinpath(req.hostname))

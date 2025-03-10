@@ -30,6 +30,7 @@ def init(capsule: gmcapsule.Context):
         snd_url='/quests/snd/',
         track_url='/quests/track/',
         cgi_url=CGI_URL,
+        sort_url=f'{CGI_URL}sort',
         reg_url=f'{CGI_URL}reg',
         reg_add_url=f'{CGI_URL}reg/add/',
         opts_url=f'{CGI_URL}opts',

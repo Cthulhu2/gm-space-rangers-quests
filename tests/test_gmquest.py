@@ -54,3 +54,16 @@ def test_choice_planets_quests(temp_db):
             assert f_planet, f'{lang} :: {f}'
             assert to_star, f'{lang} :: {f}'
             assert to_planet, f'{lang} :: {f}'
+
+
+def xtest_difficulty():
+    strings = []
+    for f in listdir(BORROWED_QUEST_DIR):
+        if not f.endswith('.qm') and not f.endswith('.qmm'):
+            continue
+        with open(join(BORROWED_QUEST_DIR, f), 'rb') as data:
+            qm = parse(data)
+        strings.append(f'{f} :: {qm.hardness}')
+    strings.sort()
+    for s in strings:
+        log.info(s)

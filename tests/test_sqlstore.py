@@ -100,9 +100,11 @@ def test_ranger_exists_case_insensitive(temp_db, temp_cert):
 
 def test_migrations(temp_db):
     router = Router(temp_db, migrate_dir=MIGRATE_DIR)
-    assert Quest.select().count() == 138
+    assert Quest.select().count() == 208
     assert Star.select().count() == 144
     assert Planet.select().count() == 1326
+    router.rollback()  # 008
+    router.rollback()  # 007
     router.rollback()  # 006
     router.rollback()  # 005
     assert Star.select().count() == 0
@@ -113,11 +115,11 @@ def test_migrations(temp_db):
     assert Quest.select().count() == 0
     router.rollback()  # 001
     router.run()
-    assert Quest.select().count() == 138
+    assert Quest.select().count() == 208
 
 
 def test_cert_foreign_key_cascade(temp_db, temp_cert):
-    assert Quest.select().count() == 138
+    assert Quest.select().count() == 208
 
     with temp_db.atomic():
         ident = gmcapsule.Identity(temp_cert)
