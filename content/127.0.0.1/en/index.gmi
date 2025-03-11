@@ -4,39 +4,74 @@ To perform government assignments, you will need a ranger certificate. Don't wor
 => /cgi/?lang=en 🪪 Show Ranger's certificate
 => about.gmi ℹ About
 
-### Quests :: SR 2 HD: A War Apart
-=> /cgi/act?qid=123 Assortment
-=> /cgi/act?qid=118 Auropedal Sibolusovtus
-=> /cgi/act?qid=6   Banquet
-=> /cgi/act?qid=11  Borzukhan
-=> /cgi/act?qid=116 Checkers
-=> /cgi/act?qid=125 Cosmic Lines
-=> /cgi/act?qid=23  Depth
-=> /cgi/act?qid=27  Disk
-=> /cgi/act?qid=32  Driver
-=> /cgi/act?qid=36  Edelweiss
-=> /cgi/act?qid=38  Elections
-=> /cgi/act?qid=40  Eloose
-=> /cgi/act?qid=51  Fishing Championship
-=> /cgi/act?qid=53  Foncers
-=> /cgi/act?qid=43  Frame
-=> /cgi/act?qid=64  Jumper
-=> /cgi/act?qid=68  Leonardo da Vinci
-=> /cgi/act?qid=70  Logic
-=> /cgi/act?qid=112 Minirobot Battles
-=> /cgi/act?qid=80  Ministry
-=> /cgi/act?qid=84  Music Festival
-=> /cgi/act?qid=87  Olympics
-=> /cgi/act?qid=89  Pachvaraus
-=> /cgi/act?qid=95  Pilot
-=> /cgi/act?qid=100 Pizza
-=> /cgi/act?qid=106 Prison
-=> /cgi/act?qid=97  Prison (pirate)
-=> /cgi/act?qid=110 Rally
-=> /cgi/act?qid=3   Ranger's Bad Day
+## Quests :: SR HD: A War Apart (0 / 35)
 => /cgi/act?qid=102 Record Player
-=> /cgi/act?qid=121 Ski Resort
+☠ 20% ⏱ low 🏷 logic game
+=> /cgi/act?qid=84 Music Festival
+☠ 20% ⏱ average 🏷 adventure with management elements
+=> /cgi/act?qid=80 Ministry
+☠ 20% ⏱ average 🏷 adventure with logic elements
+=> /cgi/act?qid=27 Disk
+☠ 20% ⏱ average 🏷 cargo delivery with quest elements
+=> /cgi/act?qid=100 Pizza
+☠ 22% ⏱ average 🏷 logic math game
+=> /cgi/act?qid=70 Logic
+☠ 30% ⏱ low 🏷 logic puzzle
+=> /cgi/act?qid=116 Checkers
+☠ 30% ⏱ low 🏷 math puzzle
+=> /cgi/act?qid=38 Elections
+☠ 30% ⏱ low 🏷 election campaign simulator
+=> /cgi/act?qid=11 Borzukhan
+☠ 30% ⏱ below average 🏷 adventure with arcade elements
+=> /cgi/act?qid=95 Pilot
+☠ 30% ⏱ average 🏷 adventure with logic puzzles
 => /cgi/act?qid=128 Stealth
+☠ 35% ⏱ below average 🏷 adventure-shooter
+=> /cgi/act?qid=123 Assortment
+☠ 40% ⏱ average 🏷 arcade logic game
+=> /cgi/act?qid=121 Ski Resort
+☠ 40% ⏱ average 🏷 economy simulator
+=> /cgi/act?qid=53 Foncers
+☠ 40% ⏱ average 🏷 racing simulator
 => /cgi/act?qid=130 Swarokok
-=> /cgi/act?qid=16  Tag
+☠ 40% ⏱ average 🏷 tactical game
+=> /cgi/act?qid=51 Fishing Championship
+☠ 45% ⏱ average 🏷 fishing simulator
+=> /cgi/act?qid=118 Auropedal Sibolusovtus
+☠ 50% ⏱ average 🏷 adventure with black humor elements
+=> /cgi/act?qid=3 Ranger's Bad Day
+☠ 50% ⏱ average 🏷 adventure with fighting elements
+=> /cgi/act?qid=110 Rally
+☠ 50% ⏱ average 🏷 racing simulator with management elements
+=> /cgi/act?qid=112 Minirobot Battles
+☠ 50% ⏱ average 🏷 tactical fighting
+=> /cgi/act?qid=43 Frame
+☠ 50% ⏱ average 🏷 humorous detective
+=> /cgi/act?qid=89 Pachvaraus
+☠ 50% ⏱ above average 🏷 animal life simulator
+=> /cgi/act?qid=125 Cosmic Lines
+☠ 50% ⏱ above average 🏷 economic strategy
+=> /cgi/act?qid=32 Driver
+☠ 50% ⏱ long 🏷 logic math game
+=> /cgi/act?qid=106 Prison
+☠ 50% ⏱ long 🏷 prison simulator
+=> /cgi/act?qid=97 Prison (pirate)
+☠ 50% ⏱ long 🏷 prison simulator
+=> /cgi/act?qid=40 Eloose
+☠ 60% ⏱ low 🏷 logic puzzle
 => /cgi/act?qid=138 Xenopark
+☠ 60% ⏱ low 🏷 logic puzzle
+=> /cgi/act?qid=87 Olympics
+☠ 60% ⏱ long 🏷 logic game with management elements
+=> /cgi/act?qid=16 Tag
+☠ 65% ⏱ low 🏷 logic puzzle
+=> /cgi/act?qid=6 Banquet
+☠ 70% ⏱ average 🏷 logic educational game
+=> /cgi/act?qid=68 Leonardo da Vinci
+☠ 70% ⏱ average 🏷 logic easel simulator
+=> /cgi/act?qid=36 Edelweiss
+☠ 75% ⏱ average 🏷 adventure with adventures
+=> /cgi/act?qid=64 Jumper
+☠ 80% ⏱ average 🏷 logic puzzle
+=> /cgi/act?qid=23 Depth
+☠ 90% ⏱ long 🏷 logic math game

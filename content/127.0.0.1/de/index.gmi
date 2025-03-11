@@ -4,39 +4,74 @@ Zur Wahrnehmung behördlicher Aufträge benötigen Sie ein Ranger-Zertifikat. Ke
 => /cgi/?lang=de 🪪 Ranger-Zertifikat anzeigen
 => about.gmi ℹ Über das Projekt
 
-### Quests :: SR 2 HD: A War Apart
-=> /cgi/act?qid=6   Banquet
-=> /cgi/act?qid=11  Borzukhan
-=> /cgi/act?qid=125 Cosmic Lines
-=> /cgi/act?qid=23  Depth
-=> /cgi/act?qid=27  Disk
-=> /cgi/act?qid=32  Driver
-=> /cgi/act?qid=36  Edelweiss
-=> /cgi/act?qid=38  Election
-=> /cgi/act?qid=40  Elus
-=> /cgi/act?qid=51  Fishing Championship
-=> /cgi/act?qid=53  Foncers
-=> /cgi/act?qid=43  Frames
-=> /cgi/act?qid=64  Jumper
-=> /cgi/act?qid=68  Leonardo da Vinci
-=> /cgi/act?qid=70  Logic
-=> /cgi/act?qid=80  Ministry
-=> /cgi/act?qid=84  Music Festival
-=> /cgi/act?qid=87  Olympics (Clerks without End)
-=> /cgi/act?qid=89  Pachvarash
-=> /cgi/act?qid=95  Pilot
-=> /cgi/act?qid=100 Pizza
-=> /cgi/act?qid=116 Plasmo-checkers
-=> /cgi/act?qid=102 Player
-=> /cgi/act?qid=106 Prison
-=> /cgi/act?qid=97  Prison (pirate)
-=> /cgi/act?qid=3   Ranger's Bad Day
-=> /cgi/act?qid=110 Rally
-=> /cgi/act?qid=112 Robots
-=> /cgi/act?qid=16  Safecracking
-=> /cgi/act?qid=118 Sibolusovtus
-=> /cgi/act?qid=121 Ski Resort
-=> /cgi/act?qid=123 Sorting
-=> /cgi/act?qid=128 Stealth Ship
-=> /cgi/act?qid=130 Swarokok
-=> /cgi/act?qid=138 Xenopark
+## Quests :: SR HD: A War Apart (0 / 35)
+=> /cgi/act?qid=185 Abspielgerät
+☠ 20% ⏱ gering 🏷 logikspiel
+=> /cgi/act?qid=173 Musikfestival
+☠ 20% ⏱ durchschnittlich 🏷 abenteuer mit management-elementen
+=> /cgi/act?qid=171 Ministerium
+☠ 20% ⏱ durchschnittlich 🏷 abenteuer mit logikelement
+=> /cgi/act?qid=149 Disk
+☠ 20% ⏱ durchschnittlich 🏷 frachtlieferung mit questelementen
+=> /cgi/act?qid=183 Pizza
+☠ 22% ⏱ durchschnittlich 🏷 logik-mathe-spiel
+=> /cgi/act?qid=169 Maloq Logik
+☠ 30% ⏱ gering 🏷 logikrätsel
+=> /cgi/act?qid=193 Dame
+☠ 30% ⏱ gering 🏷 mathe-puzzle
+=> /cgi/act?qid=155 Wahlen
+☠ 30% ⏱ gering 🏷 wahlkampfsimulator
+=> /cgi/act?qid=143 Borzukhan
+☠ 30% ⏱ unterdurchschnittlich 🏷 abenteuer mit arcade-elementen
+=> /cgi/act?qid=179 Pilot
+☠ 30% ⏱ durchschnittlich 🏷 abenteuer mit logikrätseln
+=> /cgi/act?qid=203 Tarnvorrichtung
+☠ 35% ⏱ unterdurchschnittlich 🏷 abenteuer-shooter
+=> /cgi/act?qid=199 Sortierer
+☠ 40% ⏱ durchschnittlich 🏷 arcade-logikspiel
+=> /cgi/act?qid=197 Ski Resort
+☠ 40% ⏱ durchschnittlich 🏷 wirtschaftssimulator
+=> /cgi/act?qid=163 Foncerrennen
+☠ 40% ⏱ durchschnittlich 🏷 rennsimulator
+=> /cgi/act?qid=205 Swarokok
+☠ 40% ⏱ durchschnittlich 🏷 taktisches spiel
+=> /cgi/act?qid=161 Angelmeisterschaft
+☠ 45% ⏱ durchschnittlich 🏷 angelsimulator
+=> /cgi/act?qid=195 Auropedal Sibolusovtus
+☠ 50% ⏱ durchschnittlich 🏷 abenteuer mit elementen des schwarzen humors
+=> /cgi/act?qid=139 Ein schelchter tag
+☠ 50% ⏱ durchschnittlich 🏷 abenteuer mit kampfelementen
+=> /cgi/act?qid=189 Rallye
+☠ 50% ⏱ durchschnittlich 🏷 rennsimulator mit management-elementen
+=> /cgi/act?qid=191 Mini-Roboterschlachten
+☠ 50% ⏱ durchschnittlich 🏷 rennsimulator mit management-elementen
+=> /cgi/act?qid=159 Beweis
+☠ 50% ⏱ durchschnittlich 🏷 humorvoller detektiv
+=> /cgi/act?qid=177 Pachvaraus
+☠ 50% ⏱ überdurchschnittlich 🏷 tierleben-simulator
+=> /cgi/act?qid=201 Passagiertransport RaumLiner
+☠ 50% ⏱ überdurchschnittlich 🏷 wirtschaftliche strategie
+=> /cgi/act?qid=151 Fahrer
+☠ 50% ⏱ lange 🏷 logik-mathe-spiel
+=> /cgi/act?qid=187 Gefängnis
+☠ 50% ⏱ lange 🏷 gefängnissimulator
+=> /cgi/act?qid=181 Gefängnis (pirat)
+☠ 50% ⏱ lange 🏷 gefängnissimulator
+=> /cgi/act?qid=157 Eloose
+☠ 60% ⏱ gering 🏷 logikrätsel
+=> /cgi/act?qid=207 Xenopark
+☠ 60% ⏱ gering 🏷 logikrätsel
+=> /cgi/act?qid=175 Olympia
+☠ 60% ⏱ lange 🏷 logikspiel mit management-elementen
+=> /cgi/act?qid=145 Krönung des Maloqarchen
+☠ 65% ⏱ gering 🏷 logikrätsel
+=> /cgi/act?qid=141 Bankett
+☠ 70% ⏱ durchschnittlich 🏷 logik-lernspiel
+=> /cgi/act?qid=167 Leonardo da Vinci
+☠ 70% ⏱ durchschnittlich 🏷 logik-staffelei-simulator
+=> /cgi/act?qid=153 Edelweiß
+☠ 75% ⏱ durchschnittlich 🏷 abenteuer mit abenteuer
+=> /cgi/act?qid=165 Springer
+☠ 80% ⏱ durchschnittlich 🏷 logikrätsel
+=> /cgi/act?qid=147 Tiefe
+☠ 90% ⏱ lange 🏷 logik-mathe-spiel

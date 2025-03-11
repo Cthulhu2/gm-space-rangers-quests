@@ -40,7 +40,7 @@ def build_quest_urls(_, ansi, cfg: Config, title, completed, in_progress,
         build_quest_url(_, quest, cfg, ansi, game_completed, in_progress)
         for quest in quests)
 
-    return f'### {title} ({len(game_completed)} / {len(quests)})\n' \
+    return f'## {title} ({len(game_completed)} / {len(quests)})\n' \
            f'{game_urls}\n'
 
 
@@ -58,38 +58,36 @@ def build_quest_urls_ru(cfg, ranger):
     quest_urls += build_quest_urls(_, ansi, cfg, f'Квесты :: КР 1',
                                    completed, in_progress, quests)
     #
-    quests = [q for q in Quest.all_by(lang='ru', game=['КР 2 Доминаторы',
-                                                       'SR 2.1.2170'],
+    quests = [q for q in Quest.all_by(lang='ru', game='КР 2 Доминаторы',
                                       sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls += build_quest_urls(_, ansi, cfg, f'Квесты :: КР 2 Доминаторы',
                                    completed, in_progress, quests)
     #
     quests = [q for q in Quest.all_by(
-        lang='ru', game='КР 2 Доминаторы Перезагрузка',
+        lang='ru', game='КР 2 Доминаторы: Перезагрузка',
         sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls += build_quest_urls(
         _, ansi, cfg, f'Квесты :: КР 2 Доминаторы: Перезагрузка',
         completed, in_progress, quests)
     # КР 2 Доминаторы HD Революция
     sr2r_orig = [q for q in Quest.all_by(
-        lang='ru', game=['КР 2 Доминаторы HD Революция Оригинальные',
-                         'КР 2 2.1.2369'],
+        lang='ru', game='КР HD: Революция Оригинальные',
         sort_type=sort_type, sort_dir=sort_dir)]
     sr2r_orig_completed = list(filter(lambda qid: qid in completed,
                                       map(lambda q: q.id, sr2r_orig)))
     sr2r_fan = [q for q in Quest.all_by(
-        lang='ru', game='КР 2 Доминаторы HD Революция Фанатские',
+        lang='ru', game='КР HD: Революция Фанатские',
         sort_type=sort_type, sort_dir=sort_dir)]
     sr2r_fan_completed = list(filter(lambda qid: qid in completed,
                                      map(lambda q: q.id, sr2r_fan)))
-    quest_urls += f'### Квесты :: КР 2 HD: Революция' \
+    quest_urls += f'## Квесты :: КР HD: Революция' \
                   f' ({len(sr2r_orig_completed) + len(sr2r_fan_completed)}' \
                   f' / {len(sr2r_orig) + len(sr2r_fan)})\n' \
-                  f'Оригинальные\n'
+                  f'### Оригинальные\n'
     quest_urls += '\n'.join(build_quest_url(_, quest, cfg, ansi,
                                             sr2r_orig_completed, in_progress)
                             for quest in sr2r_orig)
-    quest_urls += '\nФанатские\n'
+    quest_urls += '\n### Фанатские\n'
     quest_urls += '\n'.join(build_quest_url(_, quest, cfg, ansi,
                                             sr2r_fan_completed, in_progress)
                             for quest in sr2r_fan)
@@ -113,7 +111,7 @@ def build_quest_urls_en(cfg, ranger):
     quests = [q for q in Quest.all_by(lang='en', game='SR 2.1.2468 eng',
                                       sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls = build_quest_urls(
-        _, ansi, cfg, f'Quests :: SR 2 HD: A War Apart',
+        _, ansi, cfg, f'Quests :: SR HD: A War Apart',
         completed, in_progress, quests)
     return quest_urls
 
@@ -129,7 +127,7 @@ def build_quest_urls_de(cfg, ranger):
     quests = [q for q in Quest.all_by(lang='de', game='SR 2.1.2468 ger',
                                       sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls = build_quest_urls(
-        _, ansi, cfg, f'Quests :: SR 2 HD: A War Apart',
+        _, ansi, cfg, f'Quests :: SR HD: A War Apart',
         completed, in_progress, quests)
     return quest_urls
 
@@ -145,7 +143,7 @@ def build_quest_urls_es(cfg, ranger):
     quests = [q for q in Quest.all_by(lang='es', game='SR 2.1.2468 spa',
                                       sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls = build_quest_urls(
-        _, ansi, cfg, f'Quests :: SR 2 HD: A War Apart',
+        _, ansi, cfg, f'Quests :: SR HD: A War Apart',
         completed, in_progress, quests)
     return quest_urls
 

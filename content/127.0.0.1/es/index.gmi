@@ -4,39 +4,74 @@ Para realizar misiones gubernamentales, necesitarás un certificado de ranger. N
 => /cgi/?lang=es 🪪 Mostrar certificado de ranger
 => about.gmi ℹ Acerca del proyecto
 
-### Quests :: SR 2 HD: A War Apart
-=> /cgi/act?qid=142 Banquete
-=> /cgi/act?qid=192 Batallas de Minirobots
-=> /cgi/act?qid=144 Borzukhan
-=> /cgi/act?qid=162 Campeonato de Pesca
-=> /cgi/act?qid=152 Conductor
-=> /cgi/act?qid=160 Cuadro
-=> /cgi/act?qid=194 Dames
-=> /cgi/act?qid=150 Disco
-=> /cgi/act?qid=154 Edelweiss
-=> /cgi/act?qid=156 Elección
-=> /cgi/act?qid=158 Eloose
-=> /cgi/act?qid=198 Estación de Esquí
-=> /cgi/act?qid=146 Etiqueta
-=> /cgi/act?qid=174 Festival de Música
-=> /cgi/act?qid=164 Fonsers
-=> /cgi/act?qid=176 Juegos Olímpicos
-=> /cgi/act?qid=168 Leonardo da Vinci
-=> /cgi/act?qid=202 Líneas Cósmicas
-=> /cgi/act?qid=170 Lógica
-=> /cgi/act?qid=140 Mal Día de Ranger
-=> /cgi/act?qid=172 Ministerio
-=> /cgi/act?qid=178 Pachvaraus
-=> /cgi/act?qid=180 Piloto
-=> /cgi/act?qid=184 Pizza
-=> /cgi/act?qid=188 Prisión
-=> /cgi/act?qid=182 Prisión (pirata)
-=> /cgi/act?qid=148 Profundidad
-=> /cgi/act?qid=190 Rally
-=> /cgi/act?qid=166 Saltador
-=> /cgi/act?qid=196 Sibolusovtus Auropedal
-=> /cgi/act?qid=204 Sigilo
-=> /cgi/act?qid=200 Surtido
-=> /cgi/act?qid=206 Swarokok
+## Quests :: SR HD: A War Apart (0 / 35)
 => /cgi/act?qid=186 Tocadiscos
+☠ 20% ⏱ bajo 🏷 juego de lógica
+=> /cgi/act?qid=174 Festival de Música
+☠ 20% ⏱ promedio 🏷 aventura con elementos de gestión
+=> /cgi/act?qid=172 Ministerio
+☠ 20% ⏱ promedio 🏷 aventura con elementos de lógica
+=> /cgi/act?qid=150 Disco
+☠ 20% ⏱ promedio 🏷 entrega de carga con elementos de misión
+=> /cgi/act?qid=184 Pizza
+☠ 22% ⏱ promedio 🏷 juego de matemáticas de lógica
+=> /cgi/act?qid=170 Lógica
+☠ 30% ⏱ bajo 🏷 rompecabezas de lógica
+=> /cgi/act?qid=194 Dames
+☠ 30% ⏱ bajo 🏷 rompecabezas de matemáticas
+=> /cgi/act?qid=156 Elección
+☠ 30% ⏱ bajo 🏷 simulador de campaña electoral
+=> /cgi/act?qid=144 Borzukhan
+☠ 30% ⏱ por debajo del promedio 🏷 aventura con elementos arcade
+=> /cgi/act?qid=180 Piloto
+☠ 30% ⏱ promedio 🏷 aventura con acertijos de lógica
+=> /cgi/act?qid=204 Sigilo
+☠ 35% ⏱ por debajo del promedio 🏷 aventura-shooter
+=> /cgi/act?qid=200 Surtido
+☠ 40% ⏱ promedio 🏷 juego de lógica arcade
+=> /cgi/act?qid=198 Estación de Esquí
+☠ 40% ⏱ promedio 🏷 simulador de economía
+=> /cgi/act?qid=164 Fonsers
+☠ 40% ⏱ promedio 🏷 simulador de carreras
+=> /cgi/act?qid=206 Swarokok
+☠ 40% ⏱ promedio 🏷 juego táctico
+=> /cgi/act?qid=162 Campeonato de Pesca
+☠ 45% ⏱ promedio 🏷 simulador de pesca
+=> /cgi/act?qid=196 Sibolusovtus Auropedal
+☠ 50% ⏱ promedio 🏷 aventura con elementos de humor negro
+=> /cgi/act?qid=140 Mal Día de Ranger
+☠ 50% ⏱ promedio 🏷 aventura con elementos de lucha
+=> /cgi/act?qid=190 Rally
+☠ 50% ⏱ promedio 🏷 simulador de carreras con elementos de gestión
+=> /cgi/act?qid=192 Batallas de Minirobots
+☠ 50% ⏱ promedio 🏷 combate táctico
+=> /cgi/act?qid=160 Cuadro
+☠ 50% ⏱ promedio 🏷 detective humorístico
+=> /cgi/act?qid=178 Pachvaraus
+☠ 50% ⏱ por encima del promedio 🏷 simulador de vida animal
+=> /cgi/act?qid=202 Líneas Cósmicas
+☠ 50% ⏱ por encima del promedio 🏷 estrategia económica
+=> /cgi/act?qid=152 Conductor
+☠ 50% ⏱ largo 🏷 juego de matemáticas de lógica
+=> /cgi/act?qid=188 Prisión
+☠ 50% ⏱ largo 🏷 simulador de prisión
+=> /cgi/act?qid=182 Prisión (pirata)
+☠ 50% ⏱ largo 🏷 simulador de prisión
+=> /cgi/act?qid=158 Eloose
+☠ 60% ⏱ bajo 🏷 rompecabezas de lógica
 => /cgi/act?qid=208 Xenoparque
+☠ 60% ⏱ bajo 🏷 rompecabezas de lógica
+=> /cgi/act?qid=176 Juegos Olímpicos
+☠ 60% ⏱ largo 🏷 juego de lógica con elementos de gestión
+=> /cgi/act?qid=146 Etiqueta
+☠ 65% ⏱ bajo 🏷 rompecabezas de lógica
+=> /cgi/act?qid=142 Banquete
+☠ 70% ⏱ promedio 🏷 juego educativo de lógica
+=> /cgi/act?qid=168 Leonardo da Vinci
+☠ 70% ⏱ promedio 🏷 simulador de caballete de lógica
+=> /cgi/act?qid=154 Edelweiss
+☠ 75% ⏱ promedio 🏷 aventura con aventuras
+=> /cgi/act?qid=166 Saltador
+☠ 80% ⏱ promedio 🏷 rompecabezas de lógica
+=> /cgi/act?qid=148 Profundidad
+☠ 90% ⏱ largo 🏷 juego de matemáticas de lógica
