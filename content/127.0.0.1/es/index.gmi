@@ -1,7 +1,8 @@
 # Centro de ranger "Unión"
 Para realizar misiones gubernamentales, necesitarás un certificado de ranger. No te preocupes, es exactamente igual que el tuyo. ¿Tienes un certificado, verdad? ¿Eres ranger? Entonces tienes el certificado correcto.
 
-=> /cgi/?lang=es Mostrar certificado de ranger
+=> /cgi/?lang=es 🪪 Mostrar certificado de ranger
+=> about.gmi ℹ Acerca del proyecto
 
 ### Quests :: SR 2 HD: A War Apart
 => /cgi/act?qid=142 Banquete
@@ -39,9 +40,3 @@ Para realizar misiones gubernamentales, necesitarás un certificado de ranger. N
 => /cgi/act?qid=206 Swarokok
 => /cgi/act?qid=186 Tocadiscos
 => /cgi/act?qid=208 Xenoparque
-
-### Información
-=> /es/gemlog/ Gemlog
-=> gemini://bbs.geminispace.org/s/SpaceRangers Discutir en el BBS
-=> https://github.com/Cthulhu2/gm-space-rangers-quests Código fuente y problemas
-=> misfin:cthulhu28@hashnix.club Correo electrónico de contacto (misfin)

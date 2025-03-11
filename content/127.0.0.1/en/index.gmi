@@ -1,7 +1,8 @@
 # Ranger Center "Union"
 To perform government assignments, you will need a ranger certificate. Don't worry, it's exactly the same as yours. Do you have a certificate, right? Are you a ranger? So you have the right certificate.
 
-=> /cgi/?lang=en Show Ranger's certificate
+=> /cgi/?lang=en 🪪 Show Ranger's certificate
+=> about.gmi ℹ About
 
 ### Quests :: SR 2 HD: A War Apart
 => /cgi/act?qid=123 Assortment
@@ -39,9 +40,3 @@ To perform government assignments, you will need a ranger certificate. Don't wor
 => /cgi/act?qid=130 Swarokok
 => /cgi/act?qid=16  Tag
 => /cgi/act?qid=138 Xenopark
-
-### Info
-=> /en/gemlog/ Gemlog
-=> gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS
-=> https://github.com/Cthulhu2/gm-space-rangers-quests Source code and Issues
-=> misfin:cthulhu28@hashnix.club Contact email (misfin)

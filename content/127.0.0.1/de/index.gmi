@@ -1,7 +1,8 @@
 # Ranger-Zentrum "Union"
 Zur Wahrnehmung behördlicher Aufträge benötigen Sie ein Ranger-Zertifikat. Keine Sorge, es ist genau dasselbe wie bei Ihnen. Du hast doch ein Zertifikat, oder? Du bist doch ein Ranger, oder? Hier haben Sie das passende Zertifikat.
 
-=> /cgi/?lang=de Ranger-Zertifikat anzeigen
+=> /cgi/?lang=de 🪪 Ranger-Zertifikat anzeigen
+=> about.gmi ℹ Über das Projekt
 
 ### Quests :: SR 2 HD: A War Apart
 => /cgi/act?qid=6   Banquet
@@ -39,9 +40,3 @@ Zur Wahrnehmung behördlicher Aufträge benötigen Sie ein Ranger-Zertifikat. Ke
 => /cgi/act?qid=128 Stealth Ship
 => /cgi/act?qid=130 Swarokok
 => /cgi/act?qid=138 Xenopark
-
-### Info
-=> /en/gemlog/ Gemlog
-=> gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS
-=> https://github.com/Cthulhu2/gm-space-rangers-quests Source code and Issues
-=> misfin:cthulhu28@hashnix.club Contact email (misfin)

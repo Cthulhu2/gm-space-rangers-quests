@@ -163,9 +163,13 @@ def index_anon(_, cfg: Config, ranger: Ranger, lang):
             f'=> {cfg.reg_url} 🪪' + _('Registration') + '\n' +
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
             f'=> /{lang}/leaders 💯 ' + _('Leader board') + '\n' +
+            f'=> /{lang}/about.gmi ℹ ' + _('About') + '\n' +
             f'\n' + sort_urls +
-            f'{quest_urls}\n' +
-            footer(_, lang))
+            f'{quest_urls}\n')
+
+
+def color(text):
+    return f'\033[38;5;11m{text}\033[0m'
 
 
 def index_ranger(_, cfg: Config, ranger: Ranger, lang):
@@ -176,11 +180,11 @@ def index_ranger(_, cfg: Config, ranger: Ranger, lang):
     quest_completed = len(QuestCompleted.by(rid=ranger.id, lang=lang))
     quest_total = Quest.count_by(lang=lang)
     if ranger.get_opts().ansi:
-        progress = f'\033[38;5;11m{quest_completed} / {quest_total}\033[0m'
+        progress = color(f'{quest_completed} / {quest_total}')
         if lang == 'ru':
-            credits = f'\033[38;5;11m{ranger.credits_ru}\033[0m'
+            credits = color(ranger.credits_ru)
         else:
-            credits = f'\033[38;5;11m{ranger.credits_en}\033[0m'
+            credits = color(ranger.credits_en)
     else:
         progress = f'{quest_completed} / {quest_total}'
         if lang == 'ru':
@@ -197,19 +201,9 @@ def index_ranger(_, cfg: Config, ranger: Ranger, lang):
             _('Credits: ') + credits + '\n\n' +
             f'=> {cfg.opts_url} ⚙ ' + _('Options') + '\n' +
             f'=> /{lang}/leaders 💯 ' + _('Leader board') + '\n' +
+            f'=> /{lang}/about.gmi ℹ ' + _('About') + '\n' +
             f'\n' + sort_urls +
-            f'{quest_urls}\n' +
-            footer(_, lang))
-
-
-def footer(_, lang):
-    return (f'### ' + _('Info') + '\n' +
-            f'=> /{lang}/gemlog/ ' + _('Gemlog') + '\n' +
-            f'=> gemini://bbs.geminispace.org/s/SpaceRangers ' +
-            _('Discuss on the BBS') + '\n' +
-            f'=> https://github.com/Cthulhu2/gm-space-rangers-quests ' +
-            _('Source code and Issues') + '\n' +
-            f'=> misfin:cthulhu28@hashnix.club ' + _('Contact email (misfin)'))
+            f'{quest_urls}\n')
 
 
 def build_sort_urls(_, cfg, ranger: Ranger):

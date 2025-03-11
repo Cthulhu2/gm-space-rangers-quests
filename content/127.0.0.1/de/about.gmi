@@ -1,0 +1,33 @@
+# Über das Projekt
+Die Kapsel ist Textquests aus dem Spiel "Space Rangers" gewidmet.
+
+Der Quest-Player wurde von einem ähnlichen Projekt von @roginvs aus dem großen Web portiert.
+=> https://spacerangers.gitlab.io
+
+Grundsätzlich werden die Quests aus der ehrlich erworbenen GOG-Version des Spiels "Space Rangers HD: A War Apart" (v2.1.2468) übernommen.
+Alle Rechte an Quests und Bildern aus dem Spiel liegen bei deren Besitzern. Ja, ja.
+
+Informationen zu Schwierigkeit/Länge/Genres stammen von der Site "https://rangers.fandom.com", da diese am wenigsten umstritten ist. CC-BY-SA.
+
+Wenn Sie plötzlich das Originalspiel spielen möchten:
+=> https://www.gog.com/en/game/space_rangers_hd_a_war_apart Space Rangers HD: A War Apart (gog.com)
+=> https://store.steampowered.com/app/214730/Space_Rangers_HD_A_War_Apart/ Space Rangers HD: A War Apart (store.steampowered.com)
+
+Für alle Fälle gibt es hier die Quest-Komplettlösungen:
+=> https://steamcommunity.com/sharedfiles/filedetails/?id=395450382 Text Quest Guide 16,5/30 (steamcommunity.com)
+=> https://steamcommunity.com/sharedfiles/filedetails/?id=134454960 Прохождение всех квестов игры (steamcommunity.com)
+=> https://rangers.fandom.com/ru/wiki/%D0%A2%D0%B5%D0%BA%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D0%B5_%D0%BF%D0%BB%D0%B0%D0%BD%D0%B5%D1%82%D0%B0%D1%80%D0%BD%D1%8B%D0%B5_%D0%BA%D0%B2%D0%B5%D1%81%D1%82%D1%8B Текстовые планетарные квесты (rangers.fandom.com)
+
+Vielen Dank für die Übersetzung der Kapselseiten (nicht der Quests):
+=> https://translate.google.com Google Translate
+=> gemini://gmi.wikdict.com WikDict
+
+Und allgemein:
+=> gemini://bbs.geminispace.org/s/SpaceRangers Diskutieren Sie auf dem BBS
+=> https://github.com/Cthulhu2/gm-space-rangers-quests Code und Issues (github.com)
+=> misfin:cthulhu28@hashnix.club Kontakt-E-Mail (misfin)
+=> gemlog/ Gemlog
+```
+Created: 2025-03-11
+```
+=> gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule

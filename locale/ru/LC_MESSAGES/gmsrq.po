@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-10 22:34+0200\n"
+"POT-Creation-Date: 2025-03-11 00:38+0200\n"
 "PO-Revision-Date: 2024-06-09 19:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -28,7 +28,7 @@ msgstr "Требуется сертификат рейнджера"
 msgid "Unknown quest id={qid}"
 msgstr "Неизвестный квест id={qid}"
 
-#: gmsrq/gmusers.py:29 gmsrq/page_index.py:194
+#: gmsrq/gmusers.py:29 gmsrq/page_index.py:198
 #, python-brace-format
 msgid "Wow! This is the famous ranger {name}!"
 msgstr "Ба! Да это же знаменитый рейнджер {name}!"
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Rename ranger"
 msgstr "Переименовать рейнджера"
 
-#: gmsrq/gmusers.py:79 gmsrq/page_index.py:164 gmsrq/page_index.py:198
+#: gmsrq/gmusers.py:79 gmsrq/page_index.py:164 gmsrq/page_index.py:202
 msgid "Options"
 msgstr "Настройки"
 
@@ -163,7 +163,7 @@ msgid "  # : Ranger                    : Quests : Credits"
 msgstr "  № : Рейнджер                  : Квесты : Кредиты"
 
 #: gmsrq/gmusers.py:402 gmsrq/gmusers.py:405 gmsrq/page_index.py:165
-#: gmsrq/page_index.py:199
+#: gmsrq/page_index.py:203
 msgid "Leader board"
 msgstr "Таблица рекордов"
 
@@ -179,335 +179,319 @@ msgstr "Входи, рейнджер, твой сертификат прошёл
 msgid "Registration"
 msgstr "Регистрация"
 
-#: gmsrq/page_index.py:196
+#: gmsrq/page_index.py:166 gmsrq/page_index.py:204
+msgid "About"
+msgstr "О проекте"
+
+#: gmsrq/page_index.py:200
 msgid "Progress: "
 msgstr "Прогресс: "
 
-#: gmsrq/page_index.py:197
+#: gmsrq/page_index.py:201
 msgid "Credits: "
 msgstr "Кредиты: "
 
-#: gmsrq/page_index.py:206
-msgid "Info"
-msgstr "Информация"
-
-#: gmsrq/page_index.py:207
-msgid "Gemlog"
-msgstr "Гемлог"
-
-#: gmsrq/page_index.py:209
-msgid "Discuss on the BBS"
-msgstr "Обсудить на BBS"
-
 #: gmsrq/page_index.py:211
-msgid "Source code and Issues"
-msgstr "Исходники и ишьюсы"
-
-#: gmsrq/page_index.py:212
-msgid "Contact email (misfin)"
-msgstr "Почта для связи (misfin)"
-
-#: gmsrq/page_index.py:217
 msgid "☠ difficulty"
 msgstr "☠ сложность"
 
-#: gmsrq/page_index.py:218
+#: gmsrq/page_index.py:212
 msgid "⏱ duration"
 msgstr "⏱ длительность"
 
-#: gmsrq/page_index.py:219
+#: gmsrq/page_index.py:213
 msgid "🏷 genre"
 msgstr "🏷 жанр"
 
-#: gmsrq/page_index.py:226
+#: gmsrq/page_index.py:220
 msgid "⇧ ascend"
 msgstr "⇧ по возрастанию"
 
-#: gmsrq/page_index.py:227
+#: gmsrq/page_index.py:221
 msgid "⇩ descend"
 msgstr "⇩ по убыванию"
 
-#: gmsrq/page_index.py:245
+#: gmsrq/page_index.py:239
 msgid "⏱ low"
 msgstr "⏱ низкая"
 
-#: gmsrq/page_index.py:247
+#: gmsrq/page_index.py:241
 msgid "⏱ below average"
 msgstr "⏱ ниже среднего"
 
-#: gmsrq/page_index.py:249
+#: gmsrq/page_index.py:243
 msgid "⏱ average"
 msgstr "⏱ средняя"
 
-#: gmsrq/page_index.py:251
+#: gmsrq/page_index.py:245
 msgid "⏱ above average"
 msgstr "⏱ выше среднего"
 
-#: gmsrq/page_index.py:253
+#: gmsrq/page_index.py:247
 msgid "⏱ long"
 msgstr "⏱ высокая"
 
-#: gmsrq/page_index.py:262
+#: gmsrq/page_index.py:256
 msgid "🏷 adventure"
 msgstr "🏷 бродилка"
 
-#: gmsrq/page_index.py:264
+#: gmsrq/page_index.py:258
 msgid "🏷 adventure-shooter"
 msgstr "🏷 бродилка-стрелялка"
 
-#: gmsrq/page_index.py:266
+#: gmsrq/page_index.py:260
 msgid "🏷 adventure-shooter; safe cracking simulator"
 msgstr "🏷 бродилка-стрелялка; симулятор взлома сейфа"
 
-#: gmsrq/page_index.py:268
+#: gmsrq/page_index.py:262
 msgid "🏷 adventure with adventures"
 msgstr "🏷 бродилка с приключениями"
 
-#: gmsrq/page_index.py:270
+#: gmsrq/page_index.py:264
 msgid "🏷 adventure with arcade elements"
 msgstr "🏷 бродилка с элементами аркады"
 
-#: gmsrq/page_index.py:272
+#: gmsrq/page_index.py:266
 msgid "🏷 adventure with black humor elements"
 msgstr "🏷 бродилка с элементами черного юмора"
 
-#: gmsrq/page_index.py:274
+#: gmsrq/page_index.py:268
 msgid "🏷 adventure with fighting elements"
 msgstr "🏷 бродилка с элементами файтинга"
 
-#: gmsrq/page_index.py:276
+#: gmsrq/page_index.py:270
 msgid "🏷 adventure with fighting and puzzle elements"
 msgstr "🏷 бродилка с элементами файтинга и головоломками"
 
-#: gmsrq/page_index.py:278
+#: gmsrq/page_index.py:272
 msgid "🏷 adventure with management elements"
 msgstr "🏷 бродилка с элементами менеджмента"
 
-#: gmsrq/page_index.py:280
+#: gmsrq/page_index.py:274
 msgid "🏷 adventure with horror elements"
 msgstr "🏷 бродилка с элементами ужасов"
 
-#: gmsrq/page_index.py:282
+#: gmsrq/page_index.py:276
 msgid "🏷 adventure with awful horror elements"
 msgstr "🏷 бродилка с элементами тихих ужасов"
 
-#: gmsrq/page_index.py:284
+#: gmsrq/page_index.py:278
 msgid "🏷 adventure with logic elements"
 msgstr "🏷 бродилка с логическими элементами"
 
-#: gmsrq/page_index.py:286
+#: gmsrq/page_index.py:280
 msgid "🏷 adventure with logic puzzles"
 msgstr "🏷 бродилка с логическими головоломками"
 
-#: gmsrq/page_index.py:288
+#: gmsrq/page_index.py:282
 msgid "🏷 trivia game"
 msgstr "🏷 викторина"
 
-#: gmsrq/page_index.py:290
+#: gmsrq/page_index.py:284
 msgid "🏷 text and logic puzzle"
 msgstr "🏷 текстово-логическая головоломка"
 
-#: gmsrq/page_index.py:292
+#: gmsrq/page_index.py:286
 msgid "🏷 puzzle"
 msgstr "🏷 головоломка"
 
-#: gmsrq/page_index.py:294
+#: gmsrq/page_index.py:288
 msgid "🏷 logic puzzle"
 msgstr "🏷 логическая головоломка"
 
-#: gmsrq/page_index.py:296
+#: gmsrq/page_index.py:290
 msgid "🏷 arcade logic game"
 msgstr "🏷 аркадно-логическая игра"
 
-#: gmsrq/page_index.py:298
+#: gmsrq/page_index.py:292
 msgid "🏷 logic game"
 msgstr "🏷 логическая игра"
 
-#: gmsrq/page_index.py:300
+#: gmsrq/page_index.py:294
 msgid "🏷 logic game with management elements"
 msgstr "🏷 логическая игра с элементами менеджмента"
 
-#: gmsrq/page_index.py:302
+#: gmsrq/page_index.py:296
 msgid "🏷 logic educational game"
 msgstr "🏷 логико-познавательная игра"
 
-#: gmsrq/page_index.py:304
+#: gmsrq/page_index.py:298
 msgid "🏷 logic math game"
 msgstr "🏷 логико-математическая игра"
 
-#: gmsrq/page_index.py:306
+#: gmsrq/page_index.py:300
 msgid "🏷 logic easel simulator"
 msgstr "🏷 логический симулятор мольберта"
 
-#: gmsrq/page_index.py:308
+#: gmsrq/page_index.py:302
 msgid "🏷 math logic puzzle"
 msgstr "🏷 логико-математическая головоломка"
 
-#: gmsrq/page_index.py:310
+#: gmsrq/page_index.py:304
 msgid "🏷 math puzzle"
 msgstr "🏷 математическая головоломка"
 
-#: gmsrq/page_index.py:312
+#: gmsrq/page_index.py:306
 msgid "🏷 logic puzzles and math problems"
 msgstr "🏷 логические головоломки и математические задачи"
 
-#: gmsrq/page_index.py:314
+#: gmsrq/page_index.py:308
 msgid "🏷 logic tactical game"
 msgstr "🏷 логико-тактическая игра"
 
-#: gmsrq/page_index.py:316
+#: gmsrq/page_index.py:310
 msgid "🏷 simulator"
 msgstr "🏷 симулятор"
 
-#: gmsrq/page_index.py:318
+#: gmsrq/page_index.py:312
 msgid "🏷 prison simulator"
 msgstr "🏷 симулятор тюрьмы"
 
-#: gmsrq/page_index.py:320
+#: gmsrq/page_index.py:314
 msgid "🏷 space rangers simulator"
 msgstr "🏷 симулятор \"космических рейнджеров\""
 
-#: gmsrq/page_index.py:322
+#: gmsrq/page_index.py:316
 msgid "🏷 animal life simulator"
 msgstr "🏷 симулятор жизни животного"
 
-#: gmsrq/page_index.py:324
+#: gmsrq/page_index.py:318
 msgid "🏷 lab rat simulator"
 msgstr "🏷 симулятор \"подопытной крысы\""
 
-#: gmsrq/page_index.py:326
+#: gmsrq/page_index.py:320
 msgid "🏷 composite sketch simulator"
 msgstr "🏷 симулятор составления фоторобота"
 
-#: gmsrq/page_index.py:328
+#: gmsrq/page_index.py:322
 msgid "🏷 economy simulator"
 msgstr "🏷 экономический симулятор"
 
-#: gmsrq/page_index.py:330
+#: gmsrq/page_index.py:324
 msgid "🏷 election campaign simulator"
 msgstr "🏷 симулятор предвыборной кампании"
 
-#: gmsrq/page_index.py:332
+#: gmsrq/page_index.py:326
 msgid "🏷 hauler simulator"
 msgstr "🏷 симулятор дальнобойщика"
 
-#: gmsrq/page_index.py:334
+#: gmsrq/page_index.py:328
 msgid "🏷 taxi simulator"
 msgstr "🏷 симулятор таксиста"
 
-#: gmsrq/page_index.py:336
+#: gmsrq/page_index.py:330
 msgid "🏷 fishing simulator"
 msgstr "🏷 симулятор рыбалки"
 
-#: gmsrq/page_index.py:338
+#: gmsrq/page_index.py:332
 msgid "🏷 ancient cars racing simulator"
 msgstr "🏷 гонки на древних машинах"
 
-#: gmsrq/page_index.py:340
+#: gmsrq/page_index.py:334
 msgid "🏷 racing simulator"
 msgstr "🏷 гоночный симулятор"
 
-#: gmsrq/page_index.py:342
+#: gmsrq/page_index.py:336
 msgid "🏷 racing simulator with management elements"
 msgstr "🏷 гоночный симулятор с элементами менеджмента"
 
-#: gmsrq/page_index.py:344
+#: gmsrq/page_index.py:338
 msgid "🏷 penchekrack breeding simulator"
 msgstr "🏷 симулятор выведения пенчекряка"
 
-#: gmsrq/page_index.py:346
+#: gmsrq/page_index.py:340
 msgid "🏷 wild gobzaur taming simulator"
 msgstr "🏷 симулятор укрощения дикого гобзавра"
 
-#: gmsrq/page_index.py:348
+#: gmsrq/page_index.py:342
 msgid "🏷 passing entrance exams"
 msgstr "🏷 сдача вступительных экзаменов"
 
-#: gmsrq/page_index.py:350
+#: gmsrq/page_index.py:344
 msgid "🏷 tactical fighting"
 msgstr "🏷 тактический файтинг"
 
-#: gmsrq/page_index.py:352
+#: gmsrq/page_index.py:346
 msgid "🏷 tactical game"
 msgstr "🏷 тактическая игра"
 
-#: gmsrq/page_index.py:354
+#: gmsrq/page_index.py:348
 msgid "🏷 tactical strategy"
 msgstr "🏷 тактическая стратегия"
 
-#: gmsrq/page_index.py:356
+#: gmsrq/page_index.py:350
 msgid "🏷 economic strategy"
 msgstr "🏷 экономическая стратегия"
 
-#: gmsrq/page_index.py:358
+#: gmsrq/page_index.py:352
 msgid "🏷 strategy with fighting elements"
 msgstr "🏷 стратегия с элементами файтинга"
 
-#: gmsrq/page_index.py:360
+#: gmsrq/page_index.py:354
 msgid "🏷 recruitment center manager"
 msgstr "🏷 менеджер военкомата"
 
-#: gmsrq/page_index.py:362
+#: gmsrq/page_index.py:356
 msgid "🏷 management"
 msgstr "🏷 менеджмент"
 
-#: gmsrq/page_index.py:364
+#: gmsrq/page_index.py:358
 msgid "🏷 build management"
 msgstr "🏷 менеджмент; управление стройкой"
 
-#: gmsrq/page_index.py:366
+#: gmsrq/page_index.py:360
 msgid "🏷 sport management"
 msgstr "🏷 спорт-менеджер"
 
-#: gmsrq/page_index.py:368
+#: gmsrq/page_index.py:362
 msgid "🏷 gambling"
 msgstr "🏷 азартная игра"
 
-#: gmsrq/page_index.py:370
+#: gmsrq/page_index.py:364
 msgid "🏷 trading"
 msgstr "🏷 торговля"
 
-#: gmsrq/page_index.py:372
+#: gmsrq/page_index.py:366
 msgid "🏷 weapons testing"
 msgstr "🏷 испытание оружия"
 
-#: gmsrq/page_index.py:374
+#: gmsrq/page_index.py:368
 msgid "🏷 espionage"
 msgstr "🏷 шпионаж"
 
-#: gmsrq/page_index.py:376
+#: gmsrq/page_index.py:370
 msgid "🏷 espionage; gambling"
 msgstr "🏷 шпионаж; азартные игры"
 
-#: gmsrq/page_index.py:378
+#: gmsrq/page_index.py:372
 msgid "🏷 espionage; bugging"
 msgstr "🏷 шпионаж; установка жучков"
 
-#: gmsrq/page_index.py:380
+#: gmsrq/page_index.py:374
 msgid "🏷 assault"
 msgstr "🏷 штурм"
 
-#: gmsrq/page_index.py:382
+#: gmsrq/page_index.py:376
 msgid "🏷 fantasy role-playing game"
 msgstr "🏷 фэнтезийная ролевая игра"
 
-#: gmsrq/page_index.py:384
+#: gmsrq/page_index.py:378
 msgid "🏷 detective"
 msgstr "🏷 детектив"
 
-#: gmsrq/page_index.py:386
+#: gmsrq/page_index.py:380
 msgid "🏷 humorous detective"
 msgstr "🏷 юмористический детектив"
 
-#: gmsrq/page_index.py:388
+#: gmsrq/page_index.py:382
 msgid "🏷 cargo delivery with quest elements"
 msgstr "🏷 доставка груза с элементами квеста"
 
-#: gmsrq/page_index.py:390
+#: gmsrq/page_index.py:384
 msgid "🏷 fortress defend"
 msgstr "🏷 защита крепости"
 
-#: gmsrq/page_index.py:392
+#: gmsrq/page_index.py:386
 msgid "🏷 action horror"
 msgstr "🏷 экшн с хоррором"
 
