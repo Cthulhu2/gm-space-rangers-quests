@@ -52,7 +52,7 @@ To perform government assignments, you will need a ranger certificate. Don't wor
 => /cgi/act?qid=125 Cosmic Lines
 ☠ 50% ⏱ above average 🏷 economic strategy
 => /cgi/act?qid=32 Driver
-☠ 50% ⏱ long 🏷 logic math game
+☠ 50% ⏱ long 🏷 hauler simulator
 => /cgi/act?qid=106 Prison
 ☠ 50% ⏱ long 🏷 prison simulator
 => /cgi/act?qid=97 Prison (pirate)

@@ -52,7 +52,7 @@ Para realizar misiones gubernamentales, necesitarás un certificado de ranger. N
 => /cgi/act?qid=202 Líneas Cósmicas
 ☠ 50% ⏱ por encima del promedio 🏷 estrategia económica
 => /cgi/act?qid=152 Conductor
-☠ 50% ⏱ largo 🏷 juego de matemáticas de lógica
+☠ 50% ⏱ largo 🏷 simulador de transportista
 => /cgi/act?qid=188 Prisión
 ☠ 50% ⏱ largo 🏷 simulador de prisión
 => /cgi/act?qid=182 Prisión (pirata)

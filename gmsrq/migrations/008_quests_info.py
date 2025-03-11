@@ -144,7 +144,7 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
 ('Diver',        90, Duration.LOW,           Genre.ADVENTURE),                         # noqa 90  (res, 16 0) (help, средняя      низкая      ) (fandom, 90  Низкая       )
 ('Domoclan',     80, Duration.LONG,          Genre.ADVENTURE_W_ADVENTURES),            # noqa 80  (res, 49 4) (help, высокая      высокая     ) (fandom, 80  Высокая      )
 ('Doomino',      50, Duration.AVERAGE,       Genre.LOGIC_GAME),                        # noqa 50  (res, 21 2) (help, средняя      средняя     ) (fandom, 50  Средняя      )
-('Driver',       50, Duration.LONG,          Genre.LOGIC_MATH_GAME),                   # noqa 50  (res, 32 3) (help, средняя      выше средней) (fandom, 50  Выше средней*)
+('Driver',       50, Duration.LONG,          Genre.HAULER_SIM),                        # noqa 50  (res, 32 3) (help, средняя      выше средней) (fandom, 50  Выше средней*)
 ('Drugs',        80, Duration.LOW,           Genre.ADVENTURE_W_LOGIC_PUZZLES),         # noqa 80  (res, 52 4) (help, высокая      высокая     ) (fandom, 80  Высокая     *)
 ('Easywork',    100, Duration.LONG,          Genre.LOGIC_PUZZLES_AND_MATH_PROBLEMS),   # noqa 100 (res, 50 4) (help, высокая      высокая     ) (fandom, 100 Высокая      )
 ('Edelweiss',    75, Duration.AVERAGE,       Genre.ADVENTURE_W_ADVENTURES),            # noqa 35  (res,  8 2) (help, ниже средней средняя     ) (fandom, 75  Средняя      )

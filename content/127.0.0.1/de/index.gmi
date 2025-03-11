@@ -52,7 +52,7 @@ Zur Wahrnehmung behördlicher Aufträge benötigen Sie ein Ranger-Zertifikat. Ke
 => /cgi/act?qid=201 Passagiertransport RaumLiner
 ☠ 50% ⏱ überdurchschnittlich 🏷 wirtschaftliche strategie
 => /cgi/act?qid=151 Fahrer
-☠ 50% ⏱ lange 🏷 logik-mathe-spiel
+☠ 50% ⏱ lange 🏷 schleppersimulator
 => /cgi/act?qid=187 Gefängnis
 ☠ 50% ⏱ lange 🏷 gefängnissimulator
 => /cgi/act?qid=181 Gefängnis (pirat)
