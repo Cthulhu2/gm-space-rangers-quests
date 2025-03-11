@@ -1,0 +1,19 @@
+# Relocation and localization
+It so happened that the ranger center is moving to a new system. Now it lives here:
+=> gemini://srq.cthulhu29.space srq.cthulhu29.space
+
+Suddenly it turned out that my version of the game has mods with German and Spanish localization. Quests from them were immediately extracted and added to the capsule. German and Spanish rangers are invited to participate in the unbridled fun.
+
+Also added a few "improvements":
+* some quest difficulty on a scale of 0..100 (☠);
+* relative assessment of the time of completion (⏱);
+* something similar to the genre (🏷);
+* can be sorted in any way;
+* a separate section "About" with links.
+
+To simplify the migration, the project database was recreated fresh and clean. Rangers will need to re-register.
+
+=> /en/ Home
+```
+Created: 2025-03-11
+```

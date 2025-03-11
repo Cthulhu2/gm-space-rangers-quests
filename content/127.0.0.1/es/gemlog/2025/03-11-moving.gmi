@@ -1,0 +1,19 @@
+# Reubicación y localización
+Da la casualidad de que el centro de guardabosques se está mudando a un nuevo sistema. Ahora vive aquí:
+=> gemini://srq.cthulhu29.space srq.cthulhu29.space
+
+De repente resultó que mi versión del juego contiene mods con localización en alemán y español. Las misiones de ellos fueron extraídas inmediatamente y agregadas a la cápsula. Los ranger alemanes y españoles están invitados a unirse a la diversión salvaje.
+
+También se agregaron algunas "mejoras":
+* algunas dificultades de las misiones en una escala de 0 a 100 (☠);
+* evaluación relativa del tiempo de viaje (⏱);
+* algo similar al género (🏷);
+* se puede organizar de cualquier manera;
+* Sección separada "Acerca del proyecto" con enlaces.
+
+Para simplificar la migración, la base de datos del proyecto se volvió a crear limpia y nueva. Los guardabosques tendrán que volver a registrarse.
+
+=> /es/ Inicio
+```
+Created: 2025-03-11
+```

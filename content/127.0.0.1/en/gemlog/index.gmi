@@ -1,4 +1,5 @@
 # Ranger Center "Union"
+=> 2025/03-11-moving.gmi 2025-03-11 Relocation and localization
 => 2024/06-13-leaderboard.gmi 2024-06-13 Leaderboard available!
 => 2024/05-12-progress.gmi 2024-05-12 Quests progress available!
 => 2024/04-17-open.gmi 2024-04-17 We are open!

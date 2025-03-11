@@ -1,0 +1,19 @@
+# Umzug und Lokalisierung
+Es ist einfach so, dass das Ranger-Zentrum auf ein neues System umsteigt. Jetzt lebt er hier:
+=> gemini://srq.cthulhu29.space srq.cthulhu29.space
+
+Plötzlich stellte sich heraus, dass meine Version des Spiels Mods mit deutscher und spanischer Lokalisierung enthält. Die Quests wurden umgehend daraus extrahiert und der Kapsel hinzugefügt. Deutsche und spanische Ranger sind herzlich eingeladen, beim wilden Spaß dabei zu sein.
+
+Außerdem wurden einige "Verbesserungen" hinzugefügt:
+* einige Schwierigkeitsgrade der Quests auf einer Skala von 0..100 (☠);
+* relative Einschätzung der Reisezeit (⏱);
+* etwas Ähnliches wie das Genre (🏷);
+* kann beliebig angeordnet werden;
+* separater Abschnitt "Über das Projekt" mit Links.
+
+Um die Migration zu vereinfachen, wurde die Projektdatenbank neu und bereinigt erstellt. Ranger müssen sich erneut registrieren.
+
+=> /de/ Startseite
+```
+Created: 2025-03-11
+```
