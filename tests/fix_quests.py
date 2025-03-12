@@ -59,3 +59,82 @@ def fix_format_tag():
             with open(join(QUEST_DIR, f'{qname}.qmm'), 'wb') as f:
                 packed = write_qmm(quest, io.BytesIO())
                 f.write(packed)
+
+
+def fix_formulas_depth():
+    # Expected close brace token but got 'durch' at 7
+    with open(join(QUEST_DIR, 'Depth_ger.qmm'), 'rb') as f:
+        quest = parse(f)
+    loc = quest.find_loc(37)
+    if '{([p11] durch 500 + 1) * 500}' in loc.texts[1]:
+        loc.texts[1] = loc.texts[1].replace('{([p11] durch 500 + 1) * 500}',
+                                            '{([p11] div 500 + 1) * 500}')
+        with open(join(QUEST_DIR, 'Depth_ger.qmm'), 'wb') as s:
+            packed = write_qmm(quest, io.BytesIO())
+            s.write(packed)
+
+
+def fix_formulas_driver():
+    # Expecting primary value at 23 but got 'Sin' kind=$SyntaxKind.IDENTIFIER
+    with open(join(QUEST_DIR, 'Driver_spa.qmm'), 'rb') as f:
+        quest = parse(f)
+    loc = quest.find_loc(122)
+    if '{([p6]>300)*1500+([p6]<=Sin ' in loc.texts[0]:
+        loc.texts[0] = loc.texts[0].replace(
+            'Not waiting for her to repeat the offer you gave all you platinum'
+            ' pieces to her. These were completely useless anywhere else in the'
+            ' Galaxy. In return Ramina gave you the regular Galactic credits - '
+            '{([p6]>300)*1500+([p6]<=Sin esperar a que ella repitiera la ',
+            #
+            'Sin esperar a que ella repitiera la '
+        )
+        with open(join(QUEST_DIR, 'Driver_spa.qmm'), 'wb') as s:
+            packed = write_qmm(quest, io.BytesIO())
+            s.write(packed)
+
+
+def fix_formulas_olympiada():
+    # Expecting primary value at 28 but got 'Bueno' kind=$SyntaxKind.IDENTIFIER
+    with open(join(QUEST_DIR, 'Olympiada_spa.qmm'), 'rb') as f:
+        quest = parse(f)
+    jmp = quest.find_jump(228)
+    if '{(([p18] div 100 mod 100)>=- Bueno, ' in jmp.description:
+        jmp.description = jmp.description.replace(
+            "- Well, do you need it that bad? OK, I'll tell you. According to"
+            " the results of my testing, <clr>the general IQ of your protégé is"
+            " <clrEnd> {(([p18] div 100 mod 100)>=- Bueno, ",
+            #
+            '- Bueno, '
+        )
+        with open(join(QUEST_DIR, 'Olympiada_spa.qmm'), 'wb') as s:
+            packed = write_qmm(quest, io.BytesIO())
+            s.write(packed)
+
+
+def fix_formulas_pilot():
+    # Expecting primary value at 26 but got 'La' kind=$SyntaxKind.IDENTIFIER
+    with open(join(QUEST_DIR, 'Pilot_spa.qmm'), 'rb') as f:
+        quest = parse(f)
+    jmp = quest.find_jump(286)
+    if '{10*([p21]+21)+30*([p21]=- La respuesta ' in jmp.description:
+        jmp.description = jmp.description.replace(
+            '- Correct answer is {10*([p21]+21)+30*([p21]=- La respuesta ',
+            '- La respuesta '
+        )
+        with open(join(QUEST_DIR, 'Pilot_spa.qmm'), 'wb') as s:
+            packed = write_qmm(quest, io.BytesIO())
+            s.write(packed)
+
+
+def fix_formulas_sashki():
+    # Unknown char '.' at 5 in '[5 ... 20]'
+    with open(join(QUEST_DIR, 'Shashki_ger.qmm'), 'rb') as f:
+        quest = parse(f)
+    loc = quest.find_loc(10)
+
+    if 'vor {[5 ... 20]} Jahren' in loc.texts[5]:
+        loc.texts[5] = loc.texts[5].replace('{[5 ... 20]}',
+                                            '{[5..20]}')
+        with open(join(QUEST_DIR, 'Shashki_ger.qmm'), 'wb') as s:
+            packed = write_qmm(quest, io.BytesIO())
+            s.write(packed)

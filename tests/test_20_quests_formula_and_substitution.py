@@ -118,8 +118,9 @@ def test_checking_all_quests_for_formulas_and_params_substitution():
                 # Kiberrazum: просто локация без переходов в неё
                 # Вообще-то это можно и автоматически фильтровать
             else:
-                for x in loc.texts:
-                    x and check(player, quest, param_values, x, f'Loc {loc.id}')
+                for i, x in enumerate(loc.texts):
+                    x and check(player, quest, param_values, x,
+                                f'Loc {loc.id}, text {i}')
 
             for i, p in enumerate(loc.paramsChanges):
                 if p.critText != quest.params[i].critValueString:
@@ -144,7 +145,7 @@ def test_checking_all_quests_for_formulas_and_params_substitution():
 
             if jump.description:
                 check(player, quest, param_values, jump.description,
-                      f'Jump {jump.id} decr')
+                      f'Jump {jump.id} desription')
 
             for i, p in enumerate(jump.paramsChanges):
                 if p.critText != quest.params[i].critValueString:

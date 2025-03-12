@@ -148,7 +148,7 @@ class Parser:
             expr_ = self.read_expr()
             if self.reader.current().kind != SyntaxKind.CLOSE_BRACE:
                 raise SyntaxException(f'Expected close brace token but got'
-                                      f' {self.reader.current().text}'
+                                      f' \'{self.reader.current().text}\''
                                       f' at {self.reader.current().start}')
             self.reader.read_next()
             return expr_

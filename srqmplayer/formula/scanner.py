@@ -105,7 +105,9 @@ class Scanner:
 
         kind: SyntaxKind = keyword_kind or SyntaxKind.IDENTIFIER
         if start == self.pos:
-            raise SyntaxException(f'Unknown char {self.str_[self.pos]}')
+            raise SyntaxException(f'Unknown char \'{self.str_[self.pos]}\''
+                                  f' at {self.pos}'
+                                  f' in \'{self.str_}\'')
 
         return Token(kind=kind, start=start, end=self.pos, text=text)
 
