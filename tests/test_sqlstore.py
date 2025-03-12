@@ -103,6 +103,7 @@ def test_migrations(temp_db):
     assert Quest.select().count() == 208
     assert Star.select().count() == 144
     assert Planet.select().count() == 1326
+    router.rollback()  # 009
     router.rollback()  # 008
     router.rollback()  # 007
     router.rollback()  # 006

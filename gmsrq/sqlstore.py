@@ -206,22 +206,36 @@ class Ranger(BaseModel):
     activity = DateTimeField(null=False, default=datetime.now)
     credits_ru = IntegerField(default=2000)
     credits_en = IntegerField(default=2000)
+    credits_de = IntegerField(default=2000)
+    credits_es = IntegerField(default=2000)
 
     def get_credits(self, lang):
         if lang == 'ru':
             return self.credits_ru
+        elif lang == 'de':
+            return self.credits_de
+        elif lang == 'es':
+            return self.credits_es
         else:
             return self.credits_en
 
     def set_credits(self, lang, credits):
         if lang == 'ru':
             self.credits_ru = credits
+        elif lang == 'de':
+            self.credits_de = credits
+        elif lang == 'es':
+            self.credits_es = credits
         else:
             self.credits_en = credits
 
     def inc_credits(self, lang, credits):
         if lang == 'ru':
             self.credits_ru += credits
+        elif lang == 'de':
+            self.credits_de += credits
+        elif lang == 'es':
+            self.credits_es += credits
         else:
             self.credits_en += credits
 
@@ -276,7 +290,10 @@ class Ranger(BaseModel):
 
     @staticmethod
     def leaders(lang) -> Iterable[Tuple[int, str, int, int]]:
-        credits_col = Ranger.credits_ru if lang == 'ru' else Ranger.credits_en
+        credits_col = Ranger.credits_ru if lang == 'ru' \
+            else Ranger.credits_es if lang == 'es' \
+            else Ranger.credits_de if lang == 'de' \
+            else Ranger.credits_en
         query = (
             Ranger.select(Ranger.id, Ranger.name,
                           fn.count(QuestCompleted.quest).alias('qcc'),

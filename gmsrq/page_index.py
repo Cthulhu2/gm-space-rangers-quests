@@ -183,16 +183,10 @@ def index_ranger(_, cfg: Config, ranger: Ranger, lang):
     quest_total = Quest.count_by(lang=lang)
     if ranger.get_opts().ansi:
         progress = color(f'{quest_completed} / {quest_total}')
-        if lang == 'ru':
-            credits = color(ranger.credits_ru)
-        else:
-            credits = color(ranger.credits_en)
+        credits = color(ranger.get_credits(lang))
     else:
         progress = f'{quest_completed} / {quest_total}'
-        if lang == 'ru':
-            credits = f'{ranger.credits_ru}'
-        else:
-            credits = f'{ranger.credits_en}'
+        credits = f'{ranger.get_credits(lang)}'
 
     sort_urls = build_sort_urls(_, cfg, ranger)
 
