@@ -11,22 +11,6 @@ from tests import TEST_RESOURCE_DIR
 log = logging.getLogger()
 
 
-def fix_siege_new_lines():
-    with open('../borrowed/qm/Siege.qm', 'rb') as f:
-        f.seek(0, 0)
-        quest = parse(f)
-        for i, x in enumerate(range(ord('A'), ord('I'))):
-            quest.params[12].showingInfo[i].str = (
-                f'-------------------------------------------------------\n'
-                f'Стрельба в квадрат {chr(x)}{{<> mod 10}} по Гауссу\n'
-                f'-------------------------------------------------------')
-        quest.params[13].showingInfo[0].str = ('__________________________\n'
-                                               'Состояние:')
-        with open('../borrowed/qm/Siege.qmm', 'wb') as s:
-            packed = write_qmm(quest, io.BytesIO())
-            s.write(packed)
-
-
 def check_file(f_name: str):
     if not f_name.endswith("Amnesia.qmm"):
         pass

@@ -7,8 +7,8 @@ from gmsrq.gmquests import find_format_tag, FormatToken, choice_planets
 from srqmplayer.qmmodels import Race
 from srqmplayer.qmreader import parse
 # noinspection PyUnresolvedReferences
-from . import temp_db
-from .test_20_quests_formula_and_substitution import BORROWED_QUEST_DIR
+from tests import temp_db
+from tests import QUEST_DIR
 
 log = logging.getLogger()
 
@@ -42,10 +42,10 @@ def test_choice_planets(temp_db):
 
 
 def test_choice_planets_quests(temp_db):
-    for f in listdir(BORROWED_QUEST_DIR):
+    for f in listdir(QUEST_DIR):
         if not f.endswith('.qm') and not f.endswith('.qmm'):
             continue
-        with open(join(BORROWED_QUEST_DIR, f), 'rb') as data:
+        with open(join(QUEST_DIR, f), 'rb') as data:
             qm = parse(data)
         log.info(f)
         for lang in ('en', 'ru', 'es', 'de'):
@@ -58,10 +58,10 @@ def test_choice_planets_quests(temp_db):
 
 def xtest_difficulty():
     strings = []
-    for f in listdir(BORROWED_QUEST_DIR):
+    for f in listdir(QUEST_DIR):
         if not f.endswith('.qm') and not f.endswith('.qmm'):
             continue
-        with open(join(BORROWED_QUEST_DIR, f), 'rb') as data:
+        with open(join(QUEST_DIR, f), 'rb') as data:
             qm = parse(data)
         strings.append(f'{f} :: {qm.hardness}')
     strings.sort()

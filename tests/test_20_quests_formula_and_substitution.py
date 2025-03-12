@@ -12,10 +12,9 @@ from srqmplayer.qmplayer.funcs import sr_date_to_str, QMPlayer
 from srqmplayer.qmplayer.player import PlayerSubstitute
 from srqmplayer.qmreader import parse
 from srqmplayer.substitution import substitute
-from tests import TEST_RESOURCE_DIR, math_rnd, pseudo_rnd
+from tests import math_rnd, pseudo_rnd, QUEST_DIR
 
 log = logging.getLogger()
-BORROWED_QUEST_DIR = join(TEST_RESOURCE_DIR, '../../borrowed/qm/')
 
 
 def check(player_subs: PlayerSubstitute, quest: QM,
@@ -65,10 +64,10 @@ def get_game_task_text(task_text: str, player):
 
 
 def test_checking_all_quests_for_formulas_and_params_substitution():
-    for f in listdir(BORROWED_QUEST_DIR):
+    for f in listdir(QUEST_DIR):
         if not f.endswith('.qm') and not f.endswith('.qmm'):
             continue
-        fullname = join(BORROWED_QUEST_DIR, f)
+        fullname = join(QUEST_DIR, f)
         log.info(f'Checking quest {fullname}')
         player = PlayerSubstitute(
             Ranger='Ranger', Player='Player',

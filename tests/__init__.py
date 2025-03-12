@@ -18,6 +18,7 @@ from srqmplayer.qmreader import parse
 
 log = logging.getLogger()
 TEST_RESOURCE_DIR = f'{dirname(realpath(__file__))}/resources'
+QUEST_DIR = join(TEST_RESOURCE_DIR, '../../borrowed/qm/')
 TEMP = f'{dirname(realpath(__file__))}/../.tmp'
 
 
