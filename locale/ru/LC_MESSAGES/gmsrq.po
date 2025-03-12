@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-11 00:38+0200\n"
+"POT-Creation-Date: 2025-03-12 06:51+0200\n"
 "PO-Revision-Date: 2024-06-09 19:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -171,6 +171,13 @@ msgstr "Таблица рекордов"
 msgid "Only registered rangers are displayed."
 msgstr "Отображены только зарегистрированные рейнджеры."
 
+#: gmsrq/page_index.py:59 gmsrq/page_index.py:65 gmsrq/page_index.py:72
+#: gmsrq/page_index.py:85 gmsrq/page_index.py:116 gmsrq/page_index.py:132
+#: gmsrq/page_index.py:148
+#, python-brace-format
+msgid "Quests :: {game}"
+msgstr "Квесты :: {game}"
+
 #: gmsrq/page_index.py:162
 msgid "Come in, ranger, your certificate is valid."
 msgstr "Входи, рейнджер, твой сертификат прошёл проверку."
@@ -204,12 +211,12 @@ msgid "🏷 genre"
 msgstr "🏷 жанр"
 
 #: gmsrq/page_index.py:220
-msgid "⇧ ascend"
-msgstr "⇧ по возрастанию"
+msgid "⬆ ascend"
+msgstr "⬆ по возрастанию"
 
 #: gmsrq/page_index.py:221
-msgid "⇩ descend"
-msgstr "⇩ по убыванию"
+msgid "⬇ descend"
+msgstr "⬇ по убыванию"
 
 #: gmsrq/page_index.py:239
 msgid "⏱ low"

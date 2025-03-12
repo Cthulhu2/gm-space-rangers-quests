@@ -55,19 +55,22 @@ def build_quest_urls_ru(cfg, ranger):
     #
     quests = [q for q in Quest.all_by(lang='ru', game='КР 1',
                                       sort_type=sort_type, sort_dir=sort_dir)]
-    quest_urls += build_quest_urls(_, ansi, cfg, f'Квесты :: КР 1',
-                                   completed, in_progress, quests)
+    quest_urls += build_quest_urls(
+        _, ansi, cfg, _('Quests :: {game}').format(game='КР 1'),
+        completed, in_progress, quests)
     #
     quests = [q for q in Quest.all_by(lang='ru', game='КР 2 Доминаторы',
                                       sort_type=sort_type, sort_dir=sort_dir)]
-    quest_urls += build_quest_urls(_, ansi, cfg, f'Квесты :: КР 2 Доминаторы',
-                                   completed, in_progress, quests)
+    quest_urls += build_quest_urls(
+        _, ansi, cfg, _('Quests :: {game}').format(game='КР 2 Доминаторы'),
+        completed, in_progress, quests)
     #
     quests = [q for q in Quest.all_by(
         lang='ru', game='КР 2 Доминаторы: Перезагрузка',
         sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls += build_quest_urls(
-        _, ansi, cfg, f'Квесты :: КР 2 Доминаторы: Перезагрузка',
+        _, ansi, cfg,
+        _('Quests :: {game}').format(game='КР 2 Доминаторы: Перезагрузка'),
         completed, in_progress, quests)
     # КР 2 Доминаторы HD Революция
     sr2r_orig = [q for q in Quest.all_by(
@@ -80,7 +83,8 @@ def build_quest_urls_ru(cfg, ranger):
         sort_type=sort_type, sort_dir=sort_dir)]
     sr2r_fan_completed = list(filter(lambda qid: qid in completed,
                                      map(lambda q: q.id, sr2r_fan)))
-    quest_urls += f'## Квесты :: КР HD: Революция' \
+    quest_urls += f'## ' + \
+                  _('Quests :: {game}').format(game='КР HD: Революция') + \
                   f' ({len(sr2r_orig_completed) + len(sr2r_fan_completed)}' \
                   f' / {len(sr2r_orig) + len(sr2r_fan)})\n' \
                   f'### Оригинальные\n'
@@ -95,7 +99,7 @@ def build_quest_urls_ru(cfg, ranger):
     quest_urls += '\n'
     quests = [q for q in Quest.all_by(lang='ru', game='Фанатские',
                                       sort_type=sort_type, sort_dir=sort_dir)]
-    quest_urls += build_quest_urls(_, ansi, cfg, f'Квесты :: Фанатские',
+    quest_urls += build_quest_urls(_, ansi, cfg, _('Quests :: {game}').format(game='Фанатские'),
                                    completed, in_progress, quests)
     return quest_urls
 
@@ -111,7 +115,7 @@ def build_quest_urls_en(cfg, ranger):
     quests = [q for q in Quest.all_by(lang='en', game='SR 2.1.2468 eng',
                                       sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls = build_quest_urls(
-        _, ansi, cfg, f'Quests :: SR HD: A War Apart',
+        _, ansi, cfg, _('Quests :: {game}').format(game='SR HD: A War Apart'),
         completed, in_progress, quests)
     return quest_urls
 
@@ -127,7 +131,7 @@ def build_quest_urls_de(cfg, ranger):
     quests = [q for q in Quest.all_by(lang='de', game='SR 2.1.2468 ger',
                                       sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls = build_quest_urls(
-        _, ansi, cfg, f'Quests :: SR HD: A War Apart',
+        _, ansi, cfg, _('Quests :: {game}').format(game='SR HD: A War Apart'),
         completed, in_progress, quests)
     return quest_urls
 
@@ -143,7 +147,7 @@ def build_quest_urls_es(cfg, ranger):
     quests = [q for q in Quest.all_by(lang='es', game='SR 2.1.2468 spa',
                                       sort_type=sort_type, sort_dir=sort_dir)]
     quest_urls = build_quest_urls(
-        _, ansi, cfg, f'Quests :: SR HD: A War Apart',
+        _, ansi, cfg, _('Quests :: {game}').format(game='SR HD: A War Apart'),
         completed, in_progress, quests)
     return quest_urls
 
@@ -215,8 +219,8 @@ def build_sort_urls(_, cfg, ranger: Ranger):
         f' [[ {genre} ]] ' if st == SortType.GENRE else genre)))
 
     sd = ranger.get_opts().sort_dir
-    asc = _('⇧ ascend')
-    desc = _('⇩ descend')
+    asc = _('⬆ ascend')
+    desc = _('⬇ descend')
     dir_url = (f'=> {cfg.sort_url}?dir ⇵ ' + ' '.join((
         f' [[ {asc} ]] ' if sd == SortDirection.ASCEND else asc,
         f' [[ {desc} ]] ' if sd == SortDirection.DESCEND else desc)))

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-11 00:38+0200\n"
+"POT-Creation-Date: 2025-03-12 06:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,6 +160,13 @@ msgstr ""
 msgid "Only registered rangers are displayed."
 msgstr ""
 
+#: gmsrq/page_index.py:59 gmsrq/page_index.py:65 gmsrq/page_index.py:72
+#: gmsrq/page_index.py:85 gmsrq/page_index.py:116 gmsrq/page_index.py:132
+#: gmsrq/page_index.py:148
+#, python-brace-format
+msgid "Quests :: {game}"
+msgstr ""
+
 #: gmsrq/page_index.py:162
 msgid "Come in, ranger, your certificate is valid."
 msgstr ""
@@ -193,11 +200,11 @@ msgid "🏷 genre"
 msgstr ""
 
 #: gmsrq/page_index.py:220
-msgid "⇧ ascend"
+msgid "⬆ ascend"
 msgstr ""
 
 #: gmsrq/page_index.py:221
-msgid "⇩ descend"
+msgid "⬇ descend"
 msgstr ""
 
 #: gmsrq/page_index.py:239

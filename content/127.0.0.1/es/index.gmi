@@ -4,7 +4,7 @@ Para realizar misiones gubernamentales, necesitarás un certificado de ranger. N
 => /cgi/?lang=es 🪪 Mostrar certificado de ranger
 => about.gmi ℹ Acerca del proyecto
 
-## Quests :: SR HD: A War Apart (0 / 35)
+## Misiones :: SR HD: A War Apart (0 / 35)
 => /cgi/act?qid=186 Tocadiscos
 ☠ 20% ⏱ bajo 🏷 juego de lógica
 => /cgi/act?qid=174 Festival de Música

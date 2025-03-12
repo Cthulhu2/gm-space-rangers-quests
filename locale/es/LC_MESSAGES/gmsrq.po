@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-11 00:38+0200\n"
+"POT-Creation-Date: 2025-03-12 06:51+0200\n"
 "PO-Revision-Date: 2025-03-08 15:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -161,7 +161,7 @@ msgstr "Contraseña incorrecta"
 
 #: gmsrq/gmusers.py:392
 msgid "  # : Ranger                    : Quests : Credits"
-msgstr "  # : Ranger                    : Quests : Credits"
+msgstr "  # : Ranger                    :Misiones:Créditos"
 
 #: gmsrq/gmusers.py:402 gmsrq/gmusers.py:405 gmsrq/page_index.py:165
 #: gmsrq/page_index.py:203
@@ -171,6 +171,13 @@ msgstr "Tabla de clasificación"
 #: gmsrq/gmusers.py:404
 msgid "Only registered rangers are displayed."
 msgstr "Sólo se muestran los rangers registrados."
+
+#: gmsrq/page_index.py:59 gmsrq/page_index.py:65 gmsrq/page_index.py:72
+#: gmsrq/page_index.py:85 gmsrq/page_index.py:116 gmsrq/page_index.py:132
+#: gmsrq/page_index.py:148
+#, python-brace-format
+msgid "Quests :: {game}"
+msgstr "Misiones :: {game}"
 
 #: gmsrq/page_index.py:162
 msgid "Come in, ranger, your certificate is valid."
@@ -205,12 +212,12 @@ msgid "🏷 genre"
 msgstr "🏷 género"
 
 #: gmsrq/page_index.py:220
-msgid "⇧ ascend"
-msgstr "⇧ ascender"
+msgid "⬆ ascend"
+msgstr "⬆ ascender"
 
 #: gmsrq/page_index.py:221
-msgid "⇩ descend"
-msgstr "⇩ descender"
+msgid "⬇ descend"
+msgstr "⬇ descender"
 
 #: gmsrq/page_index.py:239
 msgid "⏱ low"
