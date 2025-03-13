@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List, Tuple
 
 from gmsrq import Config
 from gmsrq.sqlstore import (
@@ -104,59 +104,47 @@ def build_quest_urls_ru(cfg, ranger):
     return quest_urls
 
 
-def build_quest_urls_en(cfg, ranger):
+def build_quest_urls_xx(cfg, ranger, lang, game_title: List[Tuple[str, str]]):
     ansi = ranger.get_opts().ansi
-    _ = cfg.l10n['en'].gettext
+    _ = cfg.l10n[lang].gettext
     sort_type = ranger.get_opts().sort_type
     sort_dir = ranger.get_opts().sort_dir
     in_progress = QuestState.in_progress(rid=ranger.id)
     completed = QuestCompleted.by(rid=ranger.id)
     #
-    quests = [q for q in Quest.all_by(lang='en', game='SR 2.1.2468 eng',
-                                      sort_type=sort_type, sort_dir=sort_dir)]
-    quest_urls = build_quest_urls(
-        _, ansi, cfg, _('Quests :: {game}').format(game='SR HD: A War Apart'),
-        completed, in_progress, quests)
+    quest_urls = ''
+    for game, title in game_title:
+        quests = [q for q in Quest.all_by(lang=lang, game=game,
+                                          sort_type=sort_type,
+                                          sort_dir=sort_dir)]
+        quest_urls += build_quest_urls(
+            _, ansi, cfg, _('Quests :: {game}').format(game=title),
+            completed, in_progress, quests)
+        quest_urls += '\n'
     return quest_urls
 
 
-def build_quest_urls_de(cfg, ranger):
-    ansi = ranger.get_opts().ansi
-    _ = cfg.l10n['de'].gettext
-    sort_type = ranger.get_opts().sort_type
-    sort_dir = ranger.get_opts().sort_dir
-    in_progress = QuestState.in_progress(rid=ranger.id)
-    completed = QuestCompleted.by(rid=ranger.id)
-    #
-    quests = [q for q in Quest.all_by(lang='de', game='SR 2.1.2468 ger',
-                                      sort_type=sort_type, sort_dir=sort_dir)]
-    quest_urls = build_quest_urls(
-        _, ansi, cfg, _('Quests :: {game}').format(game='SR HD: A War Apart'),
-        completed, in_progress, quests)
-    return quest_urls
-
-
-def build_quest_urls_es(cfg, ranger):
-    ansi = ranger.get_opts().ansi
-    _ = cfg.l10n['es'].gettext
-    sort_type = ranger.get_opts().sort_type
-    sort_dir = ranger.get_opts().sort_dir
-    in_progress = QuestState.in_progress(rid=ranger.id)
-    completed = QuestCompleted.by(rid=ranger.id)
-    #
-    quests = [q for q in Quest.all_by(lang='es', game='SR 2.1.2468 spa',
-                                      sort_type=sort_type, sort_dir=sort_dir)]
-    quest_urls = build_quest_urls(
-        _, ansi, cfg, _('Quests :: {game}').format(game='SR HD: A War Apart'),
-        completed, in_progress, quests)
-    return quest_urls
+QUEST_FILTER = {
+    # TODO: Refactor quest filtering with 3-rd level subtitles
+    'ru': [('КР 1', 'КР 1'),
+           ('КР 2 Доминаторы', 'КР 2 Доминаторы'),
+           ('КР 2 Доминаторы: Перезагрузка', 'КР 2 Доминаторы: Перезагрузка'),
+           ('КР HD: Революция Оригинальные', 'КР HD: Революция (Оригинальные)'),
+           ('КР HD: Революция Фанатские', 'КР HD: Революция (Фанатские)')],
+    'en': [('SR 1.7.2', 'SR 1'),
+           ('SR 2.1.2468 eng', 'SR HD: A War Apart')],
+    'es': [('SR 2.1.2468 spa', 'SR HD: A War Apart')],
+    'de': [('SR 2.1.2468 ger', 'SR HD: A War Apart')],
+    'cze': [('SR 1.7.2', 'SR 1')],
+    'fr': [('SR 1.7.2', 'SR 1')],
+    'hu': [('SR 1.7.2', 'SR 1')],
+    'pl': [('SR 1.7.2', 'SR 1')]
+}
 
 
 def index_anon(_, cfg: Config, ranger: Ranger, lang):
     quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
-        else build_quest_urls_es(cfg, ranger) if lang == 'es' \
-        else build_quest_urls_de(cfg, ranger) if lang == 'de' \
-        else build_quest_urls_en(cfg, ranger)
+        else build_quest_urls_xx(cfg, ranger, lang, QUEST_FILTER[lang])
 
     sort_urls = build_sort_urls(_, cfg, ranger)
 
@@ -176,9 +164,7 @@ def color(text):
 
 def index_ranger(_, cfg: Config, ranger: Ranger, lang):
     quest_urls = build_quest_urls_ru(cfg, ranger) if lang == 'ru' \
-        else build_quest_urls_es(cfg, ranger) if lang == 'es' \
-        else build_quest_urls_de(cfg, ranger) if lang == 'de' \
-        else build_quest_urls_en(cfg, ranger)
+        else build_quest_urls_xx(cfg, ranger, lang, QUEST_FILTER[lang])
     quest_completed = len(QuestCompleted.by(rid=ranger.id, lang=lang))
     quest_total = Quest.count_by(lang=lang)
     if ranger.get_opts().ansi:

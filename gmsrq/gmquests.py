@@ -214,7 +214,7 @@ def choice_planets(lang: str, qm: QM) -> Tuple[str, str, str, str]:
         planet_race.append(str(PlanetRace.No.value))
 
     if lang not in ('ru', 'en'):
-        lang = 'en'  # No planets for ES, DE.
+        lang = 'en'  # No planets for ES, DE, CZE, HU, FR, PL
     from_star = Star.choice_by(lang=lang,
                                include_sol=bool(qm.givingRace & Race.People))
     from_planet = Planet.choice_by(lang=lang, race=giving_race,

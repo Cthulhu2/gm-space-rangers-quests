@@ -180,6 +180,7 @@ def migrate(migrator: Migrator, database: pw.Database, *, fake=False):
 ('Photorobot',   50, Duration.BELOW_AVERAGE, Genre.LOGIC_MATH_GAME),                   # noqa 50  (res, 20 1) (help, средняя      ниже средней) (fandom, 50  Ниже средней )
 ('Pilot',        30, Duration.AVERAGE,       Genre.ADVENTURE_W_LOGIC_PUZZLES),         # noqa 30  (res,  4 2) (help, низкая       средняя     ) (fandom, 30  Средняя      )
 ('PirateClanPrison', 50, Duration.LONG,      Genre.PRISON_SIM),                        # noqa 50  (res,  0 2) (help,                          ) (fandom,                  )
+# All version of prison, because of LIKE%
 ('Prison',       50, Duration.LONG,          Genre.PRISON_SIM),                        # noqa 50  (res,  0 2) (help,                          ) (fandom, 50  Высокая      )
 ('Piratesnest',  70, Duration.ABOVE_AVERAGE, Genre.ADVENTURE_W_LOGIC_PUZZLES),         # noqa 70  (res, 39 3) (help, выше средней выше средней) (fandom, 70  Выше средней )
 ('Pizza',        22, Duration.AVERAGE,       Genre.LOGIC_MATH_GAME),                   # noqa 50  (res, 22 2) (help, средняя      средняя     ) (fandom, 50  Средняя      )

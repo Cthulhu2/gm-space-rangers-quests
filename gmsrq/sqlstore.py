@@ -208,6 +208,10 @@ class Ranger(BaseModel):
     credits_en = IntegerField(default=2000)
     credits_de = IntegerField(default=2000)
     credits_es = IntegerField(default=2000)
+    credits_cze = IntegerField(default=2000)
+    credits_fr = IntegerField(default=2000)
+    credits_hu = IntegerField(default=2000)
+    credits_pl = IntegerField(default=2000)
 
     def get_credits(self, lang):
         if lang == 'ru':
@@ -216,6 +220,14 @@ class Ranger(BaseModel):
             return self.credits_de
         elif lang == 'es':
             return self.credits_es
+        elif lang == 'cze':
+            return self.credits_cze
+        elif lang == 'fr':
+            return self.credits_fr
+        elif lang == 'hu':
+            return self.credits_hu
+        elif lang == 'pl':
+            return self.credits_pl
         else:
             return self.credits_en
 
@@ -226,6 +238,14 @@ class Ranger(BaseModel):
             self.credits_de = credits
         elif lang == 'es':
             self.credits_es = credits
+        elif lang == 'cze':
+            self.credits_cze = credits
+        elif lang == 'fr':
+            self.credits_fr = credits
+        elif lang == 'hu':
+            self.credits_hu = credits
+        elif lang == 'pl':
+            self.credits_pl = credits
         else:
             self.credits_en = credits
 
@@ -236,6 +256,14 @@ class Ranger(BaseModel):
             self.credits_de += credits
         elif lang == 'es':
             self.credits_es += credits
+        elif lang == 'cze':
+            self.credits_cze += credits
+        elif lang == 'fr':
+            self.credits_fr += credits
+        elif lang == 'hu':
+            self.credits_hu += credits
+        elif lang == 'pl':
+            self.credits_pl += credits
         else:
             self.credits_en += credits
 
@@ -293,6 +321,10 @@ class Ranger(BaseModel):
         credits_col = Ranger.credits_ru if lang == 'ru' \
             else Ranger.credits_es if lang == 'es' \
             else Ranger.credits_de if lang == 'de' \
+            else Ranger.credits_cze if lang == 'cze' \
+            else Ranger.credits_fr if lang == 'fr' \
+            else Ranger.credits_hu if lang == 'hu' \
+            else Ranger.credits_pl if lang == 'pl' \
             else Ranger.credits_en
         query = (
             Ranger.select(Ranger.id, Ranger.name,

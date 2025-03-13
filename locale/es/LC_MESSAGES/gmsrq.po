@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmsrq 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-12 06:51+0200\n"
+"POT-Creation-Date: 2025-03-13 21:19+0200\n"
 "PO-Revision-Date: 2025-03-08 15:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -27,7 +27,7 @@ msgstr "Se requiere certificado de ranger"
 msgid "Unknown quest id={qid}"
 msgstr "Identificador desconocido id={qid}"
 
-#: gmsrq/gmusers.py:29 gmsrq/page_index.py:198
+#: gmsrq/gmusers.py:29 gmsrq/page_index.py:179
 #, python-brace-format
 msgid "Wow! This is the famous ranger {name}!"
 msgstr "¡Guau! ¡Éste es el famoso ranger {name}!"
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Rename ranger"
 msgstr "Cambiar el nombre del ranger"
 
-#: gmsrq/gmusers.py:79 gmsrq/page_index.py:164 gmsrq/page_index.py:202
+#: gmsrq/gmusers.py:79 gmsrq/page_index.py:153 gmsrq/page_index.py:183
 msgid "Options"
 msgstr "Opciones"
 
@@ -163,8 +163,8 @@ msgstr "Contraseña incorrecta"
 msgid "  # : Ranger                    : Quests : Credits"
 msgstr "  # : Ranger                    :Misiones:Créditos"
 
-#: gmsrq/gmusers.py:402 gmsrq/gmusers.py:405 gmsrq/page_index.py:165
-#: gmsrq/page_index.py:203
+#: gmsrq/gmusers.py:402 gmsrq/gmusers.py:405 gmsrq/page_index.py:154
+#: gmsrq/page_index.py:184
 msgid "Leader board"
 msgstr "Tabla de clasificación"
 
@@ -172,334 +172,333 @@ msgstr "Tabla de clasificación"
 msgid "Only registered rangers are displayed."
 msgstr "Sólo se muestran los rangers registrados."
 
-#: gmsrq/page_index.py:59 gmsrq/page_index.py:65 gmsrq/page_index.py:72
-#: gmsrq/page_index.py:85 gmsrq/page_index.py:116 gmsrq/page_index.py:132
-#: gmsrq/page_index.py:148
+#: gmsrq/page_index.py:59 gmsrq/page_index.py:65 gmsrq/page_index.py:73
+#: gmsrq/page_index.py:87 gmsrq/page_index.py:102 gmsrq/page_index.py:121
 #, python-brace-format
 msgid "Quests :: {game}"
 msgstr "Misiones :: {game}"
 
-#: gmsrq/page_index.py:162
+#: gmsrq/page_index.py:151
 msgid "Come in, ranger, your certificate is valid."
 msgstr "Adelante, ranger, su certificado es válido."
 
-#: gmsrq/page_index.py:163
+#: gmsrq/page_index.py:152
 msgid "Registration"
 msgstr "Registro"
 
-#: gmsrq/page_index.py:166 gmsrq/page_index.py:204
+#: gmsrq/page_index.py:155 gmsrq/page_index.py:185
 msgid "About"
 msgstr "Acerca del proyecto"
 
-#: gmsrq/page_index.py:200
+#: gmsrq/page_index.py:181
 msgid "Progress: "
 msgstr "Progreso: "
 
-#: gmsrq/page_index.py:201
+#: gmsrq/page_index.py:182
 msgid "Credits: "
 msgstr "Créditos: "
 
-#: gmsrq/page_index.py:211
+#: gmsrq/page_index.py:192
 msgid "☠ difficulty"
 msgstr "☠ dificultad"
 
-#: gmsrq/page_index.py:212
+#: gmsrq/page_index.py:193
 msgid "⏱ duration"
 msgstr "⏱ duración"
 
-#: gmsrq/page_index.py:213
+#: gmsrq/page_index.py:194
 msgid "🏷 genre"
 msgstr "🏷 género"
 
-#: gmsrq/page_index.py:220
+#: gmsrq/page_index.py:201
 msgid "⬆ ascend"
 msgstr "⬆ ascender"
 
-#: gmsrq/page_index.py:221
+#: gmsrq/page_index.py:202
 msgid "⬇ descend"
 msgstr "⬇ descender"
 
-#: gmsrq/page_index.py:239
+#: gmsrq/page_index.py:220
 msgid "⏱ low"
 msgstr "⏱ bajo"
 
-#: gmsrq/page_index.py:241
+#: gmsrq/page_index.py:222
 msgid "⏱ below average"
 msgstr "⏱ por debajo del promedio"
 
-#: gmsrq/page_index.py:243
+#: gmsrq/page_index.py:224
 msgid "⏱ average"
 msgstr "⏱ promedio"
 
-#: gmsrq/page_index.py:245
+#: gmsrq/page_index.py:226
 msgid "⏱ above average"
 msgstr "⏱ por encima del promedio"
 
-#: gmsrq/page_index.py:247
+#: gmsrq/page_index.py:228
 msgid "⏱ long"
 msgstr "⏱ largo"
 
-#: gmsrq/page_index.py:256
+#: gmsrq/page_index.py:237
 msgid "🏷 adventure"
 msgstr "🏷 aventura"
 
-#: gmsrq/page_index.py:258
+#: gmsrq/page_index.py:239
 msgid "🏷 adventure-shooter"
 msgstr "🏷 aventura-shooter"
 
-#: gmsrq/page_index.py:260
+#: gmsrq/page_index.py:241
 msgid "🏷 adventure-shooter; safe cracking simulator"
 msgstr "🏷 aventura-shooter; simulador de apertura de cajas fuertes"
 
-#: gmsrq/page_index.py:262
+#: gmsrq/page_index.py:243
 msgid "🏷 adventure with adventures"
 msgstr "🏷 aventura con aventuras"
 
-#: gmsrq/page_index.py:264
+#: gmsrq/page_index.py:245
 msgid "🏷 adventure with arcade elements"
 msgstr "🏷 aventura con elementos arcade"
 
-#: gmsrq/page_index.py:266
+#: gmsrq/page_index.py:247
 msgid "🏷 adventure with black humor elements"
 msgstr "🏷 aventura con elementos de humor negro"
 
-#: gmsrq/page_index.py:268
+#: gmsrq/page_index.py:249
 msgid "🏷 adventure with fighting elements"
 msgstr "🏷 aventura con elementos de lucha"
 
-#: gmsrq/page_index.py:270
+#: gmsrq/page_index.py:251
 msgid "🏷 adventure with fighting and puzzle elements"
 msgstr "🏷 aventura con elementos de lucha y puzles"
 
-#: gmsrq/page_index.py:272
+#: gmsrq/page_index.py:253
 msgid "🏷 adventure with management elements"
 msgstr "🏷 aventura con elementos de gestión"
 
-#: gmsrq/page_index.py:274
+#: gmsrq/page_index.py:255
 msgid "🏷 adventure with horror elements"
 msgstr "🏷 aventura con elementos de terror"
 
-#: gmsrq/page_index.py:276
+#: gmsrq/page_index.py:257
 msgid "🏷 adventure with awful horror elements"
 msgstr "🏷 aventura con elementos de terror espantosos"
 
-#: gmsrq/page_index.py:278
+#: gmsrq/page_index.py:259
 msgid "🏷 adventure with logic elements"
 msgstr "🏷 aventura con elementos de lógica"
 
-#: gmsrq/page_index.py:280
+#: gmsrq/page_index.py:261
 msgid "🏷 adventure with logic puzzles"
 msgstr "🏷 aventura con acertijos de lógica"
 
-#: gmsrq/page_index.py:282
+#: gmsrq/page_index.py:263
 msgid "🏷 trivia game"
 msgstr "🏷 juego de trivia"
 
-#: gmsrq/page_index.py:284
+#: gmsrq/page_index.py:265
 msgid "🏷 text and logic puzzle"
 msgstr "🏷 acertijo de texto y lógica"
 
-#: gmsrq/page_index.py:286
+#: gmsrq/page_index.py:267
 msgid "🏷 puzzle"
 msgstr "🏷 acertijo"
 
-#: gmsrq/page_index.py:288
+#: gmsrq/page_index.py:269
 msgid "🏷 logic puzzle"
 msgstr "🏷 rompecabezas de lógica"
 
-#: gmsrq/page_index.py:290
+#: gmsrq/page_index.py:271
 msgid "🏷 arcade logic game"
 msgstr "🏷 juego de lógica arcade"
 
-#: gmsrq/page_index.py:292
+#: gmsrq/page_index.py:273
 msgid "🏷 logic game"
 msgstr "🏷 juego de lógica"
 
-#: gmsrq/page_index.py:294
+#: gmsrq/page_index.py:275
 msgid "🏷 logic game with management elements"
 msgstr "🏷 juego de lógica con elementos de gestión"
 
-#: gmsrq/page_index.py:296
+#: gmsrq/page_index.py:277
 msgid "🏷 logic educational game"
 msgstr "🏷 juego educativo de lógica"
 
-#: gmsrq/page_index.py:298
+#: gmsrq/page_index.py:279
 msgid "🏷 logic math game"
 msgstr "🏷 juego de matemáticas de lógica"
 
-#: gmsrq/page_index.py:300
+#: gmsrq/page_index.py:281
 msgid "🏷 logic easel simulator"
 msgstr "🏷 simulador de caballete de lógica"
 
-#: gmsrq/page_index.py:302
+#: gmsrq/page_index.py:283
 msgid "🏷 math logic puzzle"
 msgstr "🏷 rompecabezas de lógica matemática"
 
-#: gmsrq/page_index.py:304
+#: gmsrq/page_index.py:285
 msgid "🏷 math puzzle"
 msgstr "🏷 rompecabezas de matemáticas"
 
-#: gmsrq/page_index.py:306
+#: gmsrq/page_index.py:287
 msgid "🏷 logic puzzles and math problems"
 msgstr "🏷 rompecabezas de lógica y problemas de matemáticas"
 
-#: gmsrq/page_index.py:308
+#: gmsrq/page_index.py:289
 msgid "🏷 logic tactical game"
 msgstr "🏷 juego táctico de lógica"
 
-#: gmsrq/page_index.py:310
+#: gmsrq/page_index.py:291
 msgid "🏷 simulator"
 msgstr "🏷 simulador"
 
-#: gmsrq/page_index.py:312
+#: gmsrq/page_index.py:293
 msgid "🏷 prison simulator"
 msgstr "🏷 simulador de prisión"
 
-#: gmsrq/page_index.py:314
+#: gmsrq/page_index.py:295
 msgid "🏷 space rangers simulator"
 msgstr "🏷 espacio simulador de guardabosques"
 
-#: gmsrq/page_index.py:316
+#: gmsrq/page_index.py:297
 msgid "🏷 animal life simulator"
 msgstr "🏷 simulador de vida animal"
 
-#: gmsrq/page_index.py:318
+#: gmsrq/page_index.py:299
 msgid "🏷 lab rat simulator"
 msgstr "🏷 simulador de rata de laboratorio"
 
-#: gmsrq/page_index.py:320
+#: gmsrq/page_index.py:301
 msgid "🏷 composite sketch simulator"
 msgstr "🏷 simulador de boceto compuesto"
 
-#: gmsrq/page_index.py:322
+#: gmsrq/page_index.py:303
 msgid "🏷 economy simulator"
 msgstr "🏷 simulador de economía"
 
-#: gmsrq/page_index.py:324
+#: gmsrq/page_index.py:305
 msgid "🏷 election campaign simulator"
 msgstr "🏷 simulador de campaña electoral"
 
-#: gmsrq/page_index.py:326
+#: gmsrq/page_index.py:307
 msgid "🏷 hauler simulator"
 msgstr "🏷 simulador de transportista"
 
-#: gmsrq/page_index.py:328
+#: gmsrq/page_index.py:309
 msgid "🏷 taxi simulator"
 msgstr "🏷 simulador de taxi"
 
-#: gmsrq/page_index.py:330
+#: gmsrq/page_index.py:311
 msgid "🏷 fishing simulator"
 msgstr "🏷 simulador de pesca"
 
-#: gmsrq/page_index.py:332
+#: gmsrq/page_index.py:313
 msgid "🏷 ancient cars racing simulator"
 msgstr "🏷 simulador de carreras de coches antiguos"
 
-#: gmsrq/page_index.py:334
+#: gmsrq/page_index.py:315
 msgid "🏷 racing simulator"
 msgstr "🏷 simulador de carreras"
 
-#: gmsrq/page_index.py:336
+#: gmsrq/page_index.py:317
 msgid "🏷 racing simulator with management elements"
 msgstr "🏷 simulador de carreras con elementos de gestión"
 
-#: gmsrq/page_index.py:338
+#: gmsrq/page_index.py:319
 msgid "🏷 penchekrack breeding simulator"
 msgstr "🏷 simulador de cría de penchekrack"
 
-#: gmsrq/page_index.py:340
+#: gmsrq/page_index.py:321
 msgid "🏷 wild gobzaur taming simulator"
 msgstr "🏷 simulador de domesticación de gobzaur salvaje"
 
-#: gmsrq/page_index.py:342
+#: gmsrq/page_index.py:323
 msgid "🏷 passing entrance exams"
 msgstr "🏷 aprobar exámenes de ingreso"
 
-#: gmsrq/page_index.py:344
+#: gmsrq/page_index.py:325
 msgid "🏷 tactical fighting"
 msgstr "🏷 combate táctico"
 
-#: gmsrq/page_index.py:346
+#: gmsrq/page_index.py:327
 msgid "🏷 tactical game"
 msgstr "🏷 juego táctico"
 
-#: gmsrq/page_index.py:348
+#: gmsrq/page_index.py:329
 msgid "🏷 tactical strategy"
 msgstr "🏷 estrategia táctica"
 
-#: gmsrq/page_index.py:350
+#: gmsrq/page_index.py:331
 msgid "🏷 economic strategy"
 msgstr "🏷 estrategia económica"
 
-#: gmsrq/page_index.py:352
+#: gmsrq/page_index.py:333
 msgid "🏷 strategy with fighting elements"
 msgstr "🏷 estrategia con elementos de combate"
 
-#: gmsrq/page_index.py:354
+#: gmsrq/page_index.py:335
 msgid "🏷 recruitment center manager"
 msgstr "🏷 gerente del centro de reclutamiento"
 
-#: gmsrq/page_index.py:356
+#: gmsrq/page_index.py:337
 msgid "🏷 management"
 msgstr "🏷 administración"
 
-#: gmsrq/page_index.py:358
+#: gmsrq/page_index.py:339
 msgid "🏷 build management"
 msgstr "🏷 administración de compilaciones"
 
-#: gmsrq/page_index.py:360
+#: gmsrq/page_index.py:341
 msgid "🏷 sport management"
 msgstr "🏷 administración deportiva"
 
-#: gmsrq/page_index.py:362
+#: gmsrq/page_index.py:343
 msgid "🏷 gambling"
 msgstr "🏷 apuestas"
 
-#: gmsrq/page_index.py:364
+#: gmsrq/page_index.py:345
 msgid "🏷 trading"
 msgstr "🏷 comercio"
 
-#: gmsrq/page_index.py:366
+#: gmsrq/page_index.py:347
 msgid "🏷 weapons testing"
 msgstr "🏷 pruebas de armas"
 
-#: gmsrq/page_index.py:368
+#: gmsrq/page_index.py:349
 msgid "🏷 espionage"
 msgstr "🏷 espionaje"
 
-#: gmsrq/page_index.py:370
+#: gmsrq/page_index.py:351
 msgid "🏷 espionage; gambling"
 msgstr "🏷 espionaje; juego de azar"
 
-#: gmsrq/page_index.py:372
+#: gmsrq/page_index.py:353
 msgid "🏷 espionage; bugging"
 msgstr "🏷 espionaje; instalación de errores"
 
-#: gmsrq/page_index.py:374
+#: gmsrq/page_index.py:355
 msgid "🏷 assault"
 msgstr "🏷 asalto"
 
-#: gmsrq/page_index.py:376
+#: gmsrq/page_index.py:357
 msgid "🏷 fantasy role-playing game"
 msgstr "🏷 juego de rol de fantasía"
 
-#: gmsrq/page_index.py:378
+#: gmsrq/page_index.py:359
 msgid "🏷 detective"
 msgstr "🏷 detective"
 
-#: gmsrq/page_index.py:380
+#: gmsrq/page_index.py:361
 msgid "🏷 humorous detective"
 msgstr "🏷 detective humorístico"
 
-#: gmsrq/page_index.py:382
+#: gmsrq/page_index.py:363
 msgid "🏷 cargo delivery with quest elements"
 msgstr "🏷 entrega de carga con elementos de misión"
 
-#: gmsrq/page_index.py:384
+#: gmsrq/page_index.py:365
 msgid "🏷 fortress defend"
 msgstr "🏷 defensa de la fortaleza"
 
-#: gmsrq/page_index.py:386
+#: gmsrq/page_index.py:367
 msgid "🏷 action horror"
 msgstr "🏷 terror de acción"
 
