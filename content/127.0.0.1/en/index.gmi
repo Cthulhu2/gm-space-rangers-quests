@@ -4,7 +4,7 @@ To perform government assignments, you will need a ranger certificate. Don't wor
 => /cgi/?lang=en 🪪 Show Ranger's certificate
 => about.gmi ℹ About
 
-## Quests :: SR HD: A War Apart (0 / 35)
+## Quests :: SR HD: A War Apart
 => /cgi/act?qid=102 Record Player
 ☠ 20% ⏱ low 🏷 logic game
 => /cgi/act?qid=84 Music Festival

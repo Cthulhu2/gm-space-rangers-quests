@@ -24,5 +24,17 @@ Online-Player für Textquests aus dem Spiel "Space Rangers".
 => /es/ ¡Bienvenido!
 Reproductor en línea de misiones de texto del juego "Space Rangers".
 
+=> /cze/ Vítejte!
+Online hráč textových questů ze hry "Space Rangers".
+
+=> /fr/ Accueillir!
+Joueur en ligne de quêtes textuelles du jeu "Space Rangers".
+
+=> /hu/ Üdvözöljük!
+Szöveges küldetések online játékosa a "Space Rangers" játékból.
+
+=> /pl/ Powitanie!
+Gracz online wykonujący zadania tekstowe z gry "Space Rangers".
+
 => /ru/ Добро пожаловать!
 Онлайн-проигрыватель текстовых квестов из игры "Космические Рейнджеры".

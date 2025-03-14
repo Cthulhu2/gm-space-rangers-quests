@@ -4,7 +4,7 @@ Zur Wahrnehmung behördlicher Aufträge benötigen Sie ein Ranger-Zertifikat. Ke
 => /cgi/?lang=de 🪪 Ranger-Zertifikat anzeigen
 => about.gmi ℹ Über das Projekt
 
-## Quests :: SR HD: A War Apart (0 / 35)
+## Quests :: SR HD: A War Apart
 => /cgi/act?qid=185 Abspielgerät
 ☠ 20% ⏱ gering 🏷 logikspiel
 => /cgi/act?qid=173 Musikfestival

@@ -552,19 +552,26 @@ def parse(data) -> QM:
 
     params: List[QMParam] = []
     for i in range(base.paramsCount):
-        params.append(parse_param_qmm(r) if is_qmm else parse_param(r))
+        if is_qmm:
+            params.append(parse_param_qmm(r))
+        else:
+            params.append(parse_param(r))
 
     base2 = parse_base2(r, is_qmm)
 
     locations: List[Location] = []
     for i in range(base2.locationsCount):
-        locations.append(parse_loc_qmm(r, base.paramsCount) if is_qmm
-                         else parse_loc(r, base.paramsCount))
+        if is_qmm:
+            locations.append(parse_loc_qmm(r, base.paramsCount))
+        else:
+            locations.append(parse_loc(r, base.paramsCount))
 
     jumps: List[Jump] = []
     for i in range(base2.jumpsCount):
-        jumps.append(parse_jmp_qmm(r, base.paramsCount, params) if is_qmm
-                     else parse_jmp(r, base.paramsCount))
+        if is_qmm:
+            jumps.append(parse_jmp_qmm(r, base.paramsCount, params))
+        else:
+            jumps.append(parse_jmp(r, base.paramsCount))
 
     if r.is_not_end():
         raise Exception(r.is_not_end())

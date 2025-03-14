@@ -1,0 +1,35 @@
+# Centrum Strażników "Unia"
+Aby wykonywać zadania rządowe, będziesz potrzebować certyfikatu strażnika. Nie martw się, to dokładnie to samo, co u Ciebie. Masz certyfikat, prawda? Jesteś strażnikiem, prawda? Oto właściwy certyfikat.
+
+=> /cgi/?lang=pl 🪪 Certyfikat Strażnika Wystaw
+=> about.gmi ℹ O projekcie
+
+## Zadania :: SR 1
+=> /cgi/act?qid=233 Straszna śmierć
+☠ 10% ⏱ niski 🏷 symulator "szczura laboratoryjnego"
+=> /cgi/act?qid=253 Gobzaur
+☠ 10% ⏱ niski 🏷 symulator oswajania dzikiego gobzaura
+=> /cgi/act?qid=213 Łódka
+☠ 15% ⏱ niski 🏷 łamigłówka
+=> /cgi/act?qid=278 Grób
+☠ 20% ⏱ niski 🏷 łamigłówka
+=> /cgi/act?qid=258 Hachball
+☠ 20% ⏱ niski 🏷 zarządzanie sportem
+=> /cgi/act?qid=243 Rybacki
+☠ 50% ⏱ niski 🏷 symulator wędkarski
+=> /cgi/act?qid=218 Budowa
+☠ 50% ⏱ niski 🏷 zarządzanie kompilacją
+=> /cgi/act?qid=228 Komandos
+☠ 50% ⏱ średni 🏷 napaść
+=> /cgi/act?qid=273 Więzienie
+☠ 50% ⏱ długi 🏷 symulator więzienia
+=> /cgi/act?qid=223 Kasyno
+☠ 50% ⏱ długi 🏷 hazard
+=> /cgi/act?qid=263 Eeke-Baana
+☠ 60% ⏱ niski 🏷 łamigłówka logiczna
+=> /cgi/act?qid=238 Energia
+☠ 73% ⏱ średni 🏷 łamigłówka logiczna
+=> /cgi/act?qid=268 Morderstwo
+☠ 75% ⏱ średni 🏷 detektyw
+=> /cgi/act?qid=248 Gladiator
+☠ 100% ⏱ niski 🏷 zarządzanie
