@@ -240,8 +240,8 @@ class GmQuestsHandler:
     def __init__(self, cfg: Config):
         self.cfg = cfg
 
-    def init(self, capsule):
-        capsule.add(self.cfg.act_url, self.handle)
+    def init(self, capsule: gmcapsule.Context, hostname=None):
+        capsule.add(self.cfg.act_url, self.handle, hostname=hostname)
 
     @err_handler
     @mark_ranger_activity

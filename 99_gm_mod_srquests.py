@@ -1,5 +1,6 @@
 import gettext
 import logging
+from configparser import SectionProxy
 from os.path import dirname, realpath
 
 import gmcapsule
@@ -45,8 +46,15 @@ def init(capsule: gmcapsule.Context):
     router = Router(db, migrate_dir=gmsrq.MIGRATE_DIR,
                     logger=logging.getLogger())
     router.run()
-    gmsrq.GmQuestsHandler(srq_cfg).init(capsule)
-    gmsrq.GmUsersHandler(srq_cfg).init(capsule)
+
+    gmcfg: gmcapsule.Config = capsule.cfg
+    hostname = None
+    if 'gmsrq' in gmcfg.ini:
+        mod_cfg: SectionProxy = gmcfg.section('gmsrq')
+        hostname = mod_cfg.get('host', None)
+
+    gmsrq.GmQuestsHandler(srq_cfg).init(capsule, hostname)
+    gmsrq.GmUsersHandler(srq_cfg).init(capsule, hostname)
 
 
 # Local GmCapsule for testing

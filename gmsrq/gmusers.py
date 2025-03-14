@@ -142,22 +142,33 @@ class GmUsersHandler:
     def __init__(self, cfg: Config):
         self.cfg = cfg
 
-    def init(self, capsule: gmcapsule.Context):
+    def init(self, capsule: gmcapsule.Context, hostname=None):
         for lang in self.cfg.l10n.keys():
-            capsule.add(f'/{lang}/', self.index)
-            capsule.add(f'/{lang}/leaders', self.handle_leaders)
+            capsule.add(f'/{lang}/', self.index,
+                        hostname=hostname)
+            capsule.add(f'/{lang}/leaders', self.handle_leaders,
+                        hostname=hostname)
         # registration
-        capsule.add(self.cfg.cgi_url, self.handle_cgi)
-        capsule.add(self.cfg.reg_add_url + '*', self.handle_reg_add)
-        capsule.add(self.cfg.reg_url + '*', self.handle_reg)
+        capsule.add(self.cfg.cgi_url, self.handle_cgi,
+                    hostname=hostname)
+        capsule.add(self.cfg.reg_add_url + '*', self.handle_reg_add,
+                    hostname=hostname)
+        capsule.add(self.cfg.reg_url + '*', self.handle_reg,
+                    hostname=hostname)
         # options
-        capsule.add(self.cfg.opts_url, self.handle_opts)
-        capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass)
-        capsule.add(self.cfg.opts_del_cert_url + '*', self.handle_opts_del_cert)
-        capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc)
-        capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename)
+        capsule.add(self.cfg.opts_url, self.handle_opts,
+                    hostname=hostname)
+        capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass,
+                    hostname=hostname)
+        capsule.add(self.cfg.opts_del_cert_url + '*', self.handle_opts_del_cert,
+                    hostname=hostname)
+        capsule.add(self.cfg.opts_del_acc_url + '*', self.handle_opts_del_acc,
+                    hostname=hostname)
+        capsule.add(self.cfg.opts_rename_url + '*', self.handle_opts_rename,
+                    hostname=hostname)
         # quest sort
-        capsule.add(self.cfg.sort_url + '*', self.handle_sort)
+        capsule.add(self.cfg.sort_url + '*', self.handle_sort,
+                    hostname=hostname)
 
     def gettext_(self, lang: str) -> Callable[[str], str]:
         return self.cfg.l10n[lang].gettext if lang in self.cfg.l10n \
