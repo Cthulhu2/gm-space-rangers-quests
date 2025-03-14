@@ -3,6 +3,7 @@ import logging
 from os import listdir
 from os.path import join
 
+from srqmplayer.qmmodels import QM
 from srqmplayer.qmreader import parse
 from srqmplayer.qmwriter import write_qmm
 from tests import QUEST_DIR
@@ -152,4 +153,56 @@ def fix_prison1():
                 log.warning(f'{name}.qm p11 Max money 10 000 -> 2 000 000 000')
                 with open(join(QUEST_DIR, f'{name}.qmm'), 'wb') as s:
                     packed = write_qmm(quest, io.BytesIO())
+                    s.write(packed)
+
+
+def _copy_loc_media_img(name: str, src: QM, dst: QM):
+    fixed = False
+    for src_loc in src.locations:
+        dst_loc = dst.find_loc(src_loc.id)
+        for i, src_loc_media in enumerate(src_loc.media):
+            if dst_loc.media[i].img != src_loc_media.img:
+                log.warning(f'{name} loc={dst_loc.id}'
+                            f' media={i} img'
+                            f' {dst_loc.media[i].img}'
+                            f' -> {src_loc_media.img}')
+                dst_loc.media[i].img = src_loc_media.img
+                fixed = True
+    return fixed
+
+
+def _copy_jump_media_img(name: str, src: QM, dst: QM):
+    fixed = False
+    for src_jmp in src.jumps:
+        dst_jmp = dst.find_jump(src_jmp.id)
+        if not dst_jmp:
+            log.warning(f'{name} no jump={src_jmp.id}!!!!!!!!')
+            continue  # skip
+        if dst_jmp.img != src_jmp.img:
+            log.warning(f'{name} jump={dst_jmp.id} img'
+                        f' {dst_jmp.img} -> {src_jmp.img}')
+            dst_jmp.img = src_jmp.img
+            fixed = True
+    return fixed
+
+
+def fix_qm_images():
+    for name in (
+            #'Boat', 'Build', 'Casino', 'Commando', 'Diehard', 'Energy',
+            #'Fishing', 'Gladiator', 'Gobsaur', 'Hachball', 'Ikebana',
+            #'Murder', 'Tomb'
+            'Prison1', ):
+        with open(join(QUEST_DIR, f'{name}.qmm'), 'rb') as f:
+            ru = parse(f)
+
+        for lang in ('eng', 'cze', 'fra', 'hun', 'pol'):
+            with open(join(QUEST_DIR, f'{name}_{lang}.qmm'), 'rb') as f:
+                eng = parse(f)
+
+            loc_fixed = _copy_loc_media_img(f'{name}_{lang}.qmm', ru, eng)
+            jmp_fixed = _copy_jump_media_img(f'{name}_{lang}.qmm', ru, eng)
+
+            if loc_fixed or jmp_fixed:
+                with open(join(QUEST_DIR, f'{name}_{lang}.qmm'), 'wb') as s:
+                    packed = write_qmm(eng, io.BytesIO())
                     s.write(packed)
