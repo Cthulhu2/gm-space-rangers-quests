@@ -390,6 +390,7 @@ class GmUsersHandler:
             rid = ranger.id if ranger else None
 
         th = _('  # : Ranger                    : Quests : Credits')
+        # TODO: Detect columns width form localized table header
         tl = f'----:---------------------------:--------:---------'
         rows = []
         for pos, row in enumerate(Ranger.leaders(lang=lang), 1):

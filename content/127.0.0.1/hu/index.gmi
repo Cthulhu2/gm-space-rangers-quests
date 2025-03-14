@@ -1,0 +1,35 @@
+# Ranger Center "Union"
+Kormányzati feladatok ellátásához földőri bizonyítványra lesz szüksége. Ne aggódj, pontosan ugyanaz, mint a tied. Van bizonyítványod, nem? Te őr vagy, ugye? Itt van a megfelelő bizonyítvány.
+
+=> /cgi/?lang=hu 🪪 Mutasd a Ranger bizonyítványt
+=> about.gmi ℹ A projektről
+
+## Küldetések :: SR 1
+=> /cgi/act?qid=232 Szörnyű halál
+☠ 10% ⏱ alacsony 🏷 labor patkány szimulátor
+=> /cgi/act?qid=252 Gobsaur
+☠ 10% ⏱ alacsony 🏷 vad gobzaur szelídítő szimulátor
+=> /cgi/act?qid=212 Csónak
+☠ 15% ⏱ alacsony 🏷 rejtvény
+=> /cgi/act?qid=277 Sír
+☠ 20% ⏱ alacsony 🏷 rejtvény
+=> /cgi/act?qid=257 Hachball
+☠ 20% ⏱ alacsony 🏷 sportmenedzsment
+=> /cgi/act?qid=242 Halászat
+☠ 50% ⏱ alacsony 🏷 horgászszimulátor
+=> /cgi/act?qid=217 Építés
+☠ 50% ⏱ alacsony 🏷 build menedzsment
+=> /cgi/act?qid=227 Kommandó
+☠ 50% ⏱ átlagos 🏷 támadás
+=> /cgi/act?qid=272 Börtön
+☠ 50% ⏱ hosszú 🏷 börtönszimulátor
+=> /cgi/act?qid=222 Kaszinó
+☠ 50% ⏱ hosszú 🏷 szerencsejáték
+=> /cgi/act?qid=262 Eeke-Baana
+☠ 60% ⏱ alacsony 🏷 logikai rejtvény
+=> /cgi/act?qid=237 Energia
+☠ 73% ⏱ átlagos 🏷 logikai rejtvény
+=> /cgi/act?qid=267 Gyilkosság
+☠ 75% ⏱ átlagos 🏷 detektív
+=> /cgi/act?qid=247 Gladiátor
+☠ 100% ⏱ alacsony 🏷 kezelés

@@ -20,47 +20,47 @@ msgstr ""
 
 #: gmsrq/gmquests.py:252 gmsrq/gmusers.py:168
 msgid "Ranger certificate required"
-msgstr ""
+msgstr "Ranger tanúsítvány szükséges"
 
 #: gmsrq/gmquests.py:259
 #, python-brace-format
 msgid "Unknown quest id={qid}"
-msgstr ""
+msgstr "Ismeretlen küldetésazonosító={qid}"
 
 #: gmsrq/gmusers.py:29 gmsrq/page_index.py:179
 #, python-brace-format
 msgid "Wow! This is the famous ranger {name}!"
-msgstr ""
+msgstr "Hűha! Ez a híres ranger {name}!"
 
 #: gmsrq/gmusers.py:30
 msgid "You are already registered."
-msgstr ""
+msgstr "Ön már regisztrált."
 
 #: gmsrq/gmusers.py:31 gmsrq/gmusers.py:80 gmsrq/gmusers.py:403
 msgid "Back"
-msgstr ""
+msgstr "Vissza"
 
 #: gmsrq/gmusers.py:35
 msgid "What is your name?"
-msgstr ""
+msgstr "Mi a neved?"
 
 #: gmsrq/gmusers.py:39
 msgid "Enter ranger's name to attach certificate to."
-msgstr ""
+msgstr "Adja meg a ranger nevét a tanúsítvány csatolásához."
 
 #: gmsrq/gmusers.py:43
 #, python-brace-format
 msgid "Delete certificate {cert}. Are you sure? Type \"yes\"."
-msgstr ""
+msgstr "Törölje a(z) {cert} tanúsítványt. Biztos benne? Írja be: \"yes\"."
 
 #: gmsrq/gmusers.py:48
 #, python-brace-format
 msgid "Delete ranger {name} account and all its data. Are you sure? Type \"yes\"."
-msgstr ""
+msgstr "Törölje a ranger {name} fiókját és az összes adatát. Biztos benne? Írja be: \"yes\"."
 
 #: gmsrq/gmusers.py:53
 msgid "Password?"
-msgstr ""
+msgstr "Jelszó?"
 
 #: gmsrq/gmusers.py:63
 msgid ""
@@ -69,430 +69,436 @@ msgid ""
 "* \\r, \\n -- what are these rangers with line breaks;\n"
 "* ``` -- and we don’t need to break the formatting."
 msgstr ""
+"Érvénytelen ranger név. Nem engedélyezett:\n"
+"* >=128 szimbólum -- az adatbázis nem gumi;\n"
+"* \\r, \\n -- mik ezek a sortöréses rangerek;\n"
+"* ``` -- és nem kell megszakítanunk a formázást."
 
 #: gmsrq/gmusers.py:76
 msgid "Rename ranger"
-msgstr ""
+msgstr "Ranger átnevezése"
 
 #: gmsrq/gmusers.py:79 gmsrq/page_index.py:153 gmsrq/page_index.py:183
 msgid "Options"
-msgstr ""
+msgstr "Opciók"
 
 #: gmsrq/gmusers.py:82
 msgid "Use ANSI-colors"
-msgstr ""
+msgstr "ANSI-színek használata"
 
 #: gmsrq/gmusers.py:84
 msgid "Account"
-msgstr ""
+msgstr "Fiók"
 
 #: gmsrq/gmusers.py:86
 #, python-brace-format
 msgid "Delete ranger {name}"
-msgstr ""
+msgstr "A ranger {name} törlése"
 
 #: gmsrq/gmusers.py:88
 msgid "All quests progress and registered certificates will be deleted"
-msgstr ""
+msgstr "Az összes küldetés folyamata és a regisztrált tanúsítványok törlésre kerülnek"
 
 #: gmsrq/gmusers.py:97
 #, python-brace-format
 msgid "valid {minutes} min"
-msgstr ""
+msgstr "érvényes {minutes} perc"
 
 #: gmsrq/gmusers.py:98
 msgid "not set"
-msgstr ""
+msgstr "nincs beállítva"
 
 #: gmsrq/gmusers.py:100
 msgid "Certificates"
-msgstr ""
+msgstr "Tanúsítványok"
 
 #: gmsrq/gmusers.py:101
 #, python-brace-format
 msgid "Certificate password ({expires})"
-msgstr ""
+msgstr "A tanúsítvány jelszava ({expires})"
 
 #: gmsrq/gmusers.py:103
 msgid ""
 "For adding other certificates you need set password. Then just try "
 "register for this username."
 msgstr ""
+"Más tanúsítványok hozzáadásához be kell állítania a jelszót. Ezután próbálja meg."
+"regisztráljon erre a felhasználónévre."
 
 #: gmsrq/gmusers.py:105
 #, python-brace-format
 msgid "Registered to {name}"
-msgstr ""
+msgstr "Regisztrálva itt: {name}"
 
 #: gmsrq/gmusers.py:111
 msgid "(current)"
-msgstr ""
+msgstr "(jelenlegi)"
 
 #: gmsrq/gmusers.py:115
 msgid "Remove"
-msgstr ""
+msgstr "Eltávolítás"
 
 #: gmsrq/gmusers.py:133 gmsrq/gmusers.py:375
 #, python-brace-format
 msgid "Ranger {name} already registered."
-msgstr ""
+msgstr "Már regisztrált a ranger {name}."
 
 #: gmsrq/gmusers.py:134
 msgid "Choose different name"
-msgstr ""
+msgstr "Válassz másik nevet"
 
 #: gmsrq/gmusers.py:136
 msgid "Yes, it is me"
-msgstr ""
+msgstr "Igen, én vagyok az"
 
 #: gmsrq/gmusers.py:274
 msgid "Password incorrect"
-msgstr ""
+msgstr "Helytelen jelszó"
 
 #: gmsrq/gmusers.py:392
 msgid "  # : Ranger                    : Quests : Credits"
-msgstr ""
+msgstr "  # : Ranger                   :Küldetések: Kreditek"
 
 #: gmsrq/gmusers.py:402 gmsrq/gmusers.py:405 gmsrq/page_index.py:154
 #: gmsrq/page_index.py:184
 msgid "Leader board"
-msgstr ""
+msgstr "Ranglista"
 
 #: gmsrq/gmusers.py:404
 msgid "Only registered rangers are displayed."
-msgstr ""
+msgstr "Csak a regisztrált rangerek jelennek meg."
 
 #: gmsrq/page_index.py:59 gmsrq/page_index.py:65 gmsrq/page_index.py:73
 #: gmsrq/page_index.py:87 gmsrq/page_index.py:102 gmsrq/page_index.py:121
 #, python-brace-format
 msgid "Quests :: {game}"
-msgstr ""
+msgstr "Küldetések :: {game}"
 
 #: gmsrq/page_index.py:151
 msgid "Come in, ranger, your certificate is valid."
-msgstr ""
+msgstr "Gyere be, ranger, a tanúsítványa érvényes."
 
 #: gmsrq/page_index.py:152
 msgid "Registration"
-msgstr ""
+msgstr "Regisztráció"
 
 #: gmsrq/page_index.py:155 gmsrq/page_index.py:185
 msgid "About"
-msgstr ""
+msgstr "A projektről"
 
 #: gmsrq/page_index.py:181
 msgid "Progress: "
-msgstr ""
+msgstr "Haladás: "
 
 #: gmsrq/page_index.py:182
 msgid "Credits: "
-msgstr ""
+msgstr "Kreditek: "
 
 #: gmsrq/page_index.py:192
 msgid "☠ difficulty"
-msgstr ""
+msgstr "☠ nehézség"
 
 #: gmsrq/page_index.py:193
 msgid "⏱ duration"
-msgstr ""
+msgstr "⏱ időtartam"
 
 #: gmsrq/page_index.py:194
 msgid "🏷 genre"
-msgstr ""
+msgstr "🏷 műfaj"
 
 #: gmsrq/page_index.py:201
 msgid "⬆ ascend"
-msgstr ""
+msgstr "⬆ emelkedik"
 
 #: gmsrq/page_index.py:202
 msgid "⬇ descend"
-msgstr ""
+msgstr "⬇ leereszkedés"
 
 #: gmsrq/page_index.py:220
 msgid "⏱ low"
-msgstr ""
+msgstr "⏱ alacsony"
 
 #: gmsrq/page_index.py:222
 msgid "⏱ below average"
-msgstr ""
+msgstr "⏱ átlag alatti"
 
 #: gmsrq/page_index.py:224
 msgid "⏱ average"
-msgstr ""
+msgstr "⏱ átlagos"
 
 #: gmsrq/page_index.py:226
 msgid "⏱ above average"
-msgstr ""
+msgstr "⏱ átlag feletti"
 
 #: gmsrq/page_index.py:228
 msgid "⏱ long"
-msgstr ""
+msgstr "⏱ hosszú"
 
 #: gmsrq/page_index.py:237
 msgid "🏷 adventure"
-msgstr ""
+msgstr "🏷 kaland"
 
 #: gmsrq/page_index.py:239
 msgid "🏷 adventure-shooter"
-msgstr ""
+msgstr "🏷 kalandlövő"
 
 #: gmsrq/page_index.py:241
 msgid "🏷 adventure-shooter; safe cracking simulator"
-msgstr ""
+msgstr "🏷 kalandlövő; biztonságos repedés szimulátor"
 
 #: gmsrq/page_index.py:243
 msgid "🏷 adventure with adventures"
-msgstr ""
+msgstr "🏷 kaland kalandokkal"
 
 #: gmsrq/page_index.py:245
 msgid "🏷 adventure with arcade elements"
-msgstr ""
+msgstr "🏷 kaland arcade elemekkel"
 
 #: gmsrq/page_index.py:247
 msgid "🏷 adventure with black humor elements"
-msgstr ""
+msgstr "🏷 kaland fekete humor elemekkel"
 
 #: gmsrq/page_index.py:249
 msgid "🏷 adventure with fighting elements"
-msgstr ""
+msgstr "🏷 kaland harci elemekkel"
 
 #: gmsrq/page_index.py:251
 msgid "🏷 adventure with fighting and puzzle elements"
-msgstr ""
+msgstr "🏷 kaland harci és rejtvényelemekkel"
 
 #: gmsrq/page_index.py:253
 msgid "🏷 adventure with management elements"
-msgstr ""
+msgstr "🏷 kaland menedzsment elemekkel"
 
 #: gmsrq/page_index.py:255
 msgid "🏷 adventure with horror elements"
-msgstr ""
+msgstr "🏷 kaland horror elemekkel"
 
 #: gmsrq/page_index.py:257
 msgid "🏷 adventure with awful horror elements"
-msgstr ""
+msgstr "🏷 kaland szörnyű horror elemekkel"
 
 #: gmsrq/page_index.py:259
 msgid "🏷 adventure with logic elements"
-msgstr ""
+msgstr "🏷 kaland logikai elemekkel"
 
 #: gmsrq/page_index.py:261
 msgid "🏷 adventure with logic puzzles"
-msgstr ""
+msgstr "🏷 kaland logikai rejtvényekkel"
 
 #: gmsrq/page_index.py:263
 msgid "🏷 trivia game"
-msgstr ""
+msgstr "🏷 trivia játék"
 
 #: gmsrq/page_index.py:265
 msgid "🏷 text and logic puzzle"
-msgstr ""
+msgstr "🏷 szöveg és logikai rejtvény"
 
 #: gmsrq/page_index.py:267
 msgid "🏷 puzzle"
-msgstr ""
+msgstr "🏷 rejtvény"
 
 #: gmsrq/page_index.py:269
 msgid "🏷 logic puzzle"
-msgstr ""
+msgstr "🏷 logikai rejtvény"
 
 #: gmsrq/page_index.py:271
 msgid "🏷 arcade logic game"
-msgstr ""
+msgstr "🏷 arcade logikai játék"
 
 #: gmsrq/page_index.py:273
 msgid "🏷 logic game"
-msgstr ""
+msgstr "🏷 logikai játék"
 
 #: gmsrq/page_index.py:275
 msgid "🏷 logic game with management elements"
-msgstr ""
+msgstr "🏷 logikai játék menedzsment elemekkel"
 
 #: gmsrq/page_index.py:277
 msgid "🏷 logic educational game"
-msgstr ""
+msgstr "🏷 logikai oktatási játék"
 
 #: gmsrq/page_index.py:279
 msgid "🏷 logic math game"
-msgstr ""
+msgstr "🏷 logikai matematikai játék"
 
 #: gmsrq/page_index.py:281
 msgid "🏷 logic easel simulator"
-msgstr ""
+msgstr "🏷 logikai festőállvány szimulátor"
 
 #: gmsrq/page_index.py:283
 msgid "🏷 math logic puzzle"
-msgstr ""
+msgstr "🏷 matematikai logikai rejtvény"
 
 #: gmsrq/page_index.py:285
 msgid "🏷 math puzzle"
-msgstr ""
+msgstr "🏷 matematikai rejtvény"
 
 #: gmsrq/page_index.py:287
 msgid "🏷 logic puzzles and math problems"
-msgstr ""
+msgstr "🏷 logikai rejtvények és matematikai feladatok"
 
 #: gmsrq/page_index.py:289
 msgid "🏷 logic tactical game"
-msgstr ""
+msgstr "🏷 logikai taktikai játék"
 
 #: gmsrq/page_index.py:291
 msgid "🏷 simulator"
-msgstr ""
+msgstr "🏷 szimulátor"
 
 #: gmsrq/page_index.py:293
 msgid "🏷 prison simulator"
-msgstr ""
+msgstr "🏷 börtönszimulátor"
 
 #: gmsrq/page_index.py:295
 msgid "🏷 space rangers simulator"
-msgstr ""
+msgstr "🏷 space rangers szimulátor"
 
 #: gmsrq/page_index.py:297
 msgid "🏷 animal life simulator"
-msgstr ""
+msgstr "🏷 állatélet szimulátor"
 
 #: gmsrq/page_index.py:299
 msgid "🏷 lab rat simulator"
-msgstr ""
+msgstr "🏷 labor patkány szimulátor"
 
 #: gmsrq/page_index.py:301
 msgid "🏷 composite sketch simulator"
-msgstr ""
+msgstr "🏷 összetett vázlatszimulátor"
 
 #: gmsrq/page_index.py:303
 msgid "🏷 economy simulator"
-msgstr ""
+msgstr "🏷 gazdaságos szimulátor"
 
 #: gmsrq/page_index.py:305
 msgid "🏷 election campaign simulator"
-msgstr ""
+msgstr "🏷 választási kampány szimulátor"
 
 #: gmsrq/page_index.py:307
 msgid "🏷 hauler simulator"
-msgstr ""
+msgstr "🏷 fuvarozó szimulátor"
 
 #: gmsrq/page_index.py:309
 msgid "🏷 taxi simulator"
-msgstr ""
+msgstr "🏷 taxi szimulátor"
 
 #: gmsrq/page_index.py:311
 msgid "🏷 fishing simulator"
-msgstr ""
+msgstr "🏷 horgászszimulátor"
 
 #: gmsrq/page_index.py:313
 msgid "🏷 ancient cars racing simulator"
-msgstr ""
+msgstr "🏷 ősi autóverseny szimulátor"
 
 #: gmsrq/page_index.py:315
 msgid "🏷 racing simulator"
-msgstr ""
+msgstr "🏷 versenyszimulátor"
 
 #: gmsrq/page_index.py:317
 msgid "🏷 racing simulator with management elements"
-msgstr ""
+msgstr "🏷 versenyszimulátor menedzsment elemekkel"
 
 #: gmsrq/page_index.py:319
 msgid "🏷 penchekrack breeding simulator"
-msgstr ""
+msgstr "🏷 penchekrack tenyésztési szimulátor"
 
 #: gmsrq/page_index.py:321
 msgid "🏷 wild gobzaur taming simulator"
-msgstr ""
+msgstr "🏷 vad gobzaur szelídítő szimulátor"
 
 #: gmsrq/page_index.py:323
 msgid "🏷 passing entrance exams"
-msgstr ""
+msgstr "🏷 sikeres felvételi vizsgák"
 
 #: gmsrq/page_index.py:325
 msgid "🏷 tactical fighting"
-msgstr ""
+msgstr "🏷 taktikai harc"
 
 #: gmsrq/page_index.py:327
 msgid "🏷 tactical game"
-msgstr ""
+msgstr "🏷 taktikai játék"
 
 #: gmsrq/page_index.py:329
 msgid "🏷 tactical strategy"
-msgstr ""
+msgstr "🏷 taktikai stratégia"
 
 #: gmsrq/page_index.py:331
 msgid "🏷 economic strategy"
-msgstr ""
+msgstr "🏷 gazdasági stratégia"
 
 #: gmsrq/page_index.py:333
 msgid "🏷 strategy with fighting elements"
-msgstr ""
+msgstr "🏷 stratégia harci elemekkel"
 
 #: gmsrq/page_index.py:335
 msgid "🏷 recruitment center manager"
-msgstr ""
+msgstr "🏷 toborzási központ vezetője"
 
 #: gmsrq/page_index.py:337
 msgid "🏷 management"
-msgstr ""
+msgstr "🏷 kezelés"
 
 #: gmsrq/page_index.py:339
 msgid "🏷 build management"
-msgstr ""
+msgstr "🏷 build menedzsment"
 
 #: gmsrq/page_index.py:341
 msgid "🏷 sport management"
-msgstr ""
+msgstr "🏷 sportmenedzsment"
 
 #: gmsrq/page_index.py:343
 msgid "🏷 gambling"
-msgstr ""
+msgstr "🏷 szerencsejáték"
 
 #: gmsrq/page_index.py:345
 msgid "🏷 trading"
-msgstr ""
+msgstr "🏷 kereskedés"
 
 #: gmsrq/page_index.py:347
 msgid "🏷 weapons testing"
-msgstr ""
+msgstr "🏷 fegyverteszt"
 
 #: gmsrq/page_index.py:349
 msgid "🏷 espionage"
-msgstr ""
+msgstr "🏷 kémkedés"
 
 #: gmsrq/page_index.py:351
 msgid "🏷 espionage; gambling"
-msgstr ""
+msgstr "🏷 kémkedés; szerencsejáték"
 
 #: gmsrq/page_index.py:353
 msgid "🏷 espionage; bugging"
-msgstr ""
+msgstr "🏷 kémkedés; bogarászat"
 
 #: gmsrq/page_index.py:355
 msgid "🏷 assault"
-msgstr ""
+msgstr "🏷 támadás"
 
 #: gmsrq/page_index.py:357
 msgid "🏷 fantasy role-playing game"
-msgstr ""
+msgstr "🏷 fantasy szerepjáték"
 
 #: gmsrq/page_index.py:359
 msgid "🏷 detective"
-msgstr ""
+msgstr "🏷 detektív"
 
 #: gmsrq/page_index.py:361
 msgid "🏷 humorous detective"
-msgstr ""
+msgstr "🏷 humoros nyomozó"
 
 #: gmsrq/page_index.py:363
 msgid "🏷 cargo delivery with quest elements"
-msgstr ""
+msgstr "🏷 rakomány szállítás küldetés elemekkel"
 
 #: gmsrq/page_index.py:365
 msgid "🏷 fortress defend"
-msgstr ""
+msgstr "🏷 erőd védelme"
 
 #: gmsrq/page_index.py:367
 msgid "🏷 action horror"
-msgstr ""
+msgstr "🏷 akcióhorror"
 
 #: gmsrq/utils.py:64
 msgid "Ranger Center \"Union\""
-msgstr ""
+msgstr "Ranger Center \"Union\""
 
