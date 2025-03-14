@@ -3,3 +3,9 @@ Disallow: /cgi/
 Disallow: /cgi/*
 Disallow: /ru/leaders
 Disallow: /en/leaders
+Disallow: /es/leaders
+Disallow: /de/leaders
+Disallow: /cze/leaders
+Disallow: /fr/leaders
+Disallow: /hu/leaders
+Disallow: /pl/leaders

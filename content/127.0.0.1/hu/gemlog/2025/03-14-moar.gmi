@@ -1,0 +1,11 @@
+# További fordítások
+A torrentek horizontján megjelent a "Space Rangers" első részének (v1.7.2) angol GOG verziója. Azonnal beszálltak és kibelezték.
+
+A trófeák egy kincset tartalmaztak, az első részből 14 küldetésből angol, cseh, magyar, francia és lengyel nyelvre lokalizálva.
+
+Mindent hozzáadok, talán még kiegészítheted is.
+
+=> /hu/ A főoldalra
+```
+Created: 2025-03-14
+```
