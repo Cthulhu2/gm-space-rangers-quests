@@ -1,0 +1,35 @@
+# Ranger Center "Unie"
+K plnění vládních úkolů budete potřebovat certifikát rangera. Nebojte se, je to úplně stejné jako u vás. Certifikát máš, ne? Vy jste ranger, že? Zde máte správný certifikát.
+
+=> /cgi/?lang=cze 🪪 Zobrazit certifikát Ranger
+=> about.gmi ℹ O projektu
+
+## Úkoly :: SR 1
+=> /cgi/act?qid=229 Hrozná smrt
+☠ 10% ⏱ nízká 🏷 simulátor "laboratorní krysy"
+=> /cgi/act?qid=249 Gobsaur
+☠ 10% ⏱ nízká 🏷 simulátor zkrocení divokého gobzaura
+=> /cgi/act?qid=209 Loď
+☠ 15% ⏱ nízká 🏷 puzzle
+=> /cgi/act?qid=274 Hrobka
+☠ 20% ⏱ nízká 🏷 puzzle
+=> /cgi/act?qid=254 Hachball
+☠ 20% ⏱ nízká 🏷 sportovní management
+=> /cgi/act?qid=239 Rybolov
+☠ 50% ⏱ nízká 🏷 rybářský simulátor
+=> /cgi/act?qid=214 Konstrukce
+☠ 50% ⏱ nízká 🏷 správa sestavení
+=> /cgi/act?qid=224 Komando
+☠ 50% ⏱ průměr 🏷 útok
+=> /cgi/act?qid=269 Vězení
+☠ 50% ⏱ dlouhý 🏷 vězeňský simulátor
+=> /cgi/act?qid=219 Kasino
+☠ 50% ⏱ dlouhý 🏷 hazardní hry
+=> /cgi/act?qid=259 Eeke-Baana
+☠ 60% ⏱ nízká 🏷 logická hádanka
+=> /cgi/act?qid=234 Energie
+☠ 73% ⏱ průměr 🏷 logická hádanka
+=> /cgi/act?qid=264 Vražda
+☠ 75% ⏱ průměr 🏷 detektiv
+=> /cgi/act?qid=244 Gladiátor
+☠ 100% ⏱ nízká 🏷 management

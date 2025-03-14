@@ -20,47 +20,47 @@ msgstr ""
 
 #: gmsrq/gmquests.py:252 gmsrq/gmusers.py:168
 msgid "Ranger certificate required"
-msgstr ""
+msgstr "Vyžadován certifikát Ranger"
 
 #: gmsrq/gmquests.py:259
 #, python-brace-format
 msgid "Unknown quest id={qid}"
-msgstr ""
+msgstr "Neznámé ID úkolu={qid}"
 
 #: gmsrq/gmusers.py:29 gmsrq/page_index.py:179
 #, python-brace-format
 msgid "Wow! This is the famous ranger {name}!"
-msgstr ""
+msgstr "Páni! Toto je slavný ranger {name}!"
 
 #: gmsrq/gmusers.py:30
 msgid "You are already registered."
-msgstr ""
+msgstr "Již jste zaregistrováni."
 
 #: gmsrq/gmusers.py:31 gmsrq/gmusers.py:80 gmsrq/gmusers.py:403
 msgid "Back"
-msgstr ""
+msgstr "Zpět"
 
 #: gmsrq/gmusers.py:35
 msgid "What is your name?"
-msgstr ""
+msgstr "Jak se jmenujete?"
 
 #: gmsrq/gmusers.py:39
 msgid "Enter ranger's name to attach certificate to."
-msgstr ""
+msgstr "Zadejte jméno rangera pro připojení certifikátu."
 
 #: gmsrq/gmusers.py:43
 #, python-brace-format
 msgid "Delete certificate {cert}. Are you sure? Type \"yes\"."
-msgstr ""
+msgstr "Smazat certifikát {cert}. Jste si jistý? Napište \"yes\"."
 
 #: gmsrq/gmusers.py:48
 #, python-brace-format
 msgid "Delete ranger {name} account and all its data. Are you sure? Type \"yes\"."
-msgstr ""
+msgstr "Smažte účet rangera {name} a všechna jeho data. Jste si jisti? Napište \"yes\"."
 
 #: gmsrq/gmusers.py:53
 msgid "Password?"
-msgstr ""
+msgstr "Heslo?"
 
 #: gmsrq/gmusers.py:63
 msgid ""
@@ -69,430 +69,436 @@ msgid ""
 "* \\r, \\n -- what are these rangers with line breaks;\n"
 "* ``` -- and we don’t need to break the formatting."
 msgstr ""
+"Neplatné jméno rangera. Nepovoleno:\n"
+"* >=128 symbolů -- databáze není gumová;\n"
+"* \\r, \\n -- co jsou tito strážci se zalomením řádků;\n"
+"* ``` -- a nemusíme přerušovat formátování."
 
 #: gmsrq/gmusers.py:76
 msgid "Rename ranger"
-msgstr ""
+msgstr "Přejmenovat rangera"
 
 #: gmsrq/gmusers.py:79 gmsrq/page_index.py:153 gmsrq/page_index.py:183
 msgid "Options"
-msgstr ""
+msgstr "Možnosti"
 
 #: gmsrq/gmusers.py:82
 msgid "Use ANSI-colors"
-msgstr ""
+msgstr "Použít ANSI-barvy"
 
 #: gmsrq/gmusers.py:84
 msgid "Account"
-msgstr ""
+msgstr "Účet"
 
 #: gmsrq/gmusers.py:86
 #, python-brace-format
 msgid "Delete ranger {name}"
-msgstr ""
+msgstr "Smazat rangera {name}"
 
 #: gmsrq/gmusers.py:88
 msgid "All quests progress and registered certificates will be deleted"
-msgstr ""
+msgstr "Všechny průběh questů a registrované certifikáty budou smazány"
 
 #: gmsrq/gmusers.py:97
 #, python-brace-format
 msgid "valid {minutes} min"
-msgstr ""
+msgstr "platný {minutes} min"
 
 #: gmsrq/gmusers.py:98
 msgid "not set"
-msgstr ""
+msgstr "nenastaveno"
 
 #: gmsrq/gmusers.py:100
 msgid "Certificates"
-msgstr ""
+msgstr "Certifikáty"
 
 #: gmsrq/gmusers.py:101
 #, python-brace-format
 msgid "Certificate password ({expires})"
-msgstr ""
+msgstr "Heslo k certifikátu ({expires})"
 
 #: gmsrq/gmusers.py:103
 msgid ""
 "For adding other certificates you need set password. Then just try "
 "register for this username."
 msgstr ""
+"Pro přidání dalších certifikátů je potřeba nastavit heslo. Pak stačí zkusit "
+"zaregistrovat se pro toto uživatelské jméno."
 
 #: gmsrq/gmusers.py:105
 #, python-brace-format
 msgid "Registered to {name}"
-msgstr ""
+msgstr "Registrováno na {name}"
 
 #: gmsrq/gmusers.py:111
 msgid "(current)"
-msgstr ""
+msgstr "(aktuální)"
 
 #: gmsrq/gmusers.py:115
 msgid "Remove"
-msgstr ""
+msgstr "Odstranit"
 
 #: gmsrq/gmusers.py:133 gmsrq/gmusers.py:375
 #, python-brace-format
 msgid "Ranger {name} already registered."
-msgstr ""
+msgstr "Ranger {name} je již zaregistrován."
 
 #: gmsrq/gmusers.py:134
 msgid "Choose different name"
-msgstr ""
+msgstr "Vyberte jiné jméno"
 
 #: gmsrq/gmusers.py:136
 msgid "Yes, it is me"
-msgstr ""
+msgstr "Ano, jsem to já"
 
 #: gmsrq/gmusers.py:274
 msgid "Password incorrect"
-msgstr ""
+msgstr "Nesprávné heslo"
 
 #: gmsrq/gmusers.py:392
 msgid "  # : Ranger                    : Quests : Credits"
-msgstr ""
+msgstr "  # : Ranger                    : Úkoly  : Kredity"
 
 #: gmsrq/gmusers.py:402 gmsrq/gmusers.py:405 gmsrq/page_index.py:154
 #: gmsrq/page_index.py:184
 msgid "Leader board"
-msgstr ""
+msgstr "Výsledková deska"
 
 #: gmsrq/gmusers.py:404
 msgid "Only registered rangers are displayed."
-msgstr ""
+msgstr "Zobrazují se pouze registrovaní strážci."
 
 #: gmsrq/page_index.py:59 gmsrq/page_index.py:65 gmsrq/page_index.py:73
 #: gmsrq/page_index.py:87 gmsrq/page_index.py:102 gmsrq/page_index.py:121
 #, python-brace-format
 msgid "Quests :: {game}"
-msgstr ""
+msgstr "Úkoly :: {game}"
 
 #: gmsrq/page_index.py:151
 msgid "Come in, ranger, your certificate is valid."
-msgstr ""
+msgstr "Pojďte dál, rangere, váš certifikát je platný."
 
 #: gmsrq/page_index.py:152
 msgid "Registration"
-msgstr ""
+msgstr "Registrace"
 
 #: gmsrq/page_index.py:155 gmsrq/page_index.py:185
 msgid "About"
-msgstr ""
+msgstr "O projektu"
 
 #: gmsrq/page_index.py:181
 msgid "Progress: "
-msgstr ""
+msgstr "Pokrok: "
 
 #: gmsrq/page_index.py:182
 msgid "Credits: "
-msgstr ""
+msgstr "Kredity: "
 
 #: gmsrq/page_index.py:192
 msgid "☠ difficulty"
-msgstr ""
+msgstr "☠ obtížnost"
 
 #: gmsrq/page_index.py:193
 msgid "⏱ duration"
-msgstr ""
+msgstr "⏱ trvání"
 
 #: gmsrq/page_index.py:194
 msgid "🏷 genre"
-msgstr ""
+msgstr "🏷 žánr"
 
 #: gmsrq/page_index.py:201
 msgid "⬆ ascend"
-msgstr ""
+msgstr "⬆ vzestup"
 
 #: gmsrq/page_index.py:202
 msgid "⬇ descend"
-msgstr ""
+msgstr "⬇ sestoupit"
 
 #: gmsrq/page_index.py:220
 msgid "⏱ low"
-msgstr ""
+msgstr "⏱ nízká"
 
 #: gmsrq/page_index.py:222
 msgid "⏱ below average"
-msgstr ""
+msgstr "⏱ podprůměrný"
 
 #: gmsrq/page_index.py:224
 msgid "⏱ average"
-msgstr ""
+msgstr "⏱ průměr"
 
 #: gmsrq/page_index.py:226
 msgid "⏱ above average"
-msgstr ""
+msgstr "⏱ nadprůměrný"
 
 #: gmsrq/page_index.py:228
 msgid "⏱ long"
-msgstr ""
+msgstr "⏱ dlouhý"
 
 #: gmsrq/page_index.py:237
 msgid "🏷 adventure"
-msgstr ""
+msgstr "🏷 dobrodružství"
 
 #: gmsrq/page_index.py:239
 msgid "🏷 adventure-shooter"
-msgstr ""
+msgstr "🏷 dobrodružná střílečka"
 
 #: gmsrq/page_index.py:241
 msgid "🏷 adventure-shooter; safe cracking simulator"
-msgstr ""
+msgstr "🏷 dobrodružná střílečka; simulátor bezpečného crackingu"
 
 #: gmsrq/page_index.py:243
 msgid "🏷 adventure with adventures"
-msgstr ""
+msgstr "🏷 dobrodružství s dobrodružstvím"
 
 #: gmsrq/page_index.py:245
 msgid "🏷 adventure with arcade elements"
-msgstr ""
+msgstr "🏷 dobrodružství s arkádovými prvky"
 
 #: gmsrq/page_index.py:247
 msgid "🏷 adventure with black humor elements"
-msgstr ""
+msgstr "🏷 dobrodružství s prvky černého humoru"
 
 #: gmsrq/page_index.py:249
 msgid "🏷 adventure with fighting elements"
-msgstr ""
+msgstr "🏷 dobrodružství s bojovými prvky"
 
 #: gmsrq/page_index.py:251
 msgid "🏷 adventure with fighting and puzzle elements"
-msgstr ""
+msgstr "🏷 dobrodružství s bojovými a logickými prvky"
 
 #: gmsrq/page_index.py:253
 msgid "🏷 adventure with management elements"
-msgstr ""
+msgstr "🏷 dobrodružství s prvky správy"
 
 #: gmsrq/page_index.py:255
 msgid "🏷 adventure with horror elements"
-msgstr ""
+msgstr "🏷 dobrodružství s hororovými prvky"
 
 #: gmsrq/page_index.py:257
 msgid "🏷 adventure with awful horror elements"
-msgstr ""
+msgstr "🏷 dobrodružství s příšernými hororovými prvky"
 
 #: gmsrq/page_index.py:259
 msgid "🏷 adventure with logic elements"
-msgstr ""
+msgstr "🏷 dobrodružství s logickými prvky"
 
 #: gmsrq/page_index.py:261
 msgid "🏷 adventure with logic puzzles"
-msgstr ""
+msgstr "🏷 dobrodružství s logickými hádankami"
 
 #: gmsrq/page_index.py:263
 msgid "🏷 trivia game"
-msgstr ""
+msgstr "🏷 triviální hra"
 
 #: gmsrq/page_index.py:265
 msgid "🏷 text and logic puzzle"
-msgstr ""
+msgstr "🏷 text a logická hádanka"
 
 #: gmsrq/page_index.py:267
 msgid "🏷 puzzle"
-msgstr ""
+msgstr "🏷 puzzle"
 
 #: gmsrq/page_index.py:269
 msgid "🏷 logic puzzle"
-msgstr ""
+msgstr "🏷 logická hádanka"
 
 #: gmsrq/page_index.py:271
 msgid "🏷 arcade logic game"
-msgstr ""
+msgstr "🏷 arkádová logická hra"
 
 #: gmsrq/page_index.py:273
 msgid "🏷 logic game"
-msgstr ""
+msgstr "🏷 logická hra"
 
 #: gmsrq/page_index.py:275
 msgid "🏷 logic game with management elements"
-msgstr ""
+msgstr "🏷 logická hra s prvky správy"
 
 #: gmsrq/page_index.py:277
 msgid "🏷 logic educational game"
-msgstr ""
+msgstr "🏷 logická vzdělávací hra"
 
 #: gmsrq/page_index.py:279
 msgid "🏷 logic math game"
-msgstr ""
+msgstr "🏷 logická matematická hra"
 
 #: gmsrq/page_index.py:281
 msgid "🏷 logic easel simulator"
-msgstr ""
+msgstr "🏷 simulátor logického stojanu"
 
 #: gmsrq/page_index.py:283
 msgid "🏷 math logic puzzle"
-msgstr ""
+msgstr "🏷 matematická logická hádanka"
 
 #: gmsrq/page_index.py:285
 msgid "🏷 math puzzle"
-msgstr ""
+msgstr "🏷 matematická hádanka"
 
 #: gmsrq/page_index.py:287
 msgid "🏷 logic puzzles and math problems"
-msgstr ""
+msgstr "🏷 logické hádanky a matematické úlohy"
 
 #: gmsrq/page_index.py:289
 msgid "🏷 logic tactical game"
-msgstr ""
+msgstr "🏷 logická taktická hra"
 
 #: gmsrq/page_index.py:291
 msgid "🏷 simulator"
-msgstr ""
+msgstr "🏷 simulátor"
 
 #: gmsrq/page_index.py:293
 msgid "🏷 prison simulator"
-msgstr ""
+msgstr "🏷 vězeňský simulátor"
 
 #: gmsrq/page_index.py:295
 msgid "🏷 space rangers simulator"
-msgstr ""
+msgstr "🏷 simulátor strážců vesmíru"
 
 #: gmsrq/page_index.py:297
 msgid "🏷 animal life simulator"
-msgstr ""
+msgstr "🏷 simulátor života zvířat"
 
 #: gmsrq/page_index.py:299
 msgid "🏷 lab rat simulator"
-msgstr ""
+msgstr "🏷 simulátor \"laboratorní krysy\""
 
 #: gmsrq/page_index.py:301
 msgid "🏷 composite sketch simulator"
-msgstr ""
+msgstr "🏷 simulátor kompozitního náčrtu"
 
 #: gmsrq/page_index.py:303
 msgid "🏷 economy simulator"
-msgstr ""
+msgstr "🏷 ekonomický simulátor"
 
 #: gmsrq/page_index.py:305
 msgid "🏷 election campaign simulator"
-msgstr ""
+msgstr "🏷 simulátor volební kampaně"
 
 #: gmsrq/page_index.py:307
 msgid "🏷 hauler simulator"
-msgstr ""
+msgstr "🏷 simulátor nákladního auta"
 
 #: gmsrq/page_index.py:309
 msgid "🏷 taxi simulator"
-msgstr ""
+msgstr "🏷 simulátor taxi"
 
 #: gmsrq/page_index.py:311
 msgid "🏷 fishing simulator"
-msgstr ""
+msgstr "🏷 rybářský simulátor"
 
 #: gmsrq/page_index.py:313
 msgid "🏷 ancient cars racing simulator"
-msgstr ""
+msgstr "🏷 závodní simulátor starých aut"
 
 #: gmsrq/page_index.py:315
 msgid "🏷 racing simulator"
-msgstr ""
+msgstr "🏷 závodní simulátor"
 
 #: gmsrq/page_index.py:317
 msgid "🏷 racing simulator with management elements"
-msgstr ""
+msgstr "🏷 závodní simulátor s prvky správy"
 
 #: gmsrq/page_index.py:319
 msgid "🏷 penchekrack breeding simulator"
-msgstr ""
+msgstr "🏷 simulátor chovu penchekrack"
 
 #: gmsrq/page_index.py:321
 msgid "🏷 wild gobzaur taming simulator"
-msgstr ""
+msgstr "🏷 simulátor zkrocení divokého gobzaura"
 
 #: gmsrq/page_index.py:323
 msgid "🏷 passing entrance exams"
-msgstr ""
+msgstr "🏷 složení přijímacích zkoušek"
 
 #: gmsrq/page_index.py:325
 msgid "🏷 tactical fighting"
-msgstr ""
+msgstr "🏷 taktický boj"
 
 #: gmsrq/page_index.py:327
 msgid "🏷 tactical game"
-msgstr ""
+msgstr "🏷 taktická hra"
 
 #: gmsrq/page_index.py:329
 msgid "🏷 tactical strategy"
-msgstr ""
+msgstr "🏷 taktická strategie"
 
 #: gmsrq/page_index.py:331
 msgid "🏷 economic strategy"
-msgstr ""
+msgstr "🏷 ekonomická strategie"
 
 #: gmsrq/page_index.py:333
 msgid "🏷 strategy with fighting elements"
-msgstr ""
+msgstr "🏷 strategie s bojovými prvky"
 
 #: gmsrq/page_index.py:335
 msgid "🏷 recruitment center manager"
-msgstr ""
+msgstr "🏷 manažer náborového centra"
 
 #: gmsrq/page_index.py:337
 msgid "🏷 management"
-msgstr ""
+msgstr "🏷 management"
 
 #: gmsrq/page_index.py:339
 msgid "🏷 build management"
-msgstr ""
+msgstr "🏷 správa sestavení"
 
 #: gmsrq/page_index.py:341
 msgid "🏷 sport management"
-msgstr ""
+msgstr "🏷 sportovní management"
 
 #: gmsrq/page_index.py:343
 msgid "🏷 gambling"
-msgstr ""
+msgstr "🏷 hazardní hry"
 
 #: gmsrq/page_index.py:345
 msgid "🏷 trading"
-msgstr ""
+msgstr "🏷 obchodování"
 
 #: gmsrq/page_index.py:347
 msgid "🏷 weapons testing"
-msgstr ""
+msgstr "🏷 testování zbraní"
 
 #: gmsrq/page_index.py:349
 msgid "🏷 espionage"
-msgstr ""
+msgstr "🏷 špionáž"
 
 #: gmsrq/page_index.py:351
 msgid "🏷 espionage; gambling"
-msgstr ""
+msgstr "🏷 špionáž; hazardní hry"
 
 #: gmsrq/page_index.py:353
 msgid "🏷 espionage; bugging"
-msgstr ""
+msgstr "🏷 špionáž; odposlouchávání"
 
 #: gmsrq/page_index.py:355
 msgid "🏷 assault"
-msgstr ""
+msgstr "🏷 útok"
 
 #: gmsrq/page_index.py:357
 msgid "🏷 fantasy role-playing game"
-msgstr ""
+msgstr "🏷 fantasy hra na hrdiny"
 
 #: gmsrq/page_index.py:359
 msgid "🏷 detective"
-msgstr ""
+msgstr "🏷 detektiv"
 
 #: gmsrq/page_index.py:361
 msgid "🏷 humorous detective"
-msgstr ""
+msgstr "🏷 humorný detektiv"
 
 #: gmsrq/page_index.py:363
 msgid "🏷 cargo delivery with quest elements"
-msgstr ""
+msgstr "🏷 dodávka nákladu s prvky úkolů"
 
 #: gmsrq/page_index.py:365
 msgid "🏷 fortress defend"
-msgstr ""
+msgstr "🏷 obrana pevnosti"
 
 #: gmsrq/page_index.py:367
 msgid "🏷 action horror"
-msgstr ""
+msgstr "🏷 akční horor"
 
 #: gmsrq/utils.py:64
 msgid "Ranger Center \"Union\""
-msgstr ""
+msgstr "Ranger Center \"Unie\""
 
