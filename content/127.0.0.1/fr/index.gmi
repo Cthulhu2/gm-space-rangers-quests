@@ -1,0 +1,35 @@
+# Centre des Rangers "Union"
+Pour effectuer des missions gouvernementales, vous aurez besoin d'un certificat de garde forestier. Ne vous inquiétez pas, c'est exactement le même que le vôtre. Vous avez un certificat, n'est-ce pas ? Tu es un garde forestier, n'est-ce pas ? Vous avez ici le bon certificat.
+
+=> /cgi/?lang=fr 🪪 Certificat de Ranger d'exposition
+=> about.gmi ℹ À propos du projet
+
+## Quêtes :: SR 1
+=> /cgi/act?qid=231 Mort horrible
+☠ 10% ⏱ faible 🏷 Simulateur de rat de laboratoire
+=> /cgi/act?qid=251 Gobsaure
+☠ 10% ⏱ faible 🏷 Simulateur d'apprivoisement de gobzaurs sauvages
+=> /cgi/act?qid=211 Bateau
+☠ 15% ⏱ faible 🏷 puzzle
+=> /cgi/act?qid=276 Tombeau
+☠ 20% ⏱ faible 🏷 puzzle
+=> /cgi/act?qid=256 Comball
+☠ 20% ⏱ faible 🏷 Gestion du sport
+=> /cgi/act?qid=241 Pêche
+☠ 50% ⏱ faible 🏷 Simulateur de pêche
+=> /cgi/act?qid=216 Construction
+☠ 50% ⏱ faible 🏷 Gestion de la construction
+=> /cgi/act?qid=226 Commando
+☠ 50% ⏱ moyen 🏷 assaut
+=> /cgi/act?qid=271 Prison
+☠ 50% ⏱ long 🏷 Simulateur de prison
+=> /cgi/act?qid=221 Casino
+☠ 50% ⏱ long 🏷 Jeux d'argent
+=> /cgi/act?qid=261 d'Ike-baana
+☠ 60% ⏱ faible 🏷 puzzle logique
+=> /cgi/act?qid=236 Énergie
+☠ 73% ⏱ moyen 🏷 puzzle logique
+=> /cgi/act?qid=266 Meurtre
+☠ 75% ⏱ moyen 🏷 détective
+=> /cgi/act?qid=246 Gladiateur
+☠ 100% ⏱ faible 🏷 Gestion
