@@ -138,3 +138,18 @@ def fix_formulas_sashki():
         with open(join(QUEST_DIR, 'Shashki_ger.qmm'), 'wb') as s:
             packed = write_qmm(quest, io.BytesIO())
             s.write(packed)
+
+
+def fix_prison1():
+    # Fix: Prison1.qm w max money 10_000 -> 2_000_000_000
+    for name in ('Prison1', 'Prison1_eng', 'Prison1_cze',
+                 'Prison1_fra', 'Prison1_hun', 'Prison1_pol'):
+
+        with open(join(QUEST_DIR, f'{name}.qm'), 'rb') as f:
+            quest = parse(f)
+            if quest.params[10].isMoney and quest.params[10].max == 10_000:
+                quest.params[10].max = 2_000_000_000
+                log.warning(f'{name}.qm p11 Max money 10 000 -> 2 000 000 000')
+                with open(join(QUEST_DIR, f'{name}.qmm'), 'wb') as s:
+                    packed = write_qmm(quest, io.BytesIO())
+                    s.write(packed)

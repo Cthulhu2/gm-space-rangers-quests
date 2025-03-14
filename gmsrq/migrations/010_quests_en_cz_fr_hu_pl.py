@@ -166,11 +166,11 @@ QUEST_NAMES = [
 (266, 'fr',  'Murder_fra.qm',    'Meurtre',         'SR 1.7.2',  75, Duration.AVERAGE, Genre.DETECTIVE              ),  # noqa
 (267, 'hu',  'Murder_hun.qm',    'Gyilkosság',      'SR 1.7.2',  75, Duration.AVERAGE, Genre.DETECTIVE              ),  # noqa
 (268, 'pl',  'Murder_pol.qm',    'Morderstwo',      'SR 1.7.2',  75, Duration.AVERAGE, Genre.DETECTIVE              ),  # noqa
-(269, 'cze', 'Prison1_cze.qm',   'Vězení',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
-(270, 'en',  'Prison1_eng.qm',   'Prison',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
-(271, 'fr',  'Prison1_fra.qm',   'Prison',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
-(272, 'hu',  'Prison1_hun.qm',   'Börtön',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
-(273, 'pl',  'Prison1_pol.qm',   'Więzienie',       'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
+(269, 'cze', 'Prison1_cze.qmm',  'Vězení',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
+(270, 'en',  'Prison1_eng.qmm',  'Prison',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
+(271, 'fr',  'Prison1_fra.qmm',  'Prison',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
+(272, 'hu',  'Prison1_hun.qmm',  'Börtön',          'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
+(273, 'pl',  'Prison1_pol.qmm',  'Więzienie',       'SR 1.7.2',  50, Duration.LONG,    Genre.PRISON_SIM             ),  # noqa
 (274, 'cze', 'Tomb_cze.qm',      'Hrobka',          'SR 1.7.2',  20, Duration.LOW,     Genre.PUZZLE                 ),  # noqa
 (275, 'en',  'Tomb_eng.qm',      'Tomb',            'SR 1.7.2',  20, Duration.LOW,     Genre.PUZZLE                 ),  # noqa
 (276, 'fr',  'Tomb_fra.qm',      'Tombeau',         'SR 1.7.2',  20, Duration.LOW,     Genre.PUZZLE                 ),  # noqa
