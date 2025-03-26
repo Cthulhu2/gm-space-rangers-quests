@@ -12,17 +12,30 @@ log = logging.getLogger()
 
 
 def fix_siege_new_lines():
-    with open('Siege.qm', 'rb') as f:
-        f.seek(0, 0)
+    with open(join(QUEST_DIR, 'Siege.qmm'), 'rb') as f:
         quest = parse(f)
-        for i, x in enumerate(range(ord('A'), ord('I'))):
-            quest.params[12].showingInfo[i].str = (
-                f'-------------------------------------------------------\n'
-                f'Стрельба в квадрат {chr(x)}{{<> mod 10}} по Гауссу\n'
-                f'-------------------------------------------------------')
-        quest.params[13].showingInfo[0].str = ('__________________________\n'
-                                               'Состояние:')
-        with open('../borrowed/qm/Siege.qmm', 'wb') as s:
+    patched = False
+    for i in quest.params[12].showingInfo:
+        if '------------------------------------------------------- ' in i.str:
+            i.str = i.str.replace(
+                '------------------------------------------------------- ',
+                '-------------------------------------------------------\n')
+            patched = True
+            log.warning(f'Siege.qmm p13 long --- with new-lines')
+        if ' -------------------------------------------------------' in i.str:
+            i.str = i.str.replace(
+                ' -------------------------------------------------------',
+                '\n-------------------------------------------------------')
+            patched = True
+    state_param = quest.params[13].showingInfo[0]
+    if '__________________________ ' in state_param.str:
+        state_param.str = state_param.str.replace(
+            '__________________________ ',
+            '__________________________\n')
+        log.warning(f'Siege.qmm p14 long --- with new-lines')
+        patched = True
+    if patched:
+        with open(join(QUEST_DIR, 'Siege.qmm'), 'wb') as s:
             packed = write_qmm(quest, io.BytesIO())
             s.write(packed)
 
