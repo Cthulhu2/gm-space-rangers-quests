@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass
 from gettext import GNUTranslations
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 from gmcapsule.gemini import Request
 
@@ -32,6 +32,8 @@ class Config:
     opts_del_acc_url: str
     opts_del_cert_url: str
     opts_rename_url: str
+    #
+    salt: Optional[str] = None
 
 
 def err_handler(func):

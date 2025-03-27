@@ -37,7 +37,7 @@ def init(capsule: gmcapsule.Context):
         reg_url=f'{CGI_URL}reg',
         reg_add_url=f'{CGI_URL}reg/add/',
         opts_url=f'{CGI_URL}opts',
-        opts_pass_url=f'{CGI_URL}opts/pass',
+        opts_pass_url=f'{CGI_URL}opts/pass/',
         opts_del_acc_url=f'{CGI_URL}opts/del/acc/',
         opts_del_cert_url=f'{CGI_URL}opts/del/cert/',
         opts_rename_url=f'{CGI_URL}opts/rename/')
@@ -52,6 +52,7 @@ def init(capsule: gmcapsule.Context):
     if 'gmsrq' in gmcfg.ini:
         mod_cfg: SectionProxy = gmcfg.section('gmsrq')
         hostname = mod_cfg.get('host', None)
+        srq_cfg.salt = mod_cfg.get('salt', 'salt')
 
     gmsrq.GmQuestsHandler(srq_cfg).init(capsule, hostname)
     gmsrq.GmUsersHandler(srq_cfg).init(capsule, hostname)

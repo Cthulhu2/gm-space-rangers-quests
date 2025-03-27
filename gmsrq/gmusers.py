@@ -1,4 +1,6 @@
+import base64
 import logging
+import random
 import urllib.parse
 from datetime import datetime
 from typing import Callable
@@ -66,14 +68,24 @@ def invalid_name(_, lang: str):
         '* ``` -- and we don’t need to break the formatting.')
 
 
+def access_token(cfg: Config, fp_cert):
+    now = int(datetime.utcnow().timestamp() / 3600)  # hour
+    t1 = random.Random(cfg.salt + fp_cert + str((now - 1))).randbytes(4)
+    t2 = random.Random(cfg.salt + fp_cert + str(now)).randbytes(4)
+    return (base64.urlsafe_b64encode(t1).rstrip(b'=').decode('ascii'),
+            base64.urlsafe_b64encode(t2).rstrip(b'=').decode('ascii'))
+
+
 def options(_, cfg, ranger: Ranger, fp_cert):
     opts = ranger.get_opts()
     ansi = opts.ansi
     certs = ranger.get_certs()
+    __, token = access_token(cfg, fp_cert)
     name = ranger.name or next(filter(lambda c: c.fp == fp_cert, certs)).subj
     certs_items = options_certs(_, cfg, ranger.name, certs, fp_cert,
-                                opts.get_pass_expires())
-    rename_ranger = (f'=> {cfg.opts_rename_url} ' + _('Rename ranger') + '\n\n'
+                                opts.get_pass_expires(), token)
+    rename_ranger = (f'=> {cfg.opts_rename_url}{token}/ ' +
+                     _('Rename ranger') + '\n\n'
                      if not ranger.is_anon else '')
     return (
             f'# ' + _('Options') + '\n' +
@@ -83,14 +95,15 @@ def options(_, cfg, ranger: Ranger, fp_cert):
             f'{certs_items}\n'
             f'## ' + _('Account') + '\n' +
             f'{rename_ranger}'
-            f'=> {cfg.opts_del_acc_url} ⚠ ' + _('Delete ranger {name}')
-            .format(name=name) + '\n' +
+            f'=> {cfg.opts_del_acc_url}{token}/ ⚠ ' +
+            _('Delete ranger {name}').format(name=name) + '\n' +
             _('All quests progress and registered certificates'
               ' will be deleted') + '\n'
     )
 
 
-def options_certs(_, cfg: Config, username, certs, fp_cert, pass_expires_ts):
+def options_certs(_, cfg: Config, username, certs, fp_cert, pass_expires_ts,
+                  token):
     if not username:
         return ''  # no certificates management for unregistered users
     minutes = pass_expires_minutes(pass_expires_ts)
@@ -98,8 +111,8 @@ def options_certs(_, cfg: Config, username, certs, fp_cert, pass_expires_ts):
         else _('not set')
     certs_items = (
             f'## ' + _('Certificates') + '\n' +
-            f'=> {cfg.opts_pass_url} 🔑 ' + _('Certificate password ({expires})')
-            .format(expires=expires) + '\n' +
+            f'=> {cfg.opts_pass_url}{token}/ 🔑 ' +
+            _('Certificate password ({expires})').format(expires=expires) + '\n' +
             _('For adding other certificates you need set password.'
               ' Then just try register for this username.') + '\n\n' +
             f'### ' + _('Registered to {name}').format(name=username) + '\n'
@@ -112,7 +125,8 @@ def options_certs(_, cfg: Config, username, certs, fp_cert, pass_expires_ts):
         else:
             certs_items += (
                     f'{title}\n' +
-                    f'=> {cfg.opts_del_cert_url}{c} ✘ ' + _('Remove') + '\n\n')
+                    f'=> {cfg.opts_del_cert_url}{token}/{c} ✘ ' +
+                    _('Remove') + '\n\n')
     return certs_items
 
 
@@ -158,7 +172,7 @@ class GmUsersHandler:
         # options
         capsule.add(self.cfg.opts_url, self.handle_opts,
                     hostname=hostname)
-        capsule.add(self.cfg.opts_pass_url, self.handle_opts_pass,
+        capsule.add(self.cfg.opts_pass_url + '*', self.handle_opts_pass,
                     hostname=hostname)
         capsule.add(self.cfg.opts_del_cert_url + '*', self.handle_opts_del_cert,
                     hostname=hostname)
@@ -308,14 +322,17 @@ class GmUsersHandler:
     @mark_ranger_activity
     def handle_opts_pass(self, req: gmcapsule.gemini.Request):
         if not req.identity:
-            return self.ask_cert(req.remote_address[0])
+            return self.ask_cert(req.remote_address[0])  #
 
+        t1, t2 = access_token(self.cfg, req.identity.fp_cert)
+        if not req.path.endswith(f'/{t1}/') and not req.path.endswith(f'/{t2}/'):
+            return 30, self.cfg.opts_url  #
         fp_cert = req.identity.fp_cert
         if req.query is None:
             _ = self.gettext_(Options.lang_by(fp_cert=fp_cert))
-            return ask_password(_)
+            return ask_password(_)  #
         Options.save_pass(fp_cert, req.query)
-        return 30, self.cfg.opts_url
+        return 30, self.cfg.opts_url  #
 
     @err_handler
     @mark_ranger_activity
@@ -326,8 +343,10 @@ class GmUsersHandler:
         if not req.path.endswith('/'):
             return 30, req.path + '/'
 
-        path = req.path[len(self.cfg.opts_del_cert_url):].split('/')
-        del_cert = path[0]
+        t1, t2 = access_token(self.cfg, req.identity.fp_cert)
+        if f'/{t1}/' not in req.path and f'/{t2}/' not in req.path:
+            return 30, self.cfg.opts_url
+        del_cert = req.path.split('/')[-2]
         if not req.query:
             _ = self.gettext_(Options.lang_by(fp_cert=req.identity.fp_cert))
             return ask_del_cert(_, del_cert)
@@ -347,19 +366,23 @@ class GmUsersHandler:
             return self.ask_cert(req.remote_address[0])
 
         if not req.path.endswith('/'):
-            return 30, req.path + '/'
+            return 30, req.path + '/'   #
 
         ranger = Ranger.by(fp_cert=req.identity.fp_cert)
         if not ranger:
             return 30, f'/{IpOptions.lang_by_ip(addr=req.remote_address[0])}/'
+        t1, t2 = access_token(self.cfg, req.identity.fp_cert)
+        if not req.path.endswith(f'/{t1}/') and not req.path.endswith(f'/{t2}/'):
+            return 30, self.cfg.opts_url  #
         lang = Options.lang_by(fp_cert=req.identity.fp_cert)
         if not req.query:
             _ = self.gettext_(lang)
-            return ask_del_acc(_, ranger)
+            return ask_del_acc(_, ranger)  #
         if 'yes' == req.query:
             with db.atomic():
                 ranger.delete_instance()
-        return 30, f'/{lang}/'
+            return 30, f'/{lang}/'  #
+        return 30, self.cfg.opts_url
 
     @err_handler
     @mark_ranger_activity
@@ -373,6 +396,9 @@ class GmUsersHandler:
         ranger = Ranger.by(fp_cert=req.identity.fp_cert)
         if not ranger:
             return 30, f'/{IpOptions.lang_by_ip(addr=req.remote_address[0])}/'
+        t1, t2 = access_token(self.cfg, req.identity.fp_cert)
+        if not req.path.endswith(f'/{t1}/') and not req.path.endswith(f'/{t2}/'):
+            return 30, self.cfg.opts_url
         lang = Options.lang_by(fp_cert=req.identity.fp_cert)
         _ = self.gettext_(lang)
         if not req.query:
