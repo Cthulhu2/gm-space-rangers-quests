@@ -20,7 +20,7 @@ Just in case, walkthroughs of quests are here:
 
 Many thanks for translating the capsule pages (not the quests):
 => https://translate.google.com Google Translate
-=> gemini://gmi.wikdict.com WikDict
+=> https://github.com/karlb/wikdict-gemini WikDict translations served over Gemini protocol (github.com)
 
 And in general:
 => gemini://bbs.geminispace.org/s/SpaceRangers Discuss on the BBS
@@ -29,5 +29,6 @@ And in general:
 => gemlog/ Gemlog
 ```
 Created: 2025-03-11
+Updated: 2026-02-07
 ```
 => gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule

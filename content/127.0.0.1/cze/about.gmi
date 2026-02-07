@@ -20,7 +20,7 @@ Pro každý případ jsou návody k hledání zde:
 
 Mnohokrát děkujeme za překlad stránek kapsle (ne questů):
 => https://translate.google.com Google Translate
-=> gemini://gmi.wikdict.com WikDict
+=> https://github.com/karlb/wikdict-gemini WikDict translations served over Gemini protocol (github.com)
 
 A obecně:
 => gemini://bbs.geminispace.org/s/SpaceRangers Diskutujte o BBS
@@ -30,5 +30,6 @@ A obecně:
 
 ```
 Created: 2025-03-14
+Updated: 2026-02-07
 ```
 => gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule

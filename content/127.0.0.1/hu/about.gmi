@@ -20,7 +20,7 @@ Minden esetre a küldetés áttekintése itt található:
 
 Nagyon köszönöm a kapszulaoldalak (nem a küldetések) fordítását:
 => https://translate.google.com Google Translate
-=> gemini://gmi.wikdict.com WikDict
+=> https://github.com/karlb/wikdict-gemini WikDict translations served over Gemini protocol (github.com)
 
 És általában:
 => gemini://bbs.geminispace.org/s/SpaceRangers Beszélgetés a BBS-en
@@ -30,5 +30,6 @@ Nagyon köszönöm a kapszulaoldalak (nem a küldetések) fordítását:
 
 ```
 Created: 2025-03-14
+Updated: 2026-02-07
 ```
 => gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule

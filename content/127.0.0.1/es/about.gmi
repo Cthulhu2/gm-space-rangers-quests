@@ -20,7 +20,7 @@ Por si acaso, los tutoriales de la misión están aquí:
 
 Muchas gracias por traducir las páginas de la cápsula (no las misiones):
 => https://translate.google.com Google Translate
-=> gemini://gmi.wikdict.com WikDict
+=> https://github.com/karlb/wikdict-gemini WikDict translations served over Gemini protocol (github.com)
 
 Y en general:
 => gemini://bbs.geminispace.org/s/SpaceRangers Discutir en el BBS
@@ -29,5 +29,6 @@ Y en general:
 => gemlog/ Gemlog
 ```
 Created: 2025-03-11
+Updated: 2026-02-07
 ```
 => gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule

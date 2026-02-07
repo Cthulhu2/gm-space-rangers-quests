@@ -20,7 +20,7 @@
 
 За перевод страничек капсулы (не квестов) большое спасибо:
 => https://translate.google.com Google Translate
-=> gemini://gmi.wikdict.com WikDict
+=> https://github.com/karlb/wikdict-gemini WikDict translations served over Gemini protocol (github.com)
 
 И вообще:
 => gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS
@@ -30,5 +30,6 @@
 
 ```
 Created: 2025-03-11
+Updated: 2026-02-07
 ```
 => gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule

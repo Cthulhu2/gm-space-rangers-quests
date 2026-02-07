@@ -20,7 +20,7 @@ Au cas où, les solutions de quête sont ici:
 
 Merci beaucoup d'avoir traduit les pages capsules (pas les quêtes):
 => https://translate.google.com Google Translate
-=> gemini://gmi.wikdict.com WikDict
+=> https://github.com/karlb/wikdict-gemini WikDict translations served over Gemini protocol (github.com)
 
 Et en général:
 => gemini://bbs.geminispace.org/s/SpaceRangers Discutez sur BBS
@@ -30,5 +30,6 @@ Et en général:
 
 ```
 Created: 2025-03-14
+Updated: 2026-02-07
 ```
 => gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule

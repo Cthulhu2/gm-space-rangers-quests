@@ -20,7 +20,7 @@ Na wszelki wypadek, opisy przejść zadań znajdziesz tutaj:
 
 Wielkie dzięki za przetłumaczenie stron kapsułowych (nie zadań):
 => https://translate.google.com Google Translate
-=> gemini://gmi.wikdict.com WikDict
+=> https://github.com/karlb/wikdict-gemini WikDict translations served over Gemini protocol (github.com)
 
 I ogólnie:
 => gemini://bbs.geminispace.org/s/SpaceRangers Dyskusja na BBS
@@ -30,5 +30,6 @@ I ogólnie:
 
 ```
 Created: 2025-03-14
+Updated: 2026-02-07
 ```
 => gemini://skyjake.fi/gmcapsule/ Powered by GmCapsule
