@@ -193,7 +193,7 @@ def build_sort_urls(_, cfg, ranger: Ranger):
     difficult = _('☠ difficulty')
     duration = _('⏱ duration')
     genre = _('🏷 genre')
-    type_url = (f'=> {cfg.sort_url}?type ⇵ ' + ' '.join((
+    type_url = (f'=> {cfg.sort_url}?type ⇵ \u200B' + ' '.join((
         f' [[ {difficult} ]] ' if st == SortType.DIFFICULT else difficult,
         f' [[ {duration} ]] ' if st == SortType.DURATION else duration,
         f' [[ {genre} ]] ' if st == SortType.GENRE else genre)))
@@ -201,7 +201,7 @@ def build_sort_urls(_, cfg, ranger: Ranger):
     sd = ranger.get_opts().sort_dir
     asc = _('⬆ ascend')
     desc = _('⬇ descend')
-    dir_url = (f'=> {cfg.sort_url}?dir ⇵ ' + ' '.join((
+    dir_url = (f'=> {cfg.sort_url}?dir ⇵ \u200B' + ' '.join((
         f' [[ {asc} ]] ' if sd == SortDirection.ASCEND else asc,
         f' [[ {desc} ]] ' if sd == SortDirection.DESCEND else desc)))
 
