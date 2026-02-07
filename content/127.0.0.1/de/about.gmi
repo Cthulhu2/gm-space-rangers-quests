@@ -24,7 +24,7 @@ Vielen Dank für die Übersetzung der Kapselseiten (nicht der Quests):
 
 Und allgemein:
 => gemini://bbs.geminispace.org/s/SpaceRangers Diskutieren Sie auf dem BBS
-=> https://github.com/Cthulhu2/gm-space-rangers-quests Code und Issues (github.com)
+=> https://codeberg.org/cthulhu/gm-space-rangers-quests Code und Issues (codeberg.org)
 => misfin:cthulhu28@hashnix.club Kontakt-E-Mail (misfin)
 => gemlog/ Gemlog
 ```

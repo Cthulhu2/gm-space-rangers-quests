@@ -24,7 +24,7 @@
 
 И вообще:
 => gemini://bbs.geminispace.org/s/SpaceRangers Обсудить на BBS
-=> https://github.com/Cthulhu2/gm-space-rangers-quests Исходники и ишьюсы (github.com)
+=> https://codeberg.org/cthulhu/gm-space-rangers-quests Исходники и ишьюсы (codeberg.org)
 => misfin:cthulhu28@hashnix.club Почта для связи (misfin)
 => gemlog/ Гемлог
 

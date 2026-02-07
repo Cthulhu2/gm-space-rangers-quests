@@ -24,7 +24,7 @@ Wielkie dzięki za przetłumaczenie stron kapsułowych (nie zadań):
 
 I ogólnie:
 => gemini://bbs.geminispace.org/s/SpaceRangers Dyskusja na BBS
-=> https://github.com/Cthulhu2/gm-space-rangers-quests Źródła i problemy (github.com)
+=> https://codeberg.org/cthulhu/gm-space-rangers-quests Źródła i problemy (codeberg.org)
 => misfin:cthulhu28@hashnix.club Adres e-mail kontaktowy (misfin)
 => gemlog/ Gemlog
 

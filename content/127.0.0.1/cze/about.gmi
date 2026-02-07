@@ -24,7 +24,7 @@ Mnohokrát děkujeme za překlad stránek kapsle (ne questů):
 
 A obecně:
 => gemini://bbs.geminispace.org/s/SpaceRangers Diskutujte o BBS
-=> https://github.com/Cthulhu2/gm-space-rangers-quests Zdroje a problémy (github.com)
+=> https://codeberg.org/cthulhu/gm-space-rangers-quests Zdroje a problémy (codeberg.org)
 => misfin:cthulhu28@hashnix.club Kontaktní email (misfin)
 => gemlog/ Gemlog
 
