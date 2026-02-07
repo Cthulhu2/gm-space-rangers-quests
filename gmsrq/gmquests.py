@@ -87,11 +87,6 @@ def style(text: str, ansi: bool = True):
         body = fmt.body
         colors_ranges, body = cut_colors(body)  # to correct padding
 
-        # not colorize -- insert emphasis mark BEFORE padding
-        if colors_ranges and not ansi:
-            for r in reversed(colors_ranges):
-                body = body[:r[1]] + '*' + body[r[1]:]
-                body = body[:r[0]] + '*' + body[r[0]:]
         pad = 0
         if fmt.padding == 'left':
             body = f'{body:<{fmt.paddingSize}}'
@@ -117,9 +112,9 @@ def style(text: str, ansi: bool = True):
             .replace('<clrEnd>', '\033[0m') \
             .replace('</clr>', '\033[0m')
     else:
-        text = text.replace('<clr>', '*') \
-            .replace('<clrEnd>', '*') \
-            .replace('</clr>', '*')
+        text = text.replace('<clr>', '') \
+            .replace('<clrEnd>', '') \
+            .replace('</clr>', '')
 
     while clr := re.search(r'<color=?(\d+)?,?(\d+)?,?(\d+)?>', text):
         if ansi:
@@ -129,8 +124,8 @@ def style(text: str, ansi: bool = True):
                      f'{text[clr.regs[3][0]:clr.regs[3][1]]}m')
             end = '\033[0m'
         else:
-            color = '*'
-            end = '*'
+            color = ''
+            end = ''
         text = text[:clr.regs[0][0]] + color + text[clr.regs[0][1]:]
         clr_end = re.search(r'</color>', text)
         if clr_end:
