@@ -1,5 +1,6 @@
 .tmp/
 .idea/
+.venv/
 borrowed/qm/**
 certs/**
 content/127.0.0.1/quests/img/**

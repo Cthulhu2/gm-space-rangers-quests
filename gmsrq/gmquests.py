@@ -241,6 +241,13 @@ class GmQuestsHandler:
         self.cfg = cfg
 
     def init(self, capsule: gmcapsule.Context, hostname=None):
+        hostnames = [None]
+        if hostname:
+            hostnames = hostname.split(" ")
+        for name in hostnames:
+            self._reg_endpoints(capsule, name)
+
+    def _reg_endpoints(self, capsule: gmcapsule.Context, hostname=None):
         capsule.add(self.cfg.act_url, self.handle, hostname=hostname)
 
     @err_handler

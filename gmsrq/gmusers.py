@@ -157,6 +157,13 @@ class GmUsersHandler:
         self.cfg = cfg
 
     def init(self, capsule: gmcapsule.Context, hostname=None):
+        hostnames = [None]
+        if hostname:
+            hostnames = hostname.split(" ")
+        for name in hostnames:
+            self._reg_endpoints(capsule, name)
+
+    def _reg_endpoints(self, capsule: gmcapsule.Context, hostname=None):
         for lang in self.cfg.l10n.keys():
             capsule.add(f'/{lang}/', self.index,
                         hostname=hostname)
